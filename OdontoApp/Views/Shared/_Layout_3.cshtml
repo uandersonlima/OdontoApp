@@ -1,4 +1,53 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿<!DOCTYPE html>
+<html lang="pt-br" style="font-size:1rem">
+<head>
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" href="~/img/logo1.png" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/assets/css/all.min.css" />
+    <!-- Bootstrap core CSS -->
+    <link href="~/mdb/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Material Design Bootstrap -->
+    <link href="~/mdb/css/mdb.min.css" rel="stylesheet" />
+    <!-- Your custom styles (optional) -->
+    <link href="~/mdb/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="bg-primary text-muted">
+        <!-- Footer Text -->
+        <div class="container-fluid text-center text-md-right">
+            <div class="col-md-12">
+                <div class="mb-12 flex-center">
+                    <a class=" font-weight-bold text-white mr-md-5 mr-3 h6" asp-area="" asp-controller="Dev4s" asp-action="Privacy">
+                        Termos e Privacidade
+                    </a>
+                    <!-- Twitter -->
+                    <a class=" font-weight-bold text-white mr-md-5 mr-3 h6">
+                        Copyright  &copy;2019 - @DateTime.Now.Year DEV4
+                    </a>
+                </div>
+            </div>
+            <!-- Grid column -->
+        </div>
+        <!-- Footer Text -->
+    </footer>
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/mdb/js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/mdb/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script src="~/mdb/js/mdb.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
