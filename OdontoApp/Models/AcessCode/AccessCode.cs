@@ -2,17 +2,17 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace OdontoApp.Models.CodigoAcesso
+namespace OdontoApp.Models.AccessCode
 {
-    public class CodigoAcesso
+    public class AccessCode
     {
         [Key]
         public int Codigo { get; set; }
         public string Email { get; set; }
         [Required(ErrorMessageResourceType = typeof(Mensagem), ErrorMessageResourceName = "MSG_E001")]
         [Display(Name ="Código de Verificação")]
-        public string CodAcesso { get; set; }
-        public string TipoCodigo { get; set; }
+        public string Key { get; set; }
+        public string CodeType { get; set; }
         public DateTime DataGerada { get; set; }
     }
 }

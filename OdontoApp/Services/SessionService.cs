@@ -14,11 +14,10 @@ namespace OdontoApp.Services
 
         public bool Check(string key)
         {
-            if (context.HttpContext.Session.GetString(key) is null)
+            if (context.HttpContext.Session.GetString(key) == null)
             {
                 return false;
             }
-
             return true;
         }
         public void Delete(string key)
@@ -44,7 +43,7 @@ namespace OdontoApp.Services
         }
         public void Register(string key, string value)
         {
-            throw new System.NotImplementedException();
+            context.HttpContext.Session.SetString(key, value);
         }
 
     }

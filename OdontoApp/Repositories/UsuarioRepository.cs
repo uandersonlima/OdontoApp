@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using OdontoApp.Data;
 using OdontoApp.Models;
 using OdontoApp.Models.Const;
@@ -16,25 +15,13 @@ namespace OdontoApp.Repositories
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly OdontoAppContext context;
-        private readonly IConfiguration conf;
 
-        public UsuarioRepository(OdontoAppContext context, IConfiguration conf)
+        public UsuarioRepository(OdontoAppContext context)
         {
             this.context = context;
-            this.conf = conf;
         }
         public async Task AddAsync(Usuario entity)
         {
-            if (entity.Email.ToLower() == conf.GetValue<string>("Email:Username").ToLower())
-            {
-                entity.AccessType = AccessType.Administrator;
-                entity.AccountStatus = Status.Enabled;
-            }
-            else
-            {
-                entity.AccessType = AccessType.User;
-                entity.AccountStatus = Status.Disabled;
-            }
             await context.AddAsync(entity);
             await context.SaveChangesAsync();
         }

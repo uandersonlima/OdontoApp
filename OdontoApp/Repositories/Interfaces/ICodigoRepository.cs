@@ -1,14 +1,14 @@
-﻿using OdontoApp.Models.CodigoAcesso;
+﻿using OdontoApp.Models.AccessCode;
 using System.Threading.Tasks;
 
 namespace OdontoApp.Repositories.Interfaces
 {
     public interface ICodigoRepository
     {
-        Task AddAsync(CodigoAcesso accessCode);
-        Task DeleteAsync(CodigoAcesso accessCode);
-        Task<CodigoAcesso> SearchCodeAsync(CodigoAcesso accessCode);
-        Task<CodigoAcesso> SearchAndValidateCodeAsync(CodigoAcesso accessCode);
+        Task AddAsync(AccessCode accessCode);
+        Task DeleteAsync(AccessCode accessCode);
+        Task<AccessCode> SearchCodeAsync(AccessCode accessCode);
+        Task<AccessCode> SearchAndValidateCodeAsync(AccessCode accessCode);
         
     }
 }

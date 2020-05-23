@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OdontoApp.Data;
 using OdontoApp.Libraries.Seguranca;
-using OdontoApp.Models.CodigoAcesso;
+using OdontoApp.Models.AccessCode;
 using OdontoApp.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,28 +17,28 @@ namespace OdontoApp.Repositories
             this.context = context;
         }
 
-        public async Task AddAsync(CodigoAcesso accessCode)
+        public async Task AddAsync(AccessCode accessCode)
         {
             await context.CodigosAcesso.AddAsync(accessCode);
             await context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(CodigoAcesso accessCode)
+        public async Task DeleteAsync(AccessCode accessCode)
         {
             context.CodigosAcesso.Remove(accessCode);
             await context.SaveChangesAsync();
         }
-        public async Task<CodigoAcesso> SearchAndValidateCodeAsync(CodigoAcesso accessCode)
+        public async Task<AccessCode> SearchAndValidateCodeAsync(AccessCode accessCode)
         {
             return await context.CodigosAcesso.AsNoTracking().
                         Where(cod => cod.Email.ToLower() == accessCode.Email.ToLower()
-                        && cod.CodAcesso == Base64Cipher.Base64Decode(accessCode.CodAcesso)
-                        && cod.TipoCodigo == accessCode.TipoCodigo).FirstOrDefaultAsync();
+                        && cod.Key == Base64Cipher.Base64Decode(accessCode.Key)
+                        && cod.CodeType == accessCode.CodeType).FirstOrDefaultAsync();
         }
-        public async Task<CodigoAcesso> SearchCodeAsync(CodigoAcesso accessCode)
+        public async Task<AccessCode> SearchCodeAsync(AccessCode accessCode)
         {
             return await context.CodigosAcesso.AsNoTracking().
-                        Where(p => p.TipoCodigo == accessCode.TipoCodigo
+                        Where(p => p.CodeType == accessCode.CodeType
                         && p.Email.ToLower() == accessCode.Email.ToLower()).FirstOrDefaultAsync();
         }
 

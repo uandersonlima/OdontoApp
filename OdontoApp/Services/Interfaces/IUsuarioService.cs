@@ -1,5 +1,5 @@
 ﻿using OdontoApp.Models;
-using OdontoApp.Models.CodigoAcesso;
+using OdontoApp.Models.AccessCode;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,9 +7,9 @@ namespace OdontoApp.Services.Interfaces
 {
     public interface IUsuarioService : IServiceBase<Usuario>
     {
-        Task<bool> ActiveAccountAsync(Usuario entity, CodigoAcesso accessCode);
+        Task<bool> ActiveAccountAsync(Usuario entity, AccessCode accessCode);
         Task ChangePasswordAsync(Usuario entity);
-        Task<bool> ChangePasswordByCodeAsync(Usuario entity, CodigoAcesso accessCode);
+        Task<bool> ChangePasswordByCodeAsync(Usuario entity, AccessCode accessCode);
         Task EnableOrDisableAsync(Usuario entity);
         List<Usuario> GetUserByEmail(string email);
         Task<Usuario> GetUserByLogin(string email, string senha);

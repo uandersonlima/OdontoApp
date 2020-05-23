@@ -1,5 +1,6 @@
-﻿using OdontoApp.Models;
-using OdontoApp.Models.CodigoAcesso;
+﻿using Microsoft.Extensions.Configuration;
+using OdontoApp.Models;
+using OdontoApp.Models.AccessCode;
 using OdontoApp.Models.Const;
 using OdontoApp.Models.Helpers;
 using OdontoApp.Repositories.Interfaces;
@@ -13,14 +14,16 @@ namespace OdontoApp.Services
     public class UsuarioService : IUsuarioService
     {       
         private readonly ICodigoService codigoSvc;
+        private readonly IConfiguration conf;
         private readonly IUsuarioRepository usuarioRepos;
-        public UsuarioService(IUsuarioRepository usuarioRepos, ICodigoService codigoSvc)
+        public UsuarioService(IUsuarioRepository usuarioRepos, ICodigoService codigoSvc, IConfiguration conf)
         {
+            this.conf = conf;
+            this.codigoSvc = codigoSvc; 
             this.usuarioRepos = usuarioRepos;
-            this.codigoSvc = codigoSvc;
         }
 
-        public async Task<bool> ActiveAccountAsync(Usuario entity, CodigoAcesso accessCode)
+        public async Task<bool> ActiveAccountAsync(Usuario entity, AccessCode accessCode)
         {
             var receivedCode = await codigoSvc.SearchAndValidateCodeAsync(accessCode);
             if (!(receivedCode is null))
@@ -34,6 +37,16 @@ namespace OdontoApp.Services
         }
         public async Task AddAsync(Usuario entity)
         {
+            if (entity.Email.ToLower() == conf.GetValue<string>("Email:Username").ToLower())
+            {
+                entity.AccessType = AccessType.Administrator;
+                entity.AccountStatus = Status.Enabled;
+            }
+            else
+            {
+                entity.AccessType = AccessType.User;
+                entity.AccountStatus = Status.Disabled;
+            }
             await usuarioRepos.AddAsync(entity);
         }
 
@@ -42,7 +55,7 @@ namespace OdontoApp.Services
             await usuarioRepos.ChangePasswordAsync(entity);
         }
 
-        public async Task<bool> ChangePasswordByCodeAsync(Usuario entity, CodigoAcesso accessCode)
+        public async Task<bool> ChangePasswordByCodeAsync(Usuario entity, AccessCode accessCode)
         {
             var receivedCode = await codigoSvc.SearchAndValidateCodeAsync(accessCode);
             if (!(receivedCode is null))

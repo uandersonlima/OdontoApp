@@ -39,7 +39,7 @@ namespace OdontoApp.Libraries.Lang {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OrtoClin.Libraries.Lang.Mensagem", typeof(Mensagem).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OdontoApp.Libraries.Lang.Mensagem", typeof(Mensagem).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

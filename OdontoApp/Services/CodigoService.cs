@@ -1,7 +1,7 @@
 ﻿using OdontoApp.Libraries.Seguranca;
 using OdontoApp.Libraries.Texto;
 using OdontoApp.Models;
-using OdontoApp.Models.CodigoAcesso;
+using OdontoApp.Models.AccessCode;
 using OdontoApp.Models.Const;
 using OdontoApp.Repositories.Interfaces;
 using OdontoApp.Services.Interfaces;
@@ -21,7 +21,7 @@ namespace OdontoApp.Services
             this.emailSvc = emailSvc;
         }
 
-        public async Task AddAsync(CodigoAcesso acessCode)
+        public async Task AddAsync(AccessCode acessCode)
         {
             var previousCode = await SearchCodeAsync(acessCode);
             if (!(previousCode is null))
@@ -35,11 +35,11 @@ namespace OdontoApp.Services
         {
             var Key = KeyGenerator.GetUniqueKey(8);
             var keyCrip = Base64Cipher.Base64Encode(Key);
-            CodigoAcesso newCode = new CodigoAcesso
+            AccessCode newCode = new AccessCode
             {
-                CodAcesso = Key,
+                Key = Key,
                 Email = entity.Email,
-                TipoCodigo = codeType,
+                CodeType = codeType,
                 DataGerada = DateTime.Now
             };
             if (codeType == CodeType.Verification)
@@ -53,9 +53,9 @@ namespace OdontoApp.Services
             await AddAsync(newCode);
         }
 
-        public async Task DeleteAsync(CodigoAcesso acessCode) => await codigoRepos.DeleteAsync(acessCode);
+        public async Task DeleteAsync(AccessCode acessCode) => await codigoRepos.DeleteAsync(acessCode);
 
-        public async Task<TimeSpan> ElapsedTimeAsync(CodigoAcesso acessCode)
+        public async Task<TimeSpan> ElapsedTimeAsync(AccessCode acessCode)
         {
             var previousCodigo = await SearchCodeAsync(acessCode);
             if (!(previousCodigo is null)) 
@@ -65,8 +65,8 @@ namespace OdontoApp.Services
             return new TimeSpan(0, 15, 0);
         }
 
-        public async Task<CodigoAcesso> SearchAndValidateCodeAsync(CodigoAcesso entity) => await codigoRepos.SearchAndValidateCodeAsync(entity);
+        public async Task<AccessCode> SearchAndValidateCodeAsync(AccessCode entity) => await codigoRepos.SearchAndValidateCodeAsync(entity);
 
-        public async Task<CodigoAcesso> SearchCodeAsync(CodigoAcesso entity) => await codigoRepos.SearchCodeAsync(entity);
+        public async Task<AccessCode> SearchCodeAsync(AccessCode entity) => await codigoRepos.SearchCodeAsync(entity);
     }
 }
