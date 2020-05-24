@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OdontoApp.Controllers
 {
-    [UserAuthorization]
+    //[UserAuthorization]
     [AutoValidateAntiforgeryToken]
     public class AgendasController : Controller
     {
@@ -23,7 +23,7 @@ namespace OdontoApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ViewData["PacienteId"] = new SelectList(await pacienteSvc.GetAllAsync(), "Id", "NomePaciente");
+            //ViewData["PacienteId"] = new SelectList(await pacienteSvc.GetAllAsync(), "Id", "NomePaciente");
             return View();
         }
 

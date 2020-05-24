@@ -2,7 +2,7 @@
 <html lang="pt-br" style="font-size: 1rem;">
 <head>
     <title>@ViewData["Title"]</title>
-    <link rel="icon" href="~/img/logo1.png"/>
+    <link rel="icon" href="~/img/logo1.png" />
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -13,26 +13,33 @@
 </head>
 <body>
     <header>
-        <nav class="navbar fixed-top navbar-expand-lg navbar-toggleable-lg navbar-light bg-light box-shadow mb-5 form-group">
-            <div class="container-fluid col-md-10 col-12">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation">
-                    <span class="text-primary navbar-toggler-icon"></span>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-toggleable-lg navbar-light bg-light border-bottom box-shadow mb-5 justify-content-between">
+            <div class="container-fluid col-lg-10 col-sm-10">
+                <a class="navbar-brand" href="#tela1" onclick="deslizar(this); return false;">
+                    <img width="150" src="~/img/Logoprimaryline.png" alt="..." class="img-fluid mr-auto mr-md-0 ml-3">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <img width="150" src="~/img/Logoprimaryline.png" alt="..." class="img-fluid mr-auto mr-md-0 ml-3">
-                <div class="collapse navbar-collapse justify-content-md-end" id="navbarCollapse">
-                    <form class="form-inline mt-2 mt-md-0">
-                        <div class="form-inline">
-                            <a class="btn btn-lg mr-0 mr-md-2" href="#tela1"><h3 class="font-weight-bold text-dark">Inicio</h3></a>
-                            <a class="btn btn-lg mr-0 mr-md-2" href="#tela2"><h3 class="font-weight-bold text-dark">Ferramentas</h3></a>
-                            <a class="btn btn-lg mr-0 mr-md-2" href="#tela3"><h3 class="font-weight-bold text-dark">Teste</h3></a>
-                            <a class="btn btn-lg  mr-0 mr-md-2" href="#tela4"><h3 class="font-weight-bold text-dark">Outra tela</h3></a>
-                            <a class="btn btn-lg mr-2 mr-md-5" href="#tela5"><h3 class="font-weight-bold text-dark">Planos</h3></a>
-                        </div>
-                        <div class="btn-group float-right float-md-none">
-                            <a class="btn btn-lg btn-round btn-outline-primary mr-4 font-weight-bold" style="border-width:medium" asp-controller="Usuarios" asp-action="Login">Login</a>
-                            <a class="btn btn-lg btn-round btn-primary font-weight-bold" style="border-width:medium" asp-controller="Usuarios" asp-action="CadastroUsuario">Cadastrar</a>
-                        </div>
-                    </form>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1 justify-content-end">
+                        <li class="nav-item">
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela2"><h5 class="font-weight-bold text-dark">Ferramentas</h5></a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela3"><h5 class="font-weight-bold text-dark">Teste</h5></a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela4"><h5 class="font-weight-bold text-dark">Outra tela</h5></a>
+                        </li>
+                        <li class="nav-item">
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark mr-sm-0 mr-lg-3" href="#tela5"><h5 class="font-weight-bold text-dark">Planos</h5></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-round btn-outline-primary mr-1 mr-md-2 mr-lg-3 font-weight-bold" style="border-width:medium" asp-controller="Usuarios" asp-action="Login">Login</a>
+                            <a class="btn btn-round btn-primary font-weight-bold" style="border-width:medium" asp-controller="Usuarios" asp-action="CadastroUsuario">Cadastrar</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -80,15 +87,14 @@
         });
     </script>
     <script>
-        $('nav div.form-inline a').click(function (e) {
-            e.preventDefault();
-            let id = this.getAttribute('href'),
+        function deslizar(element) {
+            let id = element.getAttribute('href'),
                 targetOffset = $(id).offset().top,
                 menuHeight = $('nav').innerHeight();
             $('html, body').animate({
                 scrollTop: targetOffset - menuHeight
             }, 500);
-        });
+        }
     </script>
     @RenderSection("Scripts", required: false)
 </body>

@@ -19,25 +19,25 @@ namespace OdontoApp.Repositories
 
         public async Task AddAsync(AccessCode accessCode)
         {
-            await context.CodigosAcesso.AddAsync(accessCode);
+            await context.AccessCodes.AddAsync(accessCode);
             await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(AccessCode accessCode)
         {
-            context.CodigosAcesso.Remove(accessCode);
+            context.AccessCodes.Remove(accessCode);
             await context.SaveChangesAsync();
         }
         public async Task<AccessCode> SearchAndValidateCodeAsync(AccessCode accessCode)
         {
-            return await context.CodigosAcesso.AsNoTracking().
+            return await context.AccessCodes.AsNoTracking().
                         Where(cod => cod.Email.ToLower() == accessCode.Email.ToLower()
                         && cod.Key == Base64Cipher.Base64Decode(accessCode.Key)
                         && cod.CodeType == accessCode.CodeType).FirstOrDefaultAsync();
         }
         public async Task<AccessCode> SearchCodeAsync(AccessCode accessCode)
         {
-            return await context.CodigosAcesso.AsNoTracking().
+            return await context.AccessCodes.AsNoTracking().
                         Where(p => p.CodeType == accessCode.CodeType
                         && p.Email.ToLower() == accessCode.Email.ToLower()).FirstOrDefaultAsync();
         }

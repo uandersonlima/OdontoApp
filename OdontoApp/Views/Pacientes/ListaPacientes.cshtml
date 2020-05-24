@@ -1,0 +1,54 @@
+﻿@model List<Paciente>
+<div class="page-inner">
+    <div class="row">
+        <div class="container-fluid d-flex justify-content-center col-12 col-md-10">
+            <div class="card col-md-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-dark font-weight-bold op-3">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().NomePaciente)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().CPF)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.First().EmailPaciente)
+                                </th>
+                                <th>
+                                    (@Html.DisplayNameFor(model => model.First().DDD)) @Html.DisplayNameFor(model => model.First().Telefone)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-dark font-weight-bold">
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NomePaciente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CPF)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.EmailPaciente)
+                                    </td>
+                                    <td>
+                                        (@Html.DisplayFor(modelItem => item.DDD)) @Html.DisplayFor(modelItem => item.Telefone)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -17,7 +17,7 @@ namespace OdontoApp.Services.IoC
     {
         public static void Injetar(IServiceCollection svc, IConfiguration conf)
         {
-            svc.AddControllersWithViews();
+            svc.AddControllersWithViews().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; }); 
             svc.AddRazorPages();
             svc.AddHttpContextAccessor();
             svc.AddScoped<IUsuarioRepository, UsuarioRepository>();
@@ -69,6 +69,7 @@ namespace OdontoApp.Services.IoC
             svc.AddScoped<ICodigoRepository, CodigoRepository>();
             svc.AddScoped<ICodigoPromocionalRepository, CodigoPromocionalRepository>();
             svc.AddScoped<IDentesRegiaoRepository, DentesRegiaoRepository>();
+            svc.AddScoped<IEnderecoRepository, EnderecoRepository>();
             svc.AddScoped<IEntradaSaidaRepository, EntradaSaidaRepository>();
             svc.AddScoped<IEstoqueRepository, EstoqueRepository>();
             svc.AddScoped<IMedicoRepository, MedicoRepository>();
@@ -94,6 +95,7 @@ namespace OdontoApp.Services.IoC
             svc.AddScoped<ICodigoPromocionalService, CodigoPromocionalService>();
             svc.AddScoped<IDentesRegiaoService, DentesRegiaoService>();
             svc.AddScoped<IEmailService, EmailService>();
+            svc.AddScoped<IEnderecoService, EnderecoService>();
             svc.AddScoped<IEntradaSaidaService, EntradaSaidaService>();
             svc.AddScoped<IEstoqueService, EstoqueService>();
             svc.AddScoped<ILoginService, LoginService>();

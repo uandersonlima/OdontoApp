@@ -3,10 +3,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OdontoApp.Migrations
 {
-    public partial class OdontoAppV2 : Migration
+    public partial class OdontoApp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AccessCodes",
+                columns: table => new
+                {
+                    Codigo = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(nullable: true),
+                    Key = table.Column<string>(nullable: false),
+                    CodeType = table.Column<string>(nullable: true),
+                    DataGerada = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessCodes", x => x.Codigo);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Bairro",
                 columns: table => new
@@ -57,22 +73,6 @@ namespace OdontoApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cidade", x => x.CidadeId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CodigosAcesso",
-                columns: table => new
-                {
-                    Codigo = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(nullable: true),
-                    CodAcesso = table.Column<string>(nullable: false),
-                    TipoCodigo = table.Column<string>(nullable: true),
-                    DataGerada = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CodigosAcesso", x => x.Codigo);
                 });
 
             migrationBuilder.CreateTable(
@@ -1546,6 +1546,9 @@ namespace OdontoApp.Migrations
                 table: "Endereco");
 
             migrationBuilder.DropTable(
+                name: "AccessCodes");
+
+            migrationBuilder.DropTable(
                 name: "Agenda");
 
             migrationBuilder.DropTable(
@@ -1556,9 +1559,6 @@ namespace OdontoApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "ClinicaCargoClinica");
-
-            migrationBuilder.DropTable(
-                name: "CodigosAcesso");
 
             migrationBuilder.DropTable(
                 name: "CodigosPromocionais");

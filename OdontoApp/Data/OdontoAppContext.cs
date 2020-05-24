@@ -15,7 +15,7 @@ namespace OdontoApp.Data
 
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<CodigoPromocional> CodigosPromocionais { get; set; }
-        public DbSet<AccessCode> CodigosAcesso { get; set; }
+        public DbSet<AccessCode> AccessCodes { get; set; }
         public DbSet<Agenda> Agenda { get; set; }
         public DbSet<Cidade> Cidade { get; set; }
         public DbSet<Estado> Estado { get; set; }

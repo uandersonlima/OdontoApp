@@ -30,7 +30,7 @@ namespace OdontoApp.Services
             {
                 await EnableOrDisableAsync(entity);
                 await UpdateAsync(entity);
-                await codigoSvc.DeleteAsync(accessCode);
+                await codigoSvc.DeleteAsync(receivedCode);
                 return true;
             }
             return false;

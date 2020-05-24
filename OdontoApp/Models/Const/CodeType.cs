@@ -2,7 +2,7 @@
 {
     public static class CodeType
     {
-        public const string Verification = "C";
+        public const string Verification = "V";
         public const string Recovery = "R";
     }
 }

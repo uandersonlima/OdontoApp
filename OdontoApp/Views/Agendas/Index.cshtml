@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "Agenda";
+    Layout = "~/Views/Shared/_Layout_1.cshtml";
+}
+
+@model Paciente
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Context).RequestToken;
+    }
+}
+
+<input type="hidden" id="RequestVerificationToken"
+       name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
+<!---Matenha esses links aqui-->
+<link href='~/Agenda/packages/core/main.css' rel='stylesheet' />
+<link href='~/Agenda/packages/daygrid/main.css' rel='stylesheet' />
+<link href='~/Agenda/packages/timegrid/main.css' rel='stylesheet' />
+<link href='~/Agenda/packages/list/main.css' rel='stylesheet' />
+<link href='~/Agenda/packages/bootstrap/main.css' rel='stylesheet' />
+
+<!--Corpo principal do calendário-->
+<div class="content p-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 ml-auto mr-auto">
+                <div class="card rounded-0 shadow-sm">
+                    <div class="card-body">
+                        <!--Div que carrega a Agenda-->
+                        <div id="agenda"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------------------------------------------>
+<!--Corpo dos Modais----------------------------------->
+<div class="modal fade" id="modalAgenda" tabindex="-1" role="dialog" aria-labelledby="TitleModal" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content shadow">
+            <!--Titulo do modal-->
+            <div class="modal-header">
+
+                <h4 class="modal-title font-weight-bold text-muted" id="TitleModal">Título do modal</h4>
+
+            </div>
+            <!--Conteudo do modal-->
+            <div class="modal-body">
+                <form id="formAgenda">
+                    <div class="form-group row">
+
+                        <div class="col-sm-8">
+                            <label asp-for="NomePaciente" class="col-sm-4 col-form-label"></label>
+                            <select asp-for="NomePaciente" class="form-control" asp-items="ViewBag.PacienteId">
+                                <option value="" class="text-muted">Escolha um paciente...</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="titulo" class="col-sm-4 col-form-label">Título</label>
+                            <input type="text" class="form-control" id="titulo">
+                            <input type="hidden" id="agendaId">
+                            <input type="hidden" id="clienteId">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+
+                        <div class="col-sm-2 ">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="form-control custom-control-input" id="diatodo">
+                                <label for="diatodo" class="custom-control-label text-muted d-flex justify-content-center">24 horas</label>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-5 ">
+                            <label for="inicio" class="col-sm-4 col-form-label">Horário Inicial</label>
+                            <div class="col-12">
+                                <input type="text" class="form-control date-time" id="inicio">
+                            </div>
+                        </div>
+                        <div class="col-sm-5 " id="divfim">
+                            <label for="fim" class="col-sm-4 col-form-label">Horário Final</label>
+                            <div class="col-12">
+                                <input type="text" class="form-control date-time" id="fim">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            <label for="situacao" class="col-sm-4 col-form-label">Situação</label>
+                            <select id="situacao" class="form-control">
+                                <option value="#5cb85c">Confirmado</option>
+                                <option value="#f0ad4e">Pendente</option>
+                                <option value="#d9534f">Cancelado</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-8">
+                            <label for="descricao" class="col-sm-4 col-form-label">Descricao</label>
+                            <textarea type="text" class="form-control" id="descricao" cols="40" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <!--rodapé do modal-->
+            <div class="modal-footer text-right">
+                <button type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal">FECHAR</button>
+                <button type="button" class="ml-1 btn btn-danger  btn-sm deleteEvent">EXCLUIR</button>
+                <button type="button" class="ml-1 btn btn-success  btn-sm saveEvent">SALVAR</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <!------------------------------------------------------------>
+    <script>
+        let objCalendar
+        let token = $('input[name="RequestVerificationToken"]').val();
+    </script>
+    <script src='~/Agenda/packages/core/main.js'></script>
+    <script src='~/Agenda/packages/interaction/main.js'></script>
+    <script src='~/Agenda/packages/daygrid/main.js'></script>
+    <script src='~/Agenda/packages/timegrid/main.js'></script>
+    <script src='~/Agenda/packages/list/main.js'></script>
+    <script src='~/Agenda/packages/core/locales-all.js'></script>
+    <script src='~/Agenda/packages/bootstrap/main.js'></script>
+    <script src='~/Agenda/js/moment.min.js'></script>
+    <script src='~/Agenda/js/theme-chooser.js'></script>
+    <script src='~/Agenda/js/BotoesAgendaScript.js'></script>
+    <script src='~/Agenda/js/AgendaScript.js'></script>
+}

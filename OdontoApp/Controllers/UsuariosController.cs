@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using OdontoApp.Libraries.Lang;
-using OdontoApp.Libraries.Seguranca;
 using OdontoApp.Models;
 using OdontoApp.Models.AccessCode;
 using OdontoApp.Models.Const;
@@ -59,7 +58,7 @@ namespace OdontoApp.Controllers
                 return View();
             }
         }
-        [HttpGet]
+        [HttpGet, Route("[controller]/Cadastro")]
         public IActionResult CadastroUsuario()
         {
             if (loginSvc.GetUser() is null)
@@ -103,7 +102,7 @@ namespace OdontoApp.Controllers
             var codigo = new AccessCode { Email = usuario.Email, CodeType = CodeType.Recovery };
             var elapsedTime = await codeSvc.ElapsedTimeAsync(codigo);
             var _15min = new TimeSpan(0, 15, 0);
-            TempData["MSG_E"] = string.Format(Mensagem.MSG_E011, _15min.Subtract(elapsedTime));
+            TempData["MSG_E"] = string.Format(Mensagem.MSG_E011, _15min.Subtract(elapsedTime).ToString(@"mm\:ss"));
 
             if (elapsedTime >= _15min)
             {
@@ -147,7 +146,7 @@ namespace OdontoApp.Controllers
                 usercode.AcessCode.Email = usercode.Usuario.Email;
                 usercode.AcessCode.CodeType = CodeType.Recovery;
 
-                if (Base64Cipher.IsBase64String(usercode.AcessCode.Key))
+                if (codeSvc.CodeIsValid(usercode.AcessCode.Key))
                 {
 
                     if (!await userSvc.ChangePasswordByCodeAsync(usercode.Usuario, usercode.AcessCode))
@@ -171,6 +170,11 @@ namespace OdontoApp.Controllers
         {
             var loggedUser = loginSvc.GetUser();
 
+            if (loggedUser is null)
+            {
+                return RedirectToAction("Login", "Usuarios");
+            }
+
             if (loggedUser.AccountStatus != Status.Enabled)
             {
                 UserCode viewModel = new UserCode
@@ -181,7 +185,6 @@ namespace OdontoApp.Controllers
                 return View(viewModel);
 
             }
-
             return RedirectToAction("Index", "Agendas");
         }
 
@@ -192,30 +195,30 @@ namespace OdontoApp.Controllers
 
             if (loggedUser.AccountStatus != Status.Enabled)
             {
-                ModelState.Remove("Cliente.Nome");
-                ModelState.Remove("Cliente.TipoAcesso");
-                ModelState.Remove("Cliente.SituacaoConta");
-                ModelState.Remove("Cliente.SituacaoPagamento");
-                ModelState.Remove("Cliente.NumeroPlano");
-                ModelState.Remove("Cliente.Nascimento");
-                ModelState.Remove("Cliente.Sexo");
-                ModelState.Remove("Cliente.CPF");
-                ModelState.Remove("Cliente.DDD");
-                ModelState.Remove("Cliente.EnderecoId");
-                ModelState.Remove("Cliente.Telefone");
-                ModelState.Remove("Cliente.Senha");
-                ModelState.Remove("Cliente.ConfirmacaoSenha");
+                ModelState.Remove("Usuario.Nome");
+                ModelState.Remove("Usuario.TipoAcesso");
+                ModelState.Remove("Usuario.SituacaoConta");
+                ModelState.Remove("Usuario.SituacaoPagamento");
+                ModelState.Remove("Usuario.NumeroPlano");
+                ModelState.Remove("Usuario.Nascimento");
+                ModelState.Remove("Usuario.Sexo");
+                ModelState.Remove("Usuario.CPF");
+                ModelState.Remove("Usuario.DDD");
+                ModelState.Remove("Usuario.EnderecoId");
+                ModelState.Remove("Usuario.Telefone");
+                ModelState.Remove("Usuario.Senha");
+                ModelState.Remove("Usuario.ConfirmacaoSenha");
 
                 if (ModelState.IsValid)
                 {
                     usercode.AcessCode.Email = usercode.Usuario.Email;
                     usercode.AcessCode.CodeType = CodeType.Verification;
 
-                    if (Base64Cipher.IsBase64String(usercode.AcessCode.Key))
+                    if (codeSvc.CodeIsValid(usercode.AcessCode.Key))
                     {
-                        var passwordChanged = await userSvc.ChangePasswordByCodeAsync(loggedUser, usercode.AcessCode);
+                        var accountEnabled = await userSvc.ActiveAccountAsync(loggedUser, usercode.AcessCode);
 
-                        if (!passwordChanged)
+                        if (!accountEnabled)
                         {
                             TempData["MSG_E"] = Mensagem.MSG_E015;
                             return View(usercode);
@@ -244,7 +247,7 @@ namespace OdontoApp.Controllers
                 var codigo = new AccessCode { Email = loggedUser.Email, CodeType = codeType };
                 var elapsedTime = await codeSvc.ElapsedTimeAsync(codigo);
                 var _15min = new TimeSpan(0, 15, 0);
-                TempData["MSG_E"] = string.Format(Mensagem.MSG_E011, _15min.Subtract(elapsedTime));
+                TempData["MSG_E"] = string.Format(Mensagem.MSG_E011, _15min.Subtract(elapsedTime).ToString(@"mm\:ss"));
 
 
                 if (elapsedTime >= _15min)
@@ -260,7 +263,7 @@ namespace OdontoApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Logout()
         {
             loginSvc.Logout();

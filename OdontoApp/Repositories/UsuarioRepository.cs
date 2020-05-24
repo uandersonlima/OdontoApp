@@ -93,10 +93,11 @@ namespace OdontoApp.Repositories
         {
             return await context.Usuario.AsNoTracking()
                 .Include(obj => obj.Endereco)
-                    .ThenInclude(obj => obj.Rua)
+                .Include(obj => obj.Endereco.Rua)
                 .Include(obj => obj.Endereco.Bairro)
                 .Include(obj => obj.Endereco.Cidade)
-                .Include(obj => obj.Endereco.Estado).Include(obj => obj.Endereco.Cep)
+                .Include(obj => obj.Endereco.Estado)
+                .Include(obj => obj.Endereco.Cep)
                 .Where(user => user.UsuarioId == id)
                 .FirstOrDefaultAsync();
         }

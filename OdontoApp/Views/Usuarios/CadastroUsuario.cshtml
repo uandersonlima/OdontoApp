@@ -1,8 +1,354 @@
-﻿
+﻿@model Usuario
 @{
-    ViewData["Title"] = "CadastroUsuario";
+    ViewData["Title"] = "Cadastra-se";
     Layout = "~/Views/Shared/_Layout_3.cshtml";
 }
+<form method="post">
+    <div class="container-fluid">
+        <div class="row justify-content-center align-items-center vh-100">
+            <div class="card col-12 col-md-6 col-lg-4 text-center d-flex" id="pag1">
+                <div class="card-body">
+                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                        <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
+                    </a>
+                    <h1 class="text-muted">CADASTRO</h1>
+                    <p class="text-muted">Vamos iniciar sua experiência</p>
+                    @{ await Html.RenderPartialAsync("~/Views/Shared/_Mensagem.cshtml"); }
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-id-card prefix grey-text"></i>
+                                        <input type="text" asp-for="Nome" id="Name" class="form-control">
+                                        <label asp-for="Nome" for="Name">Seu nome</label>
+                                        <span asp-validation-for="Nome" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-envelope prefix grey-text"></i>
+                                        <input asp-for="Email" id="email" class="form-control" type="email">
+                                        <label for="email" class="font-weight-light">Seu email</label>
+                                        <span asp-validation-for="Email" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-lock prefix grey-text"></i>
+                                        <input asp-for="Senha" id="senha" class="form-control" type="password">
+                                        <label for="senha" class="font-weight-light">Sua Senha</label>
+                                        <span asp-validation-for="Senha" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-key prefix grey-text"></i>
+                                        <input class="form-control" asp-for="ConfirmacaoSenha" type="password">
+                                        <label asp-for="ConfirmacaoSenha">Confirme sua senha</label>
+                                        <span asp-validation-for="ConfirmacaoSenha" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-5">
+                        <div class="col-md-6 mt-4 mt-md-0 col-12 order-1 order-md-0 ml-auto align-self-center">
+                            <a asp-action="Login" asp-controller="Usuarios" class="font-weight-bold">Ir para o Login</a>
+                        </div>
+                        <div class="col-md-6 col-12 ml-auto">
+                            <button onclick="mudarPagina(this,'pag1','pag2')" id="pag2" type="button" class="btn btn-lg btn-primary btn-block text-capitalize"> Próximo </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-4 text-center d-none" id="pag2">
+                <div class="card-body">
+                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                        <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
+                    </a>
+                    <h1 class="text-muted">CADASTRO</h1>
+                    <p class="text-muted">Vamos iniciar sua experiência</p>
+                    @{ await Html.RenderPartialAsync("~/Views/Shared/_Mensagem.cshtml"); }
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-fingerprint prefix grey-text"></i>
+                                        <input asp-for="CPF" id="cpf" class="form-control cpf">
+                                        <label asp-for="CPF" for="cpf">Seu CPF</label>
+                                        <span asp-validation-for="CPF" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-birthday-cake prefix grey-text"></i>
+                                        <input type="date" asp-for="Nascimento" id="nascimento" class="form-control">
+                                        <label asp-for="Nascimento" for="nascimento">Sua data de nascimento</label>
+                                        <span asp-validation-for="Nascimento" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="form-row">
+                                        <div class="md-form col-4 col-md-3 text-left">
+                                            <i class="fa fa-phone-volume prefix grey-text"></i>
+                                            <input asp-for="DDD" id="ddd" class="form-control">
+                                            <label asp-for="DDD" for="ddd">Seu DDD</label>
+                                            <span asp-validation-for="DDD" class="ml-5 d-flex text-danger"></span>
+                                        </div>
+                                        <div class="md-form col-8 col-md-9">
+                                            <input asp-for="Telefone" id="tel" class="form-control tel">
+                                            <label asp-for="Telefone" for="tel">Seu telefone</label>
+                                            <span asp-validation-for="Telefone" class="ml-5 d-flex text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="mt-1 align-self-center md-form">
+                                    <i class="fa fa-venus-mars prefix grey-text"></i>
+                                </div>
+                                <div class="col-10 col-md-11 ml-auto">
+                                    <div class=" text-left">
+                                        <label class=" font-weight-light text-muted" for="sexo">Sexo</label>
+                                        <select class="custom-select" id="sexo" asp-for="Sexo">
+                                            <option selected>Escolha o sexo...</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                        </select>
+                                        <span asp-validation-for="Sexo" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-5">
+                        <div class="col-md-6 mt-4 mt-md-0 col-12 order-1 order-md-0 ml-auto align-self-center">
+                            <a href="#" onclick="mudarPagina(this, 'pag2','pag1')" id="pag1" class="font-weight-bold">Anterior</a>
+                        </div>
+                        <div class="col-md-6 col-12 ml-auto">
+                            <button type="button" onclick="mudarPagina(this,'pag2','pag3')" id="pag3" class="btn btn-lg btn-primary btn-block text-capitalize"> Próximo </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-4 text-center d-none" id="pag3">
+                <div class="card-body">
+                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                        <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
+                    </a>
+                    <h1 class="text-muted">CADASTRO</h1>
+                    <p class="text-muted">Vamos iniciar sua experiência</p>
+                    @{ await Html.RenderPartialAsync("~/Views/Shared/_Mensagem.cshtml"); }
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-city prefix grey-text"></i>
+                                        <input type="text" asp-for="Endereco.Cidade.Descricao" id="cidade" class="form-control">
+                                        <label asp-for="Endereco.Cidade.Descricao" for="cidade">Sua cidade</label>
+                                        <span asp-validation-for="Endereco.Cidade.Descricao" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-globe-americas prefix grey-text"></i>
+                                        <input type="text" asp-for="Endereco.Estado.Descricao" id="estado" class="form-control">
+                                        <label asp-for="Endereco.Estado.Descricao" for="estado">Seu estado</label>
+                                        <span asp-validation-for="Endereco.Estado.Descricao" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-mail-bulk prefix grey-text"></i>
+                                        <input type="text" asp-for="Endereco.Cep.Descricao" id="cep" class="form-control cep">
+                                        <label asp-for="Endereco.Cep.Descricao" for="cep">Seu CEP</label>
+                                        <span asp-validation-for="Endereco.Cep.Descricao" class="ml-5 d-flex text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-5">
+                        <div class="col-md-6 mt-4 mt-md-0 col-12 order-1 order-md-0 ml-auto align-self-center">
+                            <a href="#" onclick="mudarPagina(this, 'pag3','pag2')" id="pag2" class="font-weight-bold">Anterior</a>
+                        </div>
+                        <div class="col-md-6 col-12 ml-auto">
+                            <button type="button" onclick="mudarPagina(this, 'pag3','pag4')" id="pag4" class="btn btn-lg btn-primary btn-block text-capitalize">Próximo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card col-12 col-md-6 col-lg-4 text-center d-none" id="pag4">
+                <div class="card-body">
+                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                        <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
+                    </a>
+                    <h1 class="text-muted">CADASTRO</h1>
+                    <p class="text-muted">Vamos iniciar sua experiência</p>
+                    @{ await Html.RenderPartialAsync("~/Views/Shared/_Mensagem.cshtml"); }
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-road prefix grey-text"></i>
+                                        <input type="text" asp-for="Endereco.Rua.Descricao" id="rua" class="form-control">
+                                        <label asp-for="Endereco.Rua.Descricao" for="rua">Seu logradouro</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-sort-numeric-up prefix grey-text"></i>
+                                        <input type="text" asp-for="Endereco.NumeroEndereco" id="num" class="form-control num" />
+                                        <label asp-for="Endereco.NumeroEndereco" for="num">Numero do endereço</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <div class="col">
+                                    <div class="md-form text-left">
+                                        <i class="fa fa-building prefix grey-text"></i>
+                                        <input type="text" asp-for="Endereco.Bairro.Descricao" id="bairro" class="form-control">
+                                        <label asp-for="Endereco.Bairro.Descricao" for="bairro">Seu bairro</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mt-5">
+                        <div class="col-md-6 mt-4 mt-md-0 col-12 order-1 order-md-0 ml-auto align-self-center">
+                            <a href="#" onclick="mudarPagina(this, 'pag4','pag3')" id="pag3" class="font-weight-bold">Anterior</a>
+                        </div>
+                        <div class="col-md-6 col-12 ml-auto">
+                            <button type="submit" onclick="mudarPagina(this, 'pag4','pag5')" id="pag5" class="btn btn-lg btn-primary btn-block text-capitalize"> Finalizar </button>
+                        </div>
+                    </div>
 
-<h1>CadastroUsuario</h1>
+                </div>
+            </div>
+            <div id="pag5" class="d-none">
+                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div> 
+                <div class="spinner-grow text-light" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <!--   Core JS Files   -->
+    <script src='~/Agenda/js/jquery.mask.js'></script>
+    <script>$('.cep').mask('00.000-000')</script>
+    <script>$('.cpf').mask('000.000.000-00')</script>
+    <script>$('.num').mask('00000')</script>
+    <script>$('.tel').mask('000000000')</script>
+    <script>
+        function retornaPagina(id) {
+            return document.querySelector(`div#${id}`)
+        }
+        function mudarPagina(btn, pagAtual, pagFut) {
+            let pagA = retornaPagina(pagAtual)
+            let pagF = retornaPagina(pagFut)
+            let check = btn.id < pagAtual
 
+            if (VerificaPaginaAtual(pagA) || check)
+                ChangePag(pagA, pagF)
+        }
+        function ChangePag(pagA, pagF) {
+            pagA.classList.remove("d-flex")
+            pagA.classList.add("d-none")
+            pagF.classList.remove("d-none")
+            pagF.classList.add("d-flex")
+            pagF.querySelector('input').focus()
+        }
+        function VerificaPaginaAtual(pagA) {
+            let camposValidos = pagA.querySelectorAll("input")
+            for (let check of camposValidos) {
+                let invalid = check.getAttribute("aria-invalid")
+                check.focus()
+                if (invalid != "false") {
+                    return false
+                }
+            }
+            return true
+        }
+    </script>
+}

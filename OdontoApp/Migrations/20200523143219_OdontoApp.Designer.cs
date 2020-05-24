@@ -10,8 +10,8 @@ using OdontoApp.Data;
 namespace OdontoApp.Migrations
 {
     [DbContext(typeof(OdontoAppContext))]
-    [Migration("20200520175944_OdontoAppV2")]
-    partial class OdontoAppV2
+    [Migration("20200523143219_OdontoApp")]
+    partial class OdontoApp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,31 @@ namespace OdontoApp.Migrations
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("OdontoApp.Models.AccessCode.AccessCode", b =>
+                {
+                    b.Property<int>("Codigo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CodeType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataGerada")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Codigo");
+
+                    b.ToTable("AccessCodes");
+                });
 
             modelBuilder.Entity("OdontoApp.Models.Agenda", b =>
                 {
@@ -386,31 +411,6 @@ namespace OdontoApp.Migrations
                     b.HasIndex("CargoClinicaId");
 
                     b.ToTable("ClinicaCargoClinica");
-                });
-
-            modelBuilder.Entity("OdontoApp.Models.CodigoAcesso.CodigoAcesso", b =>
-                {
-                    b.Property<int>("Codigo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CodAcesso")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DataGerada")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TipoCodigo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Codigo");
-
-                    b.ToTable("CodigosAcesso");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.DentesRegiao", b =>
