@@ -46,8 +46,8 @@ namespace OdontoApp.Services
                 await orcamentoRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Orcamento>> GetAllAsync() => await orcamentoRepos.GetAllAsync(new AppQuery(), loginSvc.GetUser().UsuarioId);
-        public async Task<PaginationList<Orcamento>> GetAllAsync(AppQuery appQuery)
+        public async Task<List<Orcamento>> GetAllAsync() => await orcamentoRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<PaginationList<Orcamento>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
@@ -55,7 +55,7 @@ namespace OdontoApp.Services
         }
         public async Task<Orcamento> GetByIdAsync(int id) => await orcamentoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
 
-        public async Task<PaginationList<Orcamento>> GetByPatientAsync(AppQuery appQuery, int pacienteId, int userId)
+        public async Task<PaginationList<Orcamento>> GetByPatientAsync(AppView appQuery, int pacienteId, int userId)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

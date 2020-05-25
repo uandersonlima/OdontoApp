@@ -74,24 +74,24 @@ namespace OdontoApp.Services
 
         public async Task<List<EntradaSaida>> GetAllAsync()
         {
-            return await entradaSaidaRepos.GetAllAsync(new AppQuery(), loginSvc.GetUser().UsuarioId);
+            return await entradaSaidaRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
         }
 
-        public async Task<PaginationList<EntradaSaida>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<EntradaSaida>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
             return await entradaSaidaRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
         }
 
-        public async Task<PaginationList<EntradaSaida>> GetAllInputsAsync(AppQuery appQuery)
+        public async Task<PaginationList<EntradaSaida>> GetAllInputsAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
             return await entradaSaidaRepos.GetAllInputsAsync(appQuery, loginSvc.GetUser().UsuarioId);
         }
 
-        public async Task<PaginationList<EntradaSaida>> GetAllOutputsAsync(AppQuery appQuery)
+        public async Task<PaginationList<EntradaSaida>> GetAllOutputsAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

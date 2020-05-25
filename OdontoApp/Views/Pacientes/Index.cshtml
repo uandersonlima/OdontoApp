@@ -4,16 +4,16 @@
     Layout = "~/Views/Shared/_Layout_1.cshtml";
 }
 <div class="panel-header">
-    <div class="page-inner py-sm-1 py-md-3 py-lg-4">
+    <div class="page-inner ml-0 ml-md-5 py-sm-1 py-md-3 py-lg-4">
         <div class="container-fluid align-items-center">
             <div class="row ">
-                <div class="order-md-0 col-sm-6 d-md-flex d-none">
+                <div class="order-md-0 col-md-6 d-md-block d-none">
                     <div>
                         <h1 class="text-dark pb-2 fw-bold">Pacientes</h1>
                         <h4 class="text-dark op-8 mb-2 fw-bold">Veja a lista dos seus pacientes.</h4>
                     </div>
                 </div>
-                <div class="order-md-1 col-sm-4 d-flex align-items-center justify-content-center">
+                <div class="order-md-1 col-md-4 d-flex align-items-center justify-content-center">
                     <div class="form-group col-12">
                         <div class="input-icon">
                             <span class="input-icon-addon text-primary">
@@ -23,16 +23,121 @@
                         </div>
                     </div>
                 </div>
-                <div class="order-md-2 col-sm-2 d-flex align-items-center justify-content-md-start justify-content-end mr-md-0 mr-3">
+                <div class="order-md-2 col-md-2 d-flex align-items-center justify-content-md-start justify-content-end mr-md-0 mr-3">
                     <button class="btn btn-primary btn-rounded create font-weight-bold">Criar Novo</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="col-md-10 mx-auto d-flex justify-content-end form-group">
+    <select class="form-control form-control-sm col-md-2">
+        <option>10 itens por página</option>
+        <option>30 itens por página</option>
+        <option>50 itens por página</option>
+        <option>100 itens por página</option>
+    </select>
+</div>
+
 <div id="ListaPacientes"></div>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</nav>
+
+<nav class="text-center nav-pagination-marca">
+    <ul id="pagination"></ul>
+</nav>
 @section Scripts{
     <script>
         $('#ListaPacientes').load('Pacientes/ListaPacientes');
+    </script>
+    <script>
+        let inicio = null,
+            Busca = null,
+            fim = null,
+            NumeroPagina = null,
+            RegistroPorPagina = null;
+
+        let urlPag;
+        function InjectUrl(url)
+        {
+            urlPag = url;
+        }
+
+        function AppViewModel() {
+            let AppView = {
+                Search: Busca,
+                NumberPag: NumeroPagina,
+                RecordPerPage: RegistroPorPagina,
+                Start: inicio,
+                End: fim,
+            }
+            $.ajax({
+                type: "GET",
+                url: "/Pacientes/ListaPacientes",
+                dataType: "json",
+                async: true,
+                data: AppView,
+                success: function (partialView) {
+                    $('ListaPacientes').html(partialView);
+                }
+            });
+        }
+    function Pagination(NumeroLinhasEncontradas, NumeroLinhasPorPagina) {
+        $("#PaginationLink").html('');
+        $("#PaginationLink").html('<ul id="pagination"></ul>');
+
+        $('#pagination')
+            .twbsPagination({
+                totalPages: Math.ceil(NumeroLinhasEncontradas
+                / NumeroLinhasPorPagina),
+                initiateStartPageClick: false,
+                startPage: 1,
+                visiblePages: 5,
+                href: false,
+                hrefVariable: '{{number}}',
+                first: '««',
+                prev: '«',
+                next: '»',
+                last: '»»',
+                loop: false,
+                paginationClass: 'pagination pagination-lg',
+                nextClass: 'next',
+                prevClass: 'prev',
+                lastClass: 'last',
+                firstClass: 'first',
+                pageClass: 'page',
+                activeClass: 'active',
+                disabledClass: 'disabled',
+                onPageClick: function (event, page) {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Home/index",
+                        dataType: "json",
+                        async: true,
+                        data: {
+                            'linhasPorPagina': NumeroLinhasPorPagina
+                            , "pagina": page
+                        },
+                        success: function (data) {
+                            self.Produtos(data);
+                        }
+                    });
+                },
+            });
+        };
+
     </script>
 }

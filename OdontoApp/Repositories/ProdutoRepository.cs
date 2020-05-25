@@ -36,7 +36,7 @@ namespace OdontoApp.Repositories
         {
             return await context.Produto.Where(cnc => cnc.ProdutoId == id && cnc.UsuarioId == idUser).FirstOrDefaultAsync();
         }
-        public async Task<PaginationList<Produto>> GetAllAsync(AppQuery appQuery, int idUser)
+        public async Task<PaginationList<Produto>> GetAllAsync(AppView appQuery, int idUser)
         {
             var pagList = new PaginationList<Produto>();
             var produtos = context.Produto.Where(cnc => cnc.UsuarioId == idUser).AsNoTracking().AsQueryable();

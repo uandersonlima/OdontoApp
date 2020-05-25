@@ -11,7 +11,7 @@ namespace OdontoApp.Repositories.Interfaces
         Task DeleteAsync(CodigoPromocional entity);
         Task<CodigoPromocional> GetByIdAsync(int id);
         Task<CodigoPromocional> GetByPlanAsync(string planCode);
-        Task<PaginationList<CodigoPromocional>> GetAllAsync(AppQuery appQuery);
+        Task<PaginationList<CodigoPromocional>> GetAllAsync(AppView appQuery);
         Task UpdateAsync(CodigoPromocional entity);
     }
 }

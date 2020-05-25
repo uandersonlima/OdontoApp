@@ -63,10 +63,10 @@ namespace OdontoApp.Services
 
         public async Task<List<Estoque>> GetAllAsync()
         {
-            return await estoqueRepos.GetAllAsync(new AppQuery(), loginSvc.GetUser().UsuarioId);
+            return await estoqueRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
         }
 
-        public async Task<PaginationList<Estoque>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<Estoque>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

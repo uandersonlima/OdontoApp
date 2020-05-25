@@ -35,11 +35,11 @@ namespace OdontoApp.Services
                 await agendaRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Agenda>> GetAllAsync() => await agendaRepos.GetAllAsync(new AppQuery(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Agenda>> GetAllAsync() => await agendaRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
 
         public async Task<Agenda> GetByIdAsync(int id) => await agendaRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
 
-        public async Task<PaginationList<Agenda>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<Agenda>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
@@ -53,7 +53,7 @@ namespace OdontoApp.Services
                 await agendaRepos.UpdateAsync(entity);
         }
 
-        public async Task<PaginationList<Agenda>> GetByPatientAsync(AppQuery appQuery, int pacienteId)
+        public async Task<PaginationList<Agenda>> GetByPatientAsync(AppView appQuery, int pacienteId)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

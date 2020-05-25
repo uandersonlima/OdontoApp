@@ -36,11 +36,11 @@ namespace OdontoApp.Services
                 await clinicaRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Clinica>> GetAllAsync() => await clinicaRepos.GetAllAsync(new AppQuery(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Clinica>> GetAllAsync() => await clinicaRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
 
         public async Task<Clinica> GetByIdAsync(int id) => await clinicaRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
 
-        public async Task<PaginationList<Clinica>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<Clinica>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

@@ -27,7 +27,7 @@ namespace OdontoApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetEvents(AppQuery appQuery)
+        public async Task<IActionResult> GetEvents(AppView appQuery)
         {
             return Json(await agendaSvc.GetAllAsync(appQuery), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include, Formatting = Formatting.None });
         }

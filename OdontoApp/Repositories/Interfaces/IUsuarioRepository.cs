@@ -11,7 +11,7 @@ namespace OdontoApp.Repositories.Interfaces
         Task<bool> CheckEntityAsync(Usuario entity);
         Task DeleteAsync(Usuario entity);
         Task<Usuario> GetByIdAsync(int id);
-        Task<PaginationList<Usuario>> GetAllAsync(AppQuery appQuery);
+        Task<PaginationList<Usuario>> GetAllAsync(AppView appQuery);
         Task UpdateAsync(Usuario entity);
         Task ChangePasswordAsync(Usuario entity);
         List<Usuario> GetUserByEmail(string email);

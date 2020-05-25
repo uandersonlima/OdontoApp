@@ -36,7 +36,7 @@ namespace OdontoApp.Repositories
         {
             return await context.Agenda.Include(obj => obj.Paciente).Where(agd => agd.AgendaId == id && agd.UsuarioId == idUser).FirstOrDefaultAsync();
         }
-        public async Task<PaginationList<Agenda>> GetAllAsync(AppQuery appQuery, int idUser)
+        public async Task<PaginationList<Agenda>> GetAllAsync(AppView appQuery, int idUser)
         {
             var pagList = new PaginationList<Agenda>();
             var agendas = context.Agenda.Where(agd => agd.UsuarioId == idUser).AsNoTracking().AsQueryable();
@@ -76,7 +76,7 @@ namespace OdontoApp.Repositories
             }
         }
 
-        public async Task<PaginationList<Agenda>> GetByPatientAsync(AppQuery appQuery,int pacienteId, int userId)
+        public async Task<PaginationList<Agenda>> GetByPatientAsync(AppView appQuery,int pacienteId, int userId)
         {
             var pagList = new PaginationList<Agenda>();
             var agendas = context.Agenda.Where(agd => agd.UsuarioId == userId && agd.PacienteId == pacienteId).AsNoTracking().AsQueryable();

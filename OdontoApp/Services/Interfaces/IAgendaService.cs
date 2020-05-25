@@ -6,6 +6,6 @@ namespace OdontoApp.Services.Interfaces
 {
     public interface IAgendaService : IServiceBase<Agenda>
     {
-        Task<PaginationList<Agenda>> GetByPatientAsync(AppQuery appQuery, int pacienteId);
+        Task<PaginationList<Agenda>> GetByPatientAsync(AppView appQuery, int pacienteId);
     }
 }

@@ -37,7 +37,7 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<PaginationList<EntradaSaida>> GetAllAsync(AppQuery appQuery, int idUser)
+        public async Task<PaginationList<EntradaSaida>> GetAllAsync(AppView appQuery, int idUser)
         {
             var pagList = new PaginationList<EntradaSaida>();
             var entradasaidas = context.EntradaSaida.Include(eos => eos.Estoque).ThenInclude(eos => eos.Produto).Where(eos => eos.Estoque.Produto.UsuarioId == idUser).AsNoTracking().AsQueryable();
@@ -64,7 +64,7 @@ namespace OdontoApp.Repositories
             return pagList;
         }
 
-        public async Task<PaginationList<EntradaSaida>> GetAllInputsAsync(AppQuery appQuery, int idUser)
+        public async Task<PaginationList<EntradaSaida>> GetAllInputsAsync(AppView appQuery, int idUser)
         {
             var pagList = new PaginationList<EntradaSaida>();
             var entradasaidas = context.EntradaSaida.
@@ -99,7 +99,7 @@ namespace OdontoApp.Repositories
             return pagList;
         }
 
-        public async Task<PaginationList<EntradaSaida>> GetAllOutputsAsync(AppQuery appQuery, int idUser)
+        public async Task<PaginationList<EntradaSaida>> GetAllOutputsAsync(AppView appQuery, int idUser)
         {
             var pagList = new PaginationList<EntradaSaida>();
             var entradasaidas = context.EntradaSaida.

@@ -2,7 +2,7 @@
 
 namespace OdontoApp.Models.Helpers
 {
-    public class AppQuery
+    public class AppView
     {
         public string Search { get; set; }
         public int? NumberPag { get; set; }

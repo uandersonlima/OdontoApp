@@ -5730,14 +5730,14 @@ label.error {
 
 .nav.nav-line {
     width: 100%;
-    border-bottom: 1px solid #f1f1f1;
+    border: 0px solid #f1f1f1;
 }
 
     .nav.nav-line .nav-link {
         padding: 15px 20px;
         color: #575962;
         border-width: 0px;
-        font-size: 14px;
+        font-size: 18px;
         font-weight: 600;
     }
 
@@ -5750,7 +5750,7 @@ label.error {
             border-width: 0;
             background-color: transparent;
             color: #1572E8;
-            border-bottom: 2px solid #1572E8;
+            border-bottom: 3.5px solid #1572E8;
             border-radius: 0px;
         }
 

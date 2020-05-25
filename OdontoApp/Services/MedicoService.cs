@@ -35,11 +35,11 @@ namespace OdontoApp.Services
                 await medicoRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Medico>> GetAllAsync() => await medicoRepos.GetAllAsync(new AppQuery(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Medico>> GetAllAsync() => await medicoRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
 
         public async Task<Medico> GetByIdAsync(int id) => await medicoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
 
-        public async Task<PaginationList<Medico>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<Medico>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

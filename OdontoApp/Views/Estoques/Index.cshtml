@@ -3,29 +3,53 @@
     Layout = "~/Views/Shared/_Layout_1.cshtml";
 }
 <div class="panel-header">
-    <div class="page-inner py-0 py-sm-1 py-md-3 py-lg-4">
+    <div class="page-inner ml-0 ml-md-5 py-sm-1 py-md-3 py-lg-4">
         <div class="container-fluid align-items-center">
             <div class="row ">
-                <div class="order-md-0 col-sm-6 d-md-flex d-none">
+                <div class="order-md-0 col-sm-5 col-md-6  col-lg-6 d-md-flex d-none">
                     <div>
                         <h1 class="text-dark pb-2 fw-bold">Estoque</h1>
-                        <h4 class="text-dark op-8 mb-2 fw-bold">Gerencie seu estoque.</h4>
+                        <h4 class="text-dark op-8 mb-2 fw-bold">Veja a lista dos seus produtos.</h4>
                     </div>
                 </div>
-                <div class="order-md-1 col-sm-4 d-flex align-items-center justify-content-center">
+                <div class="order-md-1 col-md-4 d-flex align-items-center justify-content-center">
                     <div class="form-group col-12">
                         <div class="input-icon">
                             <span class="input-icon-addon text-primary">
                                 <i class="fa fa-search search-icon"></i>
                             </span>
-                            <input type="text" class="form-control input-pill text-dark font-weight-bold" placeholder="Digite o Nome">
+                            <input type="text" class="form-control input-pill text-dark font-weight-bold" placeholder="Digite o Nome ou CPF">
                         </div>
                     </div>
                 </div>
-                <div class="order-md-2 col-sm-2 d-flex align-items-center justify-content-md-start justify-content-end mr-md-0 mr-3">
-                    <button class="btn btn-primary btn-rounded create font-weight-bold">CRIAR NOVO</button>
+                <div class="order-md-2 btn-group order-md-2 col-md-2 d-flex align-items-center justify-content-md-start justify-content-end mr-md-0 mr-3">
+                    <div class="container d-flex d-sm-flex d-md-none justify-content-end">
+                        <div class="dropdown show mr-3">
+                            <select class="form-control input-pill">
+                                <option>Estoque</option>
+                                <option>Produtos</option>
+                                <option>Entrada/Saída</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-primary btn-rounded create font-weight-bold">Criar Novo</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<nav class="justify-content-center d-md-flex d-md-block d-none">
+    <ul class="nav nav-line nav-color-default col-12 col-md-10">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Estoque</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Produtos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Entrada/Saída</a>
+        </li>
+    </ul>
+</nav>

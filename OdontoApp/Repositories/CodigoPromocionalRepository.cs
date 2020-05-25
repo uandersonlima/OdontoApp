@@ -36,7 +36,7 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<PaginationList<CodigoPromocional>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<CodigoPromocional>> GetAllAsync(AppView appQuery)
         {
             var pagList = new PaginationList<CodigoPromocional>();
             var codigosPromocionais = context.CodigosPromocionais.AsNoTracking().AsQueryable();

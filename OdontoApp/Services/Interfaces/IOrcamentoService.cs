@@ -9,7 +9,7 @@ namespace OdontoApp.Services.Interfaces
     {
         Task AddAsync(Orcamento entity, List<int> listTratamentoId);
         Task<List<int>> CheckBoxChecked(int id);
-        Task<PaginationList<Orcamento>> GetByPatientAsync(AppQuery appQuery, int pacienteId, int userId);
+        Task<PaginationList<Orcamento>> GetByPatientAsync(AppView appQuery, int pacienteId, int userId);
         Task UpdateAsync(Orcamento entity, List<int> listPerguntaId);
 
     }

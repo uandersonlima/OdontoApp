@@ -62,7 +62,7 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<PaginationList<Usuario>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<Usuario>> GetAllAsync(AppView appQuery)
         {
             var pagList = new PaginationList<Usuario>();
             var usuarios = context.Usuario.AsNoTracking().AsQueryable();

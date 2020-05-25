@@ -92,10 +92,10 @@ namespace OdontoApp.Services
 
         public async Task<List<Usuario>> GetAllAsync()
         {
-           return await usuarioRepos.GetAllAsync(new AppQuery());
+           return await usuarioRepos.GetAllAsync(new AppView());
         }
 
-        public async Task<PaginationList<Usuario>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<Usuario>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

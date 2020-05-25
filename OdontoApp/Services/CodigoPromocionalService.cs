@@ -40,10 +40,10 @@ namespace OdontoApp.Services
 
         public async Task<List<CodigoPromocional>> GetAllAsync()
         {
-            return await codigoPromocionalRepos.GetAllAsync(new AppQuery());
+            return await codigoPromocionalRepos.GetAllAsync(new AppView());
         }
 
-        public async Task<PaginationList<CodigoPromocional>> GetAllAsync(AppQuery appQuery)
+        public async Task<PaginationList<CodigoPromocional>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;

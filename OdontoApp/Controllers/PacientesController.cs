@@ -11,8 +11,12 @@ namespace OdontoApp.Controllers
         {
             return View();
         }
-        public IActionResult ListaPacientes(AppQuery appquery)
+        public IActionResult ListaPacientes(AppView appquery)
         {
+            var list = new PaginationList<Paciente>
+            {
+                Pagination = new Pagination { TotalPages = 1, NumberPag = 1, TotalRecords = 1, RecordPerPage = 1 }
+            };
             var listPacientes = new List<Paciente> {
                 new Paciente
                 {
@@ -72,7 +76,8 @@ namespace OdontoApp.Controllers
                     Telefone = "99667-7884"
                 }
             };
-            return PartialView(listPacientes);
+            list.AddRange(listPacientes);
+            return PartialView(list );
         }
     }
 }

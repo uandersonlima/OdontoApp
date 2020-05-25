@@ -13,6 +13,6 @@ namespace OdontoApp.Services.Interfaces
         Task UpdateAsync(T entity);
         Task<T> GetByIdAsync(int id);
         Task<List<T>> GetAllAsync();
-        Task<PaginationList<T>> GetAllAsync(AppQuery appQuery);
+        Task<PaginationList<T>> GetAllAsync(AppView appQuery);
     }
 }
