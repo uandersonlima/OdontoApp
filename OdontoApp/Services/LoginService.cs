@@ -23,7 +23,7 @@ namespace OdontoApp.Services
             }
             else
             {
-                return new Usuario { Nome= "Uanderson Lima", Email="TESTE@gmail.com"};
+                return new Usuario {UsuarioId=1, Nome= "Uanderson Lima", Email="TESTE@gmail.com"};
             }
         }
         public void Login(Usuario user)

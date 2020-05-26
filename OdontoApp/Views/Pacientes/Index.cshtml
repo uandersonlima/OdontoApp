@@ -19,7 +19,7 @@
                             <span class="input-icon-addon text-primary">
                                 <i class="fa fa-search search-icon"></i>
                             </span>
-                            <input type="text" class="form-control input-pill text-dark font-weight-bold" placeholder="Digite o Nome ou CPF">
+                            <input type="text" class="form-control input-pill text-dark font-weight-bold" id="buscarPaciente" placeholder="Digite o Nome ou CPF">
                         </div>
                     </div>
                 </div>
@@ -32,112 +32,52 @@
 </div>
 
 <div class="col-md-10 mx-auto d-flex justify-content-end form-group">
-    <select class="form-control form-control-sm col-md-2">
-        <option>10 itens por página</option>
-        <option>30 itens por página</option>
-        <option>50 itens por página</option>
-        <option>100 itens por página</option>
+    <select class="form-control form-control-sm col-md-2" id="RegistroPorPagina">
+        <option value="10">10 itens por página</option>
+        <option value="30">30 itens por página</option>
+        <option value="50">50 itens por página</option>
+        <option value="100">100 itens por página</option>
     </select>
 </div>
 
-<div id="ListaPacientes"></div>
+<div id="loading" class="col-md-10 mx-auto d-flex justify-content-center form-group">
+    <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div id="ElementsList"></div>
 
 <nav>
     <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-        </li>
     </ul>
 </nav>
 
-<nav class="text-center nav-pagination-marca">
-    <ul id="pagination"></ul>
-</nav>
 @section Scripts{
+    <script src="~/assets/js/odontoapp/pagination/paginationScript.js"></script>
     <script>
-        $('#ListaPacientes').load('Pacientes/ListaPacientes');
-    </script>
-    <script>
-        let inicio = null,
-            Busca = null,
-            fim = null,
-            NumeroPagina = null,
-            RegistroPorPagina = null;
-
-        let urlPag;
-        function InjectUrl(url)
-        {
-            urlPag = url;
-        }
-
-        function AppViewModel() {
-            let AppView = {
-                Search: Busca,
-                NumberPag: NumeroPagina,
-                RecordPerPage: RegistroPorPagina,
-                Start: inicio,
-                End: fim,
-            }
-            $.ajax({
-                type: "GET",
-                url: "/Pacientes/ListaPacientes",
-                dataType: "json",
-                async: true,
-                data: AppView,
-                success: function (partialView) {
-                    $('ListaPacientes').html(partialView);
-                }
-            });
-        }
-    function Pagination(NumeroLinhasEncontradas, NumeroLinhasPorPagina) {
-        $("#PaginationLink").html('');
-        $("#PaginationLink").html('<ul id="pagination"></ul>');
-
-        $('#pagination')
-            .twbsPagination({
-                totalPages: Math.ceil(NumeroLinhasEncontradas
-                / NumeroLinhasPorPagina),
-                initiateStartPageClick: false,
-                startPage: 1,
-                visiblePages: 5,
-                href: false,
-                hrefVariable: '{{number}}',
-                first: '««',
-                prev: '«',
-                next: '»',
-                last: '»»',
-                loop: false,
-                paginationClass: 'pagination pagination-lg',
-                nextClass: 'next',
-                prevClass: 'prev',
-                lastClass: 'last',
-                firstClass: 'first',
-                pageClass: 'page',
-                activeClass: 'active',
-                disabledClass: 'disabled',
-                onPageClick: function (event, page) {
-                    $.ajax({
-                        type: 'GET',
-                        url: "/Home/index",
-                        dataType: "json",
-                        async: true,
-                        data: {
-                            'linhasPorPagina': NumeroLinhasPorPagina
-                            , "pagina": page
-                        },
-                        success: function (data) {
-                            self.Produtos(data);
-                        }
-                    });
-                },
-            });
-        };
-
+        let buscaHTML = $('input#buscarPaciente');
+        let registroPorPaginaHTML = $('select#RegistroPorPagina');
+        let url = '/Pacientes/ListaPacientes';
+        let numeroPaginaHTML = $('li.page-item.active');
+        let totalPagString = 'input[id="Pagination_TotalPages"]';
+        let totalRegString = 'input[id="Pagination_TotalRecords"]';
+        ConstructorUrl(url);
+        ConstructorAppView(buscaHTML, numeroPaginaHTML, registroPorPaginaHTML);
+        ConstructorPagination(totalPagString, totalRegString)
     </script>
 }

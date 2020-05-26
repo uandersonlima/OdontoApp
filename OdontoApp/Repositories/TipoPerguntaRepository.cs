@@ -20,7 +20,7 @@ namespace OdontoApp.Repositories
         }
         public void Start(List<TipoPergunta> tipoPerguntas)
         {
-            context.AddAsync(tipoPerguntas);
+            context.TipoPergunta.AddRangeAsync(tipoPerguntas);
             context.SaveChanges();
         }
     }

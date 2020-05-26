@@ -18,7 +18,6 @@ namespace OdontoApp.Repositories
         {
             this.context = context;
         }
-
         public async Task AddAsync(Paciente entity)
         {
             await context.Paciente.AddAsync(entity);
@@ -40,7 +39,7 @@ namespace OdontoApp.Repositories
         public async Task<PaginationList<Paciente>> GetAllAsync(AppView appQuery, int userId)
         {
             var pagList = new PaginationList<Paciente>();
-            var pacientes = context.Paciente.Where(ent => ent.UsuarioId == userId).AsNoTracking().AsQueryable();
+            var pacientes = context.Paciente.Where(ent => ent.UsuarioId == userId).OrderBy(pac => pac.NomePaciente).AsNoTracking().AsQueryable();
 
             if (appQuery.CheckSearch())
             {

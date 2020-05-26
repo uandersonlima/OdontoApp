@@ -20,7 +20,7 @@ namespace OdontoApp.Repositories
         }
         public void Start(List<DentesRegiao> dentesRegiaos)
         {
-            context.AddAsync(dentesRegiaos);
+            context.DentesRegiao.AddRangeAsync(dentesRegiaos);
             context.SaveChanges();
         }
     }
