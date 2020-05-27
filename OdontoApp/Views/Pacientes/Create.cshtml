@@ -1,0 +1,210 @@
+﻿@model Paciente
+
+<h2>Cadastrar </h2>
+
+<form asp-action="Create">
+    <div class="row">
+        @if (TempData["MS_Alert"] != null)
+        {
+            <div class="col-12">
+                <div class="form-group">
+                    <span class="text-danger">@TempData["MS_Alert"]</span>
+                </div>
+            </div>
+        }
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="NomePaciente" class="control-label"></label>
+                <input placeholder="Ex.: Maria da Silva" asp-for="NomePaciente" class="form-control" />
+                <span asp-validation-for="NomePaciente" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="col form-group">
+                <label asp-for="Nascimento">Nascimento</label>
+                <input type="date" asp-for="Nascimento" class="form-control" placeholder="">
+                <span asp-validation-for="Nascimento" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="NumeroProntuarioPaciente" class="control-label"></label>
+                <input asp-for="NumeroProntuarioPaciente" class="form-control border-bottom" />
+                <span asp-validation-for="NumeroProntuarioPaciente" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="CPF" class="control-label"></label>
+                <input asp-for="CPF" class="form-control  " placeholder="Ex.: 000.000.000-00" />
+                <span asp-validation-for="CPF" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group ">
+                <label asp-for="RgPaciente" class="control-label"></label>
+                <input asp-for="RgPaciente" class="form-control" placeholder="Ex.: 0000000000" />
+                <span asp-validation-for="RgPaciente" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="row">
+                    <label asp-for="Sexo" class="form-check"></label>
+                </div>
+                <input class="checkbox-inline" type="radio" asp-for="Sexo" value="Masculino">
+                <span class="checkbox-inline"> Masculino </span>
+                <input class="checkbox-inline" type="radio" asp-for="Sexo" value="Feminino">
+                <span class="checkbox-inline"> Feminino</span>
+                <span asp-validation-for="Sexo" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-3">
+
+            <div class="form-group">
+                <label asp-for="DDD" class="control-label"></label>
+                <input asp-for="DDD" class="form-control border-secundary" placeholder="Ex.: 00" />
+                <span asp-validation-for="DDD" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="Telefone" class="control-label"></label>
+                <input asp-for="Telefone" class="form-control border-secundary" placeholder="Ex.: 00000000000" />
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="EmailPaciente" class="control-label"></label>
+                <input asp-for="EmailPaciente" class="form-control border-bottom " placeholder="Ex.: email@email.com" />
+                <span asp-validation-for="EmailPaciente" class="text-danger"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="Endereco.Cep.Descricao" class="control-label"></label>
+                <input asp-for="Endereco.Cep.Descricao" class="form-control border-bottom" placeholder="Ex.: 000000000" />
+                <span asp-validation-for="Endereco.Cep.Descricao" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label asp-for="Endereco.Estado.Descricao" class="control-label"></label>
+                <input asp-for="Endereco.Estado.Descricao" class="form-control border-bottom" placeholder="Ex.: São Paulo" />
+                <span asp-validation-for="Endereco.Estado.Descricao" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="form-group">
+                <label asp-for="Endereco.Cidade.Descricao" class="control-label"></label>
+                <input asp-for="Endereco.Cidade.Descricao" class="form-control border-bottom " placeholder="Ex.: São Paulo" />
+                <span asp-validation-for="Endereco.Cidade.Descricao" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="Endereco.Rua.Descricao" class="control-label"></label>
+                <input asp-for="Endereco.Rua.Descricao" class="form-control border-bottom" placeholder="Ex.: Liberdade" />
+                <span asp-validation-for="Endereco.Rua.Descricao" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group">
+                <label asp-for="Endereco.Bairro.Descricao" class="control-label "></label>
+                <input asp-for="Endereco.Bairro.Descricao" class="form-control border-bottom" placeholder="Ex.: Centro" />
+                <span asp-validation-for="Endereco.Bairro.Descricao" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group ">
+                <label asp-for="Endereco.NumeroEndereco" class="control-label"></label>
+                <input asp-for="Endereco.NumeroEndereco" class="form-control border-bottom" placeholder="Ex.: 00" />
+                <span asp-validation-for="Endereco.NumeroEndereco" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="form-control custom-control-input" id="planochecked">
+                    <label for="planochecked" class="custom-control-label text-muted d-flex justify-content-center">Tem Plano de Saúde?</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="hasplano" hidden>
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="Plano.NomePlano" class="control-label"></label>
+                <input asp-for="Plano.NomePlano" class="form-control border-bottom" placeholder="Ex.: Maria da Silva" />
+                <span asp-validation-for="Plano.NomePlano" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="Plano.CpfResponsavelPlano" class="control-label"></label>
+                <input asp-for="Plano.CpfResponsavelPlano" class="form-control border-bottom" placeholder="Ex.:000.000.000-00" />
+                <span asp-validation-for="Plano.CpfResponsavelPlano" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <label asp-for="Plano.NumeroPlano" class="control-label"></label>
+                <input asp-for="Plano.NumeroPlano" class="form-control border-bottom" placeholder="Ex.: 0000" />
+                <span asp-validation-for="Plano.NumeroPlano" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="ComoChegouPaciente" class="control-label"></label>
+                <input asp-for="ComoChegouPaciente" class="form-control border-bottom" placeholder="Ex.:Propagandas, Indicações de amigos." />
+                <span asp-validation-for="ComoChegouPaciente" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label asp-for="ObsPaciente" class="control-label"></label>
+                <input asp-for="ObsPaciente" class="form-control border-bottom" placeholder="Ex.: Tem alergia a medicações" />
+                <span asp-validation-for="ObsPaciente" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group text-right pt-3">
+        <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+        <input type="submit" value="ADICIONAR" class="ml-1 btn btn-success  btn-sm" />
+    </div>
+</form>
+<script>
+    document.querySelector('#planochecked').addEventListener('change', function () {
+        if (this.checked) {
+            document.querySelector('#hasplano').hidden = false
+        }
+        else {
+            document.querySelector('#hasplano').hidden = true
+        }
+    })
+</script>
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
