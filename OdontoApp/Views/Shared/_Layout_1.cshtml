@@ -134,7 +134,7 @@
                                                 <a asp-controller="Usuarios" asp-action="MeuPerfil" style="text-decoration-line:none;">
                                                     <div class="row align-items-center">
                                                         <div class="avatar avatar-lg">
-                                                            <span class="avatar-title rounded-circle border border-white text-white font-weight-bold h1">UL</span>
+                                                            <span class="avatar-title rounded-circle border border-white text-white font-weight-bold h1">@Mascara.PrimeirasDuasLetrasNome(loginSvc.GetUser().Nome).ToUpper()</span>
                                                         </div>
                                                         <div class="col ml-2">
                                                             <div class="row">
@@ -202,7 +202,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div>  
         <!-- End Sidebar -->
         <!--Corpo da página-->
         <div class="main-panel">

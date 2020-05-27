@@ -1,4 +1,7 @@
-﻿namespace OdontoApp.Libraries.Texto
+﻿using System;
+using System.Linq;
+
+namespace OdontoApp.Libraries.Texto
 {
     public static class Mascara
     {
@@ -20,6 +23,18 @@
         public static string PrimeiroNome(string nomeCompleto)
         {
             return nomeCompleto.Split(' ')[0];
+        }
+
+        public static string PrimeirasDuasLetrasNome(string nomeCompleto)
+        {
+            if (!string.IsNullOrEmpty(nomeCompleto))
+            {
+                string[] ArrayNomes = nomeCompleto.Split(" ");
+                string resultado = ArrayNomes[0].Substring(0,1);
+                if (ArrayNomes.Count() > 1) resultado += ArrayNomes[^1].Substring(0,1);
+                return resultado;
+            }
+            return "";
         }
     }
 }
