@@ -5,7 +5,7 @@
     <title>@ViewData["Title"]</title>
     <link rel="icon" href="~/img/logo1.png" type="image/x-icon" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8" />
 
 
@@ -124,20 +124,38 @@
                         </li>
                         <li class="nav-item dropdown hidden-caret">
                             <a class="dropdown-toggle profile-pic text-primary font-weight-bold h3" data-toggle="dropdown" href="#" aria-expanded="false">
-                                @Mascara.PrimeiroNome(loginSvc.GetUser().Nome).ToUpper() <i class="ml-2 fa fa-user-alt" style="font-size:24px"></i>
+                                @Mascara.PrimeiroNome(loginSvc.GetUser().Nome).ToUpper() <i class="ml-2 fa fa-caret-down" style="font-size:24px"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-user animated fadeIn">
-                                <div class="dropdown-user-scroll scrollbar-outer">
-                                    <li>
+                                <li>
+                                    <div class="dropdown-user-scroll scrollbar-outer">
                                         <div class="user-box">
-                                            <div class="u-text">
-                                                <h4>@loginSvc.GetUser().Nome</h4>
-                                                <p class="text-muted">@loginSvc.GetUser().Email</p><a asp-controller="MinhaContas" asp-action="Index" class="btn btn-xs btn-primary btn-sm">Meu perfil</a>
-                                                <a class="text-muted card-link text-danger" asp-controller="Clientes" asp-action="Logout">Sair</a>
+                                            <div class="u-text col-12">
+                                                <a asp-controller="Usuarios" asp-action="MeuPerfil" style="text-decoration-line:none;">
+                                                    <div class="row align-items-center">
+                                                        <div class="avatar avatar-lg">
+                                                            <span class="avatar-title rounded-circle border border-white text-white font-weight-bold h1">UL</span>
+                                                        </div>
+                                                        <div class="col ml-2">
+                                                            <div class="row">
+                                                                <span class="font-weight-bold text-dark my-auto h4">Uanderson Lima</span>
+                                                                <div class="w-100"></div> <!--Quebra a linha sempre, não apagar-->
+                                                                <span class="text-dark op-8 my-auto h5">Ver seu perfil</span>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <hr />
+                                                <a class="text-dark font-weight-bold align-items-center" asp-controller="Usuarios" asp-action="Logout" style="text-decoration-line:none;">
+                                                    <div class="form-row align-items-center">
+                                                        <i class="op-7 fa fa-sign-out-alt fa-2x"></i>
+                                                        <span class="ml-2">Sair</span>
+                                                    </div>
+                                                </a>
                                             </div>
                                         </div>
-                                    </li>
-                                </div>
+                                    </div>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -215,7 +233,7 @@
     <!--   Core JS Files   -->
     <script src="~/assets/js/core/jquery.3.2.1.min.js"></script>
     <script src="~/assets/js/core/popper.min.js"></script>
-    <script src="~/assets/js/core/bootstrap.min.js"></script>
+    <script src="~/agenda/js/bootstrap.min.js"></script>
 
     <!-- jQuery UI -->
     <script src="~/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -268,26 +286,4 @@
     </script>
     @RenderSection("Scripts", required: false)
 </body>
-
 </html>
-@*<header> NAVBAR DO PRÓPRIO DOTNET
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OdontoApp</a>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>*@

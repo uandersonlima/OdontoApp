@@ -58,5 +58,9 @@ namespace OdontoApp.Controllers
             await context.SaveChangesAsync();
             return Redirect(nameof(Index));
         }
+        public async Task<IActionResult> Create()
+        {
+            return PartialView();
+        }
     }
 }

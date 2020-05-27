@@ -39,25 +39,24 @@
         <option value="100">100 itens por página</option>
     </select>
 </div>
+<div id="loading" class="col-md-10 mx-auto d-flex justify-content-center align-items-center form-group">
+    <div class="spinner-grow text-primary" role="status">
 
-<div id="loading" class="col-md-10 mx-auto d-flex justify-content-center form-group">
-    <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
     </div>
     <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+
     </div>
     <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+
     </div>
     <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+
     </div>
     <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+
     </div>
     <div class="spinner-grow text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+
     </div>
 </div>
 <div id="ElementsList"></div>
@@ -67,17 +66,17 @@
     </ul>
 </nav>
 
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="Tmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body modal-dialog-scrollable">
+                <div class="col-12" id="modal"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
-    <script src="~/assets/js/odontoapp/pagination/paginationScript.js"></script>
-    <script>
-        let buscaHTML = $('input#buscarPaciente');
-        let registroPorPaginaHTML = $('select#RegistroPorPagina');
-        let url = '/Pacientes/ListaPacientes';
-        let numeroPaginaHTML = $('li.page-item.active');
-        let totalPagString = 'input[id="Pagination_TotalPages"]';
-        let totalRegString = 'input[id="Pagination_TotalRecords"]';
-        ConstructorUrl(url);
-        ConstructorAppView(buscaHTML, numeroPaginaHTML, registroPorPaginaHTML);
-        ConstructorPagination(totalPagString, totalRegString)
-    </script>
+    <script src="~/assets/js/odontoapp/pagination/app_pagination.js"></script>
+    <script src="~/assets/js/odontoapp/paciente/paciente_index.js"></script>
 }

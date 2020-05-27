@@ -39,7 +39,7 @@ namespace OdontoApp.Repositories
         public async Task<PaginationList<Paciente>> GetAllAsync(AppView appQuery, int userId)
         {
             var pagList = new PaginationList<Paciente>();
-            var pacientes = context.Paciente.Where(ent => ent.UsuarioId == userId).OrderBy(pac => pac.NomePaciente).AsNoTracking().AsQueryable();
+            var pacientes = context.Paciente.Where(ent => ent.UsuarioId == userId).OrderBy(pac => pac.NomePaciente).ThenBy(pac => pac.NomePaciente).AsNoTracking().AsQueryable();
 
             if (appQuery.CheckSearch())
             {

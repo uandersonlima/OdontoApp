@@ -20,7 +20,6 @@
         public static string PrimeiroNome(string nomeCompleto)
         {
             return nomeCompleto.Split(' ')[0];
-
         }
     }
 }
