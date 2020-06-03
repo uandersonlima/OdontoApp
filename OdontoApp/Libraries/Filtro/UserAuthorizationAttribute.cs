@@ -20,7 +20,7 @@ namespace OdontoApp.Libraries.Filtro
             var usuario = loginSvc.GetUser();
             if (usuario == null || (usuario.AccessType == AccessType.User && accessType == AccessType.Administrator))
             {
-                context.Result = new StatusCodeResult(403);
+                context.Result = new RedirectToActionResult("Login", "Usuarios", null);//StatusCodeResult(403);
             }
             else if (usuario.AccountStatus == Status.Disabled)
             {

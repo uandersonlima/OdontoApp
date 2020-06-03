@@ -2,6 +2,7 @@
 using OdontoApp.Repositories.Interfaces;
 using OdontoApp.Services.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OdontoApp.Services
 {
@@ -18,7 +19,10 @@ namespace OdontoApp.Services
         {
             return tipoPerguntaRepos.HasValue();
         }
-
+        public async Task<List<TipoPergunta>> GetAllAsync() 
+        {
+            return await tipoPerguntaRepos.GetAllAsync();
+        }
         public void Start(List<TipoPergunta> tiposPerguntas)
         {
             tipoPerguntaRepos.Start(tiposPerguntas);

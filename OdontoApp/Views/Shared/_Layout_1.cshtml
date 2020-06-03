@@ -1,4 +1,7 @@
 ﻿@inject ILoginService loginSvc
+@{ 
+    var usuarioNome = loginSvc.GetUser().Nome;
+}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -25,6 +28,7 @@
     <link rel="stylesheet" href="~/agenda/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/assets/css/atlantis.css">
     <link rel="stylesheet" href="~/assets/css/all.min.css" />
+    <link rel="stylesheet" href="~/assets/css/style.css" />
 </head>
 <body>
     <div class="wrapper sidebar_minimize">
@@ -124,7 +128,7 @@
                         </li>
                         <li class="nav-item dropdown hidden-caret">
                             <a class="dropdown-toggle profile-pic text-primary font-weight-bold h3" data-toggle="dropdown" href="#" aria-expanded="false">
-                                @Mascara.PrimeiroNome(loginSvc.GetUser().Nome).ToUpper() <i class="ml-2 fa fa-caret-down" style="font-size:24px"></i>
+                                @Mascara.PrimeiroNome(usuarioNome).ToUpper() <i class="ml-2 fa fa-caret-down" style="font-size:24px"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-user animated fadeIn">
                                 <li>
@@ -134,14 +138,14 @@
                                                 <a asp-controller="Usuarios" asp-action="MeuPerfil" style="text-decoration-line:none;">
                                                     <div class="row align-items-center">
                                                         <div class="avatar avatar-lg">
-                                                            <span class="avatar-title rounded-circle border border-white text-white font-weight-bold h1">@Mascara.PrimeirasDuasLetrasNome(loginSvc.GetUser().Nome).ToUpper()</span>
+                                                            <span class="avatar-title rounded-circle border border-white text-white font-weight-bold h1">@Mascara.PrimeirasDuasLetrasNome(usuarioNome).ToUpper()</span>
                                                         </div>
                                                         <div class="col ml-2">
                                                             <div class="row">
-                                                                <span class="font-weight-bold text-dark my-auto h4">Uanderson Lima</span>
+                                                                <span class="font-weight-bold text-dark my-auto h4">@usuarioNome.ToUpperInvariant()</span>
                                                                 <div class="w-100"></div> <!--Quebra a linha sempre, não apagar-->
                                                                 <span class="text-dark op-8 my-auto h5">Ver seu perfil</span>
-                                                            </div>  
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -202,7 +206,7 @@
                     </ul>
                 </div>
             </div>
-        </div>  
+        </div>
         <!-- End Sidebar -->
         <!--Corpo da página-->
         <div class="main-panel">
@@ -231,7 +235,7 @@
     </div>
 
     <!--   Core JS Files   -->
-    <script src="~/assets/js/core/jquery.3.2.1.min.js"></script>
+    <script src="~/assets/js/core/jquery-3.5.1.min.js"></script>
     <script src="~/assets/js/core/popper.min.js"></script>
     <script src="~/agenda/js/bootstrap.min.js"></script>
 
@@ -268,11 +272,8 @@
     <!-- Atlantis JS -->
     <script src="~/assets/js/atlantis.js"></script>
 
-    <!-- Agenda e Mascara Cep JS -->
-    <script src='~/Agenda/js/jquery.mask.js'></script>
-
-    <!--<script src='//code.jquery.com/ui/1.11.4/jquery-ui.js'></script>-->
-    <script>$('.cep').mask('00.000-000')</script>
+    <script src='~/assets/js/core/jquery.mask.js'></script>
+    <script src="~/assets/js/odontoapp/app/app_scripts.js"></script>
     <script>
         $(document).ready(function () {
             var url = window.location

@@ -31,7 +31,7 @@ namespace OdontoApp.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet, Route("Login")]
         public IActionResult Login()
         {
             if (loginSvc.GetUser() is null)
@@ -41,7 +41,7 @@ namespace OdontoApp.Controllers
             return RedirectToAction("Index", "Agendas");
         }
 
-        [HttpPost]
+        [HttpPost, Route("Login")]
         public async Task<IActionResult> Login([FromForm]Usuario usuario)
         {
 
@@ -58,7 +58,8 @@ namespace OdontoApp.Controllers
                 return View();
             }
         }
-        [HttpGet, Route("[controller]/Cadastro")]
+
+        [HttpGet, Route("Cadastro")]
         public IActionResult CadastroUsuario()
         {
             if (loginSvc.GetUser() is null)
@@ -67,7 +68,8 @@ namespace OdontoApp.Controllers
             }
             return RedirectToAction("Index", "Agendas");
         }
-        [HttpPost]
+
+        [HttpPost, Route("Cadastro")]
         public async Task<IActionResult> CadastroUsuario([FromForm]Usuario usuario)
         {
 

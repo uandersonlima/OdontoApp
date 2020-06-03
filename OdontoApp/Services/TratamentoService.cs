@@ -52,5 +52,12 @@ namespace OdontoApp.Services
             if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
                 await tratamentoRepos.UpdateAsync(entity);
         }
+
+        public async Task<PaginationList<Tratamento>> GetByPatientAsync(AppView appQuery, int pacienteId)
+        {
+            appQuery.RecordPerPage ??= NumElement.NumElements;
+            appQuery.NumberPag ??= 1;
+            return await tratamentoRepos.GetByPatientAsync(appQuery, pacienteId, loginSvc.GetUser().UsuarioId);
+        }
     }
 }

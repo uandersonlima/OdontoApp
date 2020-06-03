@@ -760,8 +760,8 @@ namespace OdontoApp.Migrations
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(11)")
-                        .HasMaxLength(11);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<string>("ComoChegouPaciente")
                         .IsRequired()
@@ -799,7 +799,8 @@ namespace OdontoApp.Migrations
 
                     b.Property<string>("RgPaciente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<string>("Sexo")
                         .IsRequired()

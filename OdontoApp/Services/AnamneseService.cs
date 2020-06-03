@@ -24,6 +24,7 @@ namespace OdontoApp.Services
 
         public async Task AddAsync(Anamnese entity, List<int> listPerguntaId)
         {
+            entity.AnamnesesPerguntas = new List<AnamnesesPerguntas>();
             listPerguntaId.ForEach(PoAId => entity.AnamnesesPerguntas.Add(new AnamnesesPerguntas { PerguntaAnamneseId = PoAId }));
             await AddAsync(entity);
         }
@@ -67,8 +68,6 @@ namespace OdontoApp.Services
 
         public async Task<PaginationList<Anamnese>> GetAllAsync(AppView appQuery)
         {
-            appQuery.RecordPerPage ??= NumElement.NumElements;
-            appQuery.NumberPag ??= 1;
             return await anamneseRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
         }
 

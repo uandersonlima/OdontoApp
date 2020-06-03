@@ -1,0 +1,81 @@
+﻿@model AnamneseFormViewModel
+<h2 class="font-weight-bold text-muted">
+    NOVO ANAMNESE
+</h2>
+<form asp-action="Create">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group form-floating-label">
+                <input asp-for="Anamnese.DescricaoAnamnese" name="DescricaoAnamnese" type="text" id="input1" class="form-control input-border-bottom" required />
+                <label asp-for="Anamnese.DescricaoAnamnese" for="input1" class="placeholder control-label"></label>
+                <span asp-validation-for="Anamnese.DescricaoAnamnese" data-valmsg-for="DescricaoAnamnese" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-3 d-flex align-items-center">
+            <div class="form-group">
+                <button class="btn btn-icon btn-round btn-outline-primary btn-sm  createPergunta" data-toggle="tooltip" data-placement="left" title="Adicionar nova pergunta">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table col-md-12">
+                <tbody>
+                    @foreach (var perguntasAnamneses in Model.Perguntas)
+                    {
+                        <tr>
+                            <td>
+                                <div class="row">
+                                    <h4 class="mt-3">@Html.DisplayFor(model => perguntasAnamneses.Pergunta.DescricaoPergunta)</h4>
+                                    <div class="w-100"></div>
+                                    <span class="mb-3">@Html.DisplayFor(model => perguntasAnamneses.TipoPergunta.DescricaoTipoPergunta)</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row custom-control custom-switch mr-sm-2">
+                                    <input type="checkbox" class="custom-control-input" name="listid" id="List[@perguntasAnamneses.PerguntaAnamneseId]" value="@perguntasAnamneses.PerguntaAnamneseId">
+                                    <label class="custom-control-label" for="List[@perguntasAnamneses.PerguntaAnamneseId]">Habilitar Pergunta</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row ml-auto align-items-center">
+                                    <a class="btn btn-outline-light text-muted border-0 editPergunta" data-id="@perguntasAnamneses.PerguntaAnamneseId">
+                                        <span><i class="text-primary fa fa-edit"></i> Editar</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group"><span class="text-danger">@TempData["span"]</span></div>
+        <div class="ml-auto text-right form-group">
+            <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+            <input type="submit" value="SALVAR" class="ml-1 btn btn-primary font-weight-bold  btn-sm" />
+        </div>
+    </div>
+</form>
+
+<script>
+    $(function () {
+        $(".createPergunta").click(function (e) {
+            e.preventDefault();
+            $("#modal").load("/Perguntas/Create/", function () {
+                $("#Tmodal").modal("show");
+            })
+        })
+    })
+    $(".editPergunta").click(function () {
+        let id = $(this).attr("data-id")
+
+        $("#modal").load("/Perguntas/Edit/" + id, function () {
+            $("#Tmodal").modal("show")
+        })
+    })
+</script>
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

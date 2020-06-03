@@ -1,18 +1,23 @@
 ﻿using Newtonsoft.Json;
+using OdontoApp.Data;
 using OdontoApp.Models;
 using OdontoApp.Services.Interfaces;
+using System.Linq;
 
 namespace OdontoApp.Services
 {
     public class LoginService : ILoginService
     {
+        private readonly OdontoAppContext context;
         private readonly string Key = "SignIn.User";
         private readonly ISessionService session;
 
-        public LoginService(ISessionService session)
+        public LoginService(OdontoAppContext context, ISessionService session)
         {
+            this.context = context;
             this.session = session;
         }
+
         public Usuario GetUser()
         {
             if (session.Check(Key))
@@ -23,7 +28,7 @@ namespace OdontoApp.Services
             }
             else
             {
-                return new Usuario {UsuarioId=1, Nome= "Uanderson Lima", Email="TESTE@gmail.com"};
+                return context.Usuario.FirstOrDefault();
             }
         }
         public void Login(Usuario user)

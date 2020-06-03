@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OdontoApp.Repositories
 {
-    public class TratamentoRepository:ITratamentoRepository
+    public class TratamentoRepository : ITratamentoRepository
     {
         private readonly OdontoAppContext context;
 
@@ -74,6 +74,33 @@ namespace OdontoApp.Repositories
             {
                 throw new DbConcurrencyException(e.Message);
             }
+        }
+
+        public async Task<PaginationList<Tratamento>> GetByPatientAsync(AppView appQuery, int pacienteId, int userId)
+        {
+            var pagList = new PaginationList<Tratamento>();
+            var tratamentos = context.Tratamento.Where(p => p.UsuarioId == userId && p.PacienteId == pacienteId).AsNoTracking().AsQueryable();
+            if (appQuery.CheckSearch())
+            {
+                tratamentos = tratamentos.Where(trat => trat.NomeTratamento.Contains(appQuery.Search.Trim()));
+            }
+            if (appQuery.CheckPagination())
+            {
+                var quantidadeTotalRegistros = await tratamentos.CountAsync();
+                tratamentos = tratamentos.Skip((appQuery.NumberPag.Value - 1) * appQuery.RecordPerPage.Value).Take(appQuery.RecordPerPage.Value);
+
+                var paginacao = new Pagination
+                {
+                    NumberPag = appQuery.NumberPag.Value,
+                    RecordPerPage = appQuery.RecordPerPage.Value,
+                    TotalRecords = quantidadeTotalRegistros,
+                    TotalPages = (int)Math.Ceiling((double)quantidadeTotalRegistros / appQuery.RecordPerPage.Value)
+                };
+
+                pagList.Pagination = paginacao;
+            }
+            pagList.AddRange(await tratamentos.ToListAsync());
+            return pagList;
         }
     }
 }

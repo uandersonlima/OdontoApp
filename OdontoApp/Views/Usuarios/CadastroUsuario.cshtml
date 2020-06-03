@@ -314,12 +314,6 @@
 </form>
 @section Scripts{
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <!--   Core JS Files   -->
-    <script src='~/Agenda/js/jquery.mask.js'></script>
-    <script>$('.cep').mask('00.000-000')</script>
-    <script>$('.cpf').mask('000.000.000-00')</script>
-    <script>$('.num').mask('00000')</script>
-    <script>$('.tel').mask('000000000')</script>
     <script>
         function retornaPagina(id) {
             return document.querySelector(`div#${id}`)

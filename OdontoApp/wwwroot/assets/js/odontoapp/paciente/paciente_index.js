@@ -8,7 +8,7 @@ ConstructorUrl(url);
 ConstructorAppView(buscaHTML, numeroPaginaHTML, registroPorPaginaHTML);
 ConstructorPagination(totalPagString, totalRegString)
 
-function Loadmodal() {
+function LoadmodalCreate() {
     $.ajax({
         type: 'GET',
         url: 'Pacientes/Create/',
@@ -25,10 +25,4 @@ function Loadmodal() {
         }
     })
 }
-
-$(".create").click(Loadmodal)
-
-document.querySelectorAll("#carregarPaciente").forEach(el => el.onclick = function () {
-    let pacienteId = this.getAttribute("data-id")
-    window.location.href = `/Pacientes/PaginaPaciente/${pacienteId}`
-})
+$(".create").click(LoadmodalCreate)

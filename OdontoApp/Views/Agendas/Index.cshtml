@@ -15,11 +15,11 @@
 <input type="hidden" id="RequestVerificationToken"
        name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 <!---Matenha esses links aqui-->
-<link href='~/Agenda/packages/core/main.css' rel='stylesheet' />
-<link href='~/Agenda/packages/daygrid/main.css' rel='stylesheet' />
-<link href='~/Agenda/packages/timegrid/main.css' rel='stylesheet' />
-<link href='~/Agenda/packages/list/main.css' rel='stylesheet' />
-<link href='~/Agenda/packages/bootstrap/main.css' rel='stylesheet' />
+<link href='~/agenda/packages/core/main.css' rel='stylesheet' />
+<link href='~/agenda/packages/daygrid/main.css' rel='stylesheet' />
+<link href='~/agenda/packages/timegrid/main.css' rel='stylesheet' />
+<link href='~/agenda/packages/list/main.css' rel='stylesheet' />
+<link href='~/agenda/packages/bootstrap/main.css' rel='stylesheet' />
 
 <!--Corpo principal do calendário-->
 <div class="content p-3">
@@ -43,15 +43,12 @@
         <div class="modal-content shadow">
             <!--Titulo do modal-->
             <div class="modal-header">
-
                 <h4 class="modal-title font-weight-bold text-muted" id="TitleModal">Título do modal</h4>
-
             </div>
             <!--Conteudo do modal-->
             <div class="modal-body">
                 <form id="formAgenda">
                     <div class="form-group row">
-
                         <div class="col-sm-8">
                             <label asp-for="NomePaciente" class="col-sm-4 col-form-label"></label>
                             <select asp-for="NomePaciente" class="form-control" asp-items="ViewBag.PacienteId">
@@ -125,15 +122,15 @@
         let objCalendar
         let token = $('input[name="RequestVerificationToken"]').val();
     </script>
-    <script src='~/Agenda/packages/core/main.js'></script>
-    <script src='~/Agenda/packages/interaction/main.js'></script>
-    <script src='~/Agenda/packages/daygrid/main.js'></script>
-    <script src='~/Agenda/packages/timegrid/main.js'></script>
-    <script src='~/Agenda/packages/list/main.js'></script>
-    <script src='~/Agenda/packages/core/locales-all.js'></script>
-    <script src='~/Agenda/packages/bootstrap/main.js'></script>
-    <script src='~/Agenda/js/moment.min.js'></script>
-    <script src='~/Agenda/js/theme-chooser.js'></script>
-    <script src='~/Agenda/js/botoesAgendaScript.js'></script>
-    <script src='~/Agenda/js/agendaScript.js'></script>
+    <script src='~/agenda/packages/core/main.js'></script>
+    <script src='~/agenda/packages/interaction/main.js'></script>
+    <script src='~/agenda/packages/daygrid/main.js'></script>
+    <script src='~/agenda/packages/timegrid/main.js'></script>
+    <script src='~/agenda/packages/list/main.js'></script>
+    <script src='~/agenda/packages/core/locales-all.js'></script>
+    <script src='~/agenda/packages/bootstrap/main.js'></script>
+    <script src='~/agenda/js/moment.min.js'></script>
+    <script src='~/agenda/js/theme-chooser.js'></script>
+    <script src='~/agenda/js/botoesAgendaScript.js'></script>
+    <script src='~/agenda/js/agendaScript.js'></script>
 }

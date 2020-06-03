@@ -1,0 +1,163 @@
+﻿@model Paciente
+@{
+    ViewData["Title"] = "Página do Paciente";
+    Layout = "~/Views/Shared/_Layout_1.cshtml";
+}
+
+<div class="panel-header">
+    <div class="page-inner ml-0 ml-md-5 py-sm-1 py-md-3 py-lg-4">
+        <div class="container-fluid align-items-center">
+            <div class="row ">
+                <div class="order-md-0 col-sm-5 col-md-6  col-lg-6 d-md-flex d-none">
+                    <div>
+                        <h1 class="text-dark pb-2 fw-bold">@Model.NomePaciente</h1>
+                        <h4 class="text-dark op-8 mb-2 fw-bold">Veja a lista dos seus produtos.</h4>
+                    </div>
+                </div>
+                @*<div class="order-md-1 col-md-4 d-flex align-items-center justify-content-center">
+                    <div class="form-group col-12">
+                        <div class="input-icon">
+                            <span class="input-icon-addon text-primary">
+                                <i class="fa fa-search search-icon"></i>
+                            </span>
+                            <input type="text" class="form-control input-pill text-dark font-weight-bold" placeholder="Digite o Nome ou CPF">
+                        </div>
+                    </div>
+                </div>*@
+                <div class="order-md-2 btn-group order-md-2 col-md-2 d-flex align-items-center justify-content-md-start justify-content-end mr-md-0 mr-3">
+                    <div class="container d-flex d-sm-flex d-md-none justify-content-end">
+                        <div class="dropdown show mr-3">
+                            <select class="form-control input-pill">
+                                <option>Sobre</option>
+                                <option>Orçamentos</option>
+                                <option>Tratamentos</option>
+                                <option>Anamneses</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="">
+                        <button class="btn btn-primary btn-rounded editPaciente font-weight-bold">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="justify-content-center d-md-flex d-md-block d-none">
+        <ul class="nav nav-line nav-color-default col-12 col-md-10">
+            <li class="nav-item">
+                <a class="nav-link active" id="sobre" data-toggle="tab" href="#nav-sobre" role="tab" value="1">Sobre</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="orcamento" data-toggle="tab" href="#nav-orcamento" role="tab" value="2">Orçamentos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tratamento" data-toggle="tab" href="#nav-tratamento" role="tab" value="3">Tratamentos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="anamnese" data-toggle="tab" href="#nav-anamnese" role="tab" value="4">Anamneses</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="tab-content" id="nav-tabContent">
+    <!--Telas sobre-->
+    <div class="tab-pane active show" id="nav-sobre" role="tabpanel" aria-labelledby="sobre">
+        <div class="content p-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 col-md-12 mr-auto ml-auto">
+                        <div class="row">
+                            <!--Bloco 1 sobre -->
+                            <div class="col-md-7">
+                                <div class="card" style="border-radius:2.5rem">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="row justify-content-center" id="loadDetalhes">
+                                            <div class="loader loader-primary loader-lg"></div>
+                                        </div>
+                                        <div id="detalhes"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Bloco 2 sobre -->
+                            <div class="col-md-5">
+                                <div class="card rounded-0">
+                                    <div class="card-body">
+                                        <div class="row justify-content-center" id="loadAgenda">
+                                            <div class="loader loader-primary loader-lg"></div>
+                                        </div>
+                                        <div id="agendas"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Telas orcamento-->
+    <div class="tab-pane fade" id="nav-orcamento" role="tabpanel" aria-labelledby="orcamento">
+        <div class="content p-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-11 ml-auto mr-auto">
+                        <div class="card rounded-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="row justify-content-center" id="loadOrcamento">
+                                    <div class="loader loader-primary loader-lg"></div>
+                                </div>
+                                <div id="orcamentos"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Telas Tratamento-->
+    <div class="tab-pane fade" id="nav-tratamento" role="tabpanel" aria-labelledby="tratamento">
+        <div id="tratamentos"></div>
+    </div>
+    <!--Telas Anamnese-->
+    <div class="tab-pane fade" id="nav-anamnese" role="tabpanel" aria-labelledby="anamnese">
+        <div class="content p-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-11 ml-auto mr-auto">
+                        <div class="card rounded-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="col-md-6">
+                                        <div class="input-group mb-2 mr-sm-2">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text nav-search">
+                                                    <i class="fa fa-search search-icon"></i>
+                                                </div>
+                                            </div>
+                                            <input class="form-control " type="text" name="buscaAnamnese" placeholder="Pesquisar " />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center" id="loadAnamnese">
+                                    <div class="loader loader-primary loader-lg"></div>
+                                </div>
+                                <div id="anamneses"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-----Carrega Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="Tmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modal"></div>
+            </div>
+        </div>
+    </div>
+</div>

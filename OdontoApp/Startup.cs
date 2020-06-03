@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OdontoApp.Data;
 using OdontoApp.Services.IoC;
 
 namespace OdontoApp
@@ -26,7 +27,7 @@ namespace OdontoApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, InicializarDados inicializardados)
         {
             var ptBR = new CultureInfo("pt-BR");
             var localizationOptions = new RequestLocalizationOptions
@@ -40,6 +41,8 @@ namespace OdontoApp
 
             if (env.IsDevelopment())
             {
+                inicializardados.Init();
+                //app.UseStatusCodePagesWithReExecute("/Error/{0}");
                 app.UseDeveloperExceptionPage();
             }
             else

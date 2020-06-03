@@ -55,11 +55,11 @@ namespace OdontoApp.Services
         }
         public async Task<Orcamento> GetByIdAsync(int id) => await orcamentoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
 
-        public async Task<PaginationList<Orcamento>> GetByPatientAsync(AppView appQuery, int pacienteId, int userId)
+        public async Task<PaginationList<Orcamento>> GetByPatientAsync(AppView appQuery, int pacienteId)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await orcamentoRepos.GetByPatientAsync(appQuery, pacienteId,loginSvc.GetUser().UsuarioId);
+            return await orcamentoRepos.GetByPatientAsync(appQuery, pacienteId, loginSvc.GetUser().UsuarioId);
         }
 
         public async Task UpdateAsync(Orcamento entity)

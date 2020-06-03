@@ -43,13 +43,20 @@
 <nav class="justify-content-center d-md-flex d-md-block d-none">
     <ul class="nav nav-line nav-color-default col-12 col-md-10">
         <li class="nav-item">
-            <a class="nav-link active" href="#">Estoque</a>
+            <a class="nav-link active" onclick="mudar(this)" href="javascript:void(0)">Estoque</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Produtos</a>
+            <a class="nav-link" onclick="mudar(this)" href="javascript:void(0)">Produtos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Entrada/Saída</a>
+            <a class="nav-link" onclick="mudar(this)" href="javascript:void(0)">Entrada/Saída</a>
         </li>
     </ul>
 </nav>
+
+<script>
+    function mudar(el) {
+        el.parentNode.parentNode.querySelector('li a.active').classList.remove('active')
+        el.classList.add('active');
+    }
+</script>

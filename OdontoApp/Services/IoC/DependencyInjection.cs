@@ -17,8 +17,7 @@ namespace OdontoApp.Services.IoC
     {
         public static void Injetar(IServiceCollection svc, IConfiguration conf)
         {
-            svc.AddControllersWithViews().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; }); 
-            svc.AddRazorPages();
+            svc.AddControllersWithViews().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
             svc.AddHttpContextAccessor();
             svc.AddScoped<IUsuarioRepository, UsuarioRepository>();
             svc.Configure<CookiePolicyOptions>(options =>

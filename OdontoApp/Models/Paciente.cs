@@ -24,14 +24,13 @@ namespace OdontoApp.Models
 
         [CPF(ErrorMessage = "Informe um {0} válido")]
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
-        [MinLength(11, ErrorMessage = "Infome o {0} correto")]
-        [MaxLength(11, ErrorMessage = "Infome o {0} correto")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#########'/'##}")]
+        [StringLength(14, ErrorMessage = "Infome o {0} correto")]
         public string CPF { get; set; }
 
         [Display(Name = "RG")]
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0}")]
+        [StringLength(14, ErrorMessage = "Infome o {0} correto")]
         public string RgPaciente { get; set; }
 
         [Display(Name = "Observação")]
