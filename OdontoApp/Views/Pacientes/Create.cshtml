@@ -12,21 +12,21 @@
                     </div>
                 </div>
             }
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="NomePaciente"></label>
                     <input asp-for="NomePaciente" class="form-control" placeholder="Ex.: Maria" />
                     <span asp-validation-for="NomePaciente" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <div class="form-group">
                     <label asp-for="Nascimento">Nascimento</label>
                     <input type="date" asp-for="Nascimento" class="form-control">
                     <span asp-validation-for="Nascimento" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-lg-2">
                 <div class="form-group">
                     <label asp-for="NumeroProntuarioPaciente" class="control-label"></label>
                     <input asp-for="NumeroProntuarioPaciente" class="form-control" placeholder="..." />
@@ -35,21 +35,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md">
+            <div class="col-lg">
                 <div class="form-group">
                     <label asp-for="CPF" class="control-label"></label>
                     <input asp-for="CPF" class="form-control cpf" placeholder="Ex.: 000.000.000-00" />
                     <span asp-validation-for="CPF" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md">
+            <div class="col-lg">
                 <div class="form-group ">
                     <label asp-for="RgPaciente" class="control-label"></label>
                     <input asp-for="RgPaciente" class="form-control" placeholder="Ex.: 0000000000" />
                     <span asp-validation-for="RgPaciente" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md">
+            <div class="col-lg">
                 <div class="form-group">
                     <label asp-for="Sexo" class="control-label"></label>
                     <select class="form-control" asp-for="Sexo">
@@ -60,14 +60,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="form-group">
                     <label asp-for="DDD" class="control-label"></label>
                     <input asp-for="DDD" class="form-control" placeholder="Ex.: 00" />
                     <span asp-validation-for="DDD" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="form-group">
                     <label asp-for="Telefone" class="control-label"></label>
                     <input asp-for="Telefone" class="form-control tel" placeholder="Ex.: 00000000000" />
@@ -75,7 +75,7 @@
                 </div>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="EmailPaciente" class="control-label"></label>
                     <input asp-for="EmailPaciente" class="form-control" placeholder="Ex.: email@email.com" />
@@ -84,21 +84,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="form-group">
                     <label asp-for="Endereco.Cep.Descricao" class="control-label"></label>
                     <input asp-for="Endereco.Cep.Descricao" class="form-control cep" placeholder="Ex.: 000000000" />
                     <span asp-validation-for="Endereco.Cep.Descricao" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <div class="form-group">
                     <label asp-for="Endereco.Estado.Descricao" class="control-label"></label>
                     <input asp-for="Endereco.Estado.Descricao" class="form-control" placeholder="Ex.: São Paulo" />
                     <span asp-validation-for="Endereco.Estado.Descricao" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-lg-5">
                 <div class="form-group">
                     <label asp-for="Endereco.Cidade.Descricao" class="control-label"></label>
                     <input asp-for="Endereco.Cidade.Descricao" class="form-control" placeholder="Ex.: São Paulo" />
@@ -107,21 +107,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="Endereco.Rua.Descricao" class="control-label"></label>
                     <input asp-for="Endereco.Rua.Descricao" class="form-control" placeholder="Ex.: Liberdade" />
                     <span asp-validation-for="Endereco.Rua.Descricao" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <div class="form-group">
                     <label asp-for="Endereco.Bairro.Descricao" class="control-label "></label>
                     <input asp-for="Endereco.Bairro.Descricao" class="form-control" placeholder="Ex.: Centro" />
                     <span asp-validation-for="Endereco.Bairro.Descricao" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-lg-2">
                 <div class="form-group ">
                     <label asp-for="Endereco.NumeroEndereco" class="control-label"></label>
                     <input asp-for="Endereco.NumeroEndereco" class="form-control num" placeholder="Ex.: 00" />
@@ -140,21 +140,21 @@
             </div>
         </div>
         <div class="row" id="hasplano" hidden>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="Plano.NomePlano" class="control-label"></label>
                     <input asp-for="Plano.NomePlano" class="form-control" placeholder="Ex.: Maria da Silva" />
                     <span asp-validation-for="Plano.NomePlano" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="form-group">
                     <label asp-for="Plano.CpfResponsavelPlano" class="control-label"></label>
                     <input asp-for="Plano.CpfResponsavelPlano" class="form-control" placeholder="Ex.:000.000.000-00" />
                     <span asp-validation-for="Plano.CpfResponsavelPlano" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="form-group">
                     <label asp-for="Plano.NumeroPlano" class="control-label"></label>
                     <input asp-for="Plano.NumeroPlano" class="form-control" placeholder="Ex.: 0000" />
@@ -163,14 +163,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="ComoChegouPaciente" class="control-label"></label>
                     <input asp-for="ComoChegouPaciente" class="form-control" placeholder="Ex.:Propagandas, Indicações de amigos." />
                     <span asp-validation-for="ComoChegouPaciente" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label asp-for="ObsPaciente" class="control-label"></label>
                     <input asp-for="ObsPaciente" class="form-control" placeholder="Ex.: Tem alergia a medicações" />

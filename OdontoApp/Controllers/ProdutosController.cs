@@ -1,14 +1,117 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OdontoApp.Libraries.Filtro;
+using OdontoApp.Models.Estoque;
+using OdontoApp.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace OdontoApp.Controllers
 {
     [AutoValidateAntiforgeryToken, UserAuthorization]
     public class ProdutosController : Controller
     {
-        public IActionResult Index()
+        private readonly IProdutoService produtoSvc;
+
+        public ProdutosController(IProdutoService produtoSvc)
         {
-            return View();
+            this.produtoSvc = produtoSvc;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var produto = await produtoSvc.GetByIdAsync(id.Value);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(produto);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return PartialView();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Produto produto)
+        {
+            if (ModelState.IsValid)
+            {
+                await produtoSvc.AddAsync(produto);
+
+                return RedirectToAction("Index", "Estoques");
+            }
+            return View(produto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var produto = await produtoSvc.GetByIdAsync(id.Value);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+            return PartialView(produto);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Produto produto)
+        {
+            if (id != produto.ProdutoId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await produtoSvc.UpdateAsync(produto);
+
+                return RedirectToAction("Index", "Estoques");
+            }
+            return View(produto);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var produto = await produtoSvc.GetByIdAsync(id.Value);
+
+            if (produto == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView(produto);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await produtoSvc.DeleteAsync(id);
+            return RedirectToAction("Index", "Estoques");
         }
     }
 }
