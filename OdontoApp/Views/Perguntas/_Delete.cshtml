@@ -1,0 +1,15 @@
+﻿@model PerguntaAnamnese
+<h2 class="font-weight-bold text-muted">
+    DELETAR PERGUNTA
+</h2>
+<div class="text-center p-4">
+    <h1 class="fa fa-trash-alt text-danger display-1"></h1>
+</div>
+<div class="rounded col-10 ml-auto mr-auto text-dark" role="alert">
+    <h2 class="text-muted text-justify">Você nunca mais verá informações de <strong>@Model.Pergunta.DescricaoPergunta</strong>. Deseja excluir este paciente mesmo assim?</h2>
+</div>
+<form asp-action="Delete" class="mt-5 text-right">
+    <input type="hidden" asp-for="PerguntaAnamneseId" />
+    <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+    <input type="submit" value="EXCLUIR" class="btn btn-danger btn-sm" />
+</form>

@@ -41,6 +41,7 @@ namespace OdontoApp.Repositories
 
         public async Task DeleteAsync(Anamnese entity)
         {
+            context.RemoveRange(entity.AnamnesesPerguntas);
             context.Anamnese.Remove(entity);
             await context.SaveChangesAsync();
         }

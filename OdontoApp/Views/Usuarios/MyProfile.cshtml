@@ -1,0 +1,150 @@
+﻿@model Usuario
+@{
+    ViewData["Title"] = "Meu Perfil";
+    Layout = "~/Views/Shared/_Layout_1.cshtml";
+}
+<div class="page-inner" style="padding-top:12px !important">
+    <div class="row">
+        <div class="col-md-10 ml-auto mr-auto">
+            <div class="col-12 pt-4 pb-4">
+                <span class="h1 text-dark font-weight-bold">Meu Perfil</span>
+                <div class="float-right">
+                    <a class="btn btn-rounded btn-danger text-white border-0 font-weight-bold CancelarPagamento">Cancelar Assinatura</a>
+                </div>
+            </div>
+            <div class="card shadow-sm col-12" style="border-radius:10px">
+                <div class="card-body">
+                    <div class="col form-group">
+                        <form asp-action="myprofile" asp-controller="usuarios" method="post">
+                            <input type="hidden" asp-for="UsuarioId" />
+                            <div class="form-row">
+                                <div class="col-md-8 col-sm-8 col-lg-8 form-group">
+                                    <label asp-for="Nome" class="text danger">Nome</label>
+                                    <input type="text" asp-for="Nome" class="form-control" placeholder="">
+                                    <span asp-validation-for="Nome" class="text-danger"></span>
+                                </div>
+                                <div class="col form-group">
+                                    <label>Sexo</label>
+                                    <select class="custom-select" asp-for="Sexo">
+                                        <option selected>Escolha o sexo...</option>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Feminino</option>
+                                    </select>
+                                    <span asp-validation-for="Sexo"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label asp-for="Nascimento">Nascimento</label>
+                                    <input type="date" asp-for="Nascimento" class="form-control">
+                                    <span asp-validation-for="Nascimento" class="text-danger"></span>
+                                </div>
+                                <div class="col-8 form-group">
+                                    <label asp-for="CPF">CPF</label>
+                                    <input asp-for="CPF" class="form-control cpf" placeholder="">
+                                    <span asp-validation-for="CPF" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-2 form-group">
+                                    <label asp-for="DDD">DDD</label>
+                                    <input asp-for="DDD" class="form-control">
+                                    <span asp-validation-for="DDD" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label asp-for="Telefone">Telefone</label>
+                                    <input asp-for="Telefone" class="form-control tel">
+                                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                                </div>
+                                <div class="col form-group">
+                                    <label asp-for="Email">E-mail</label>
+                                    <input type="text" asp-for="Email" class="form-control" placeholder="" readonly="readonly">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                    @if (ViewData["AlreadyExists"] != null)
+                                    {
+                                        <span class="text-danger">@ViewData["AlreadyExists"]</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <input type="hidden" asp-for="Endereco.Cep.CepId" />
+                                    <label asp-for="Endereco.Cep.Descricao" class="text danger"></label>
+                                    <input type="text" asp-for="Endereco.Cep.Descricao" class="form-control cep" placeholder="">
+                                    <span asp-validation-for="Endereco.Cep.Descricao" class="text-danger"></span>
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <input type="hidden" asp-for="Endereco.Rua.RuaId" />
+                                    <label asp-for="Endereco.Rua.Descricao" class="text danger"></label>
+                                    <input type="text" asp-for="Endereco.Rua.Descricao" class="form-control" placeholder="">
+                                    <span asp-validation-for="Endereco.Rua.Descricao" class="text-danger"></span>
+                                </div>
+                                <div class="col form-group">
+                                    <input type="hidden" asp-for="Endereco.EnderecoId" />
+                                    <label asp-for="Endereco.NumeroEndereco" class="text danger"></label>
+                                    <input type="text" asp-for="Endereco.NumeroEndereco" class="form-control num" placeholder="">
+                                    <span asp-validation-for="Endereco.NumeroEndereco" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-6 form-group">
+                                    <input type="hidden" asp-for="Endereco.Bairro.BairroId" />
+                                    <label asp-for="Endereco.Bairro.Descricao" class="text danger"></label>
+                                    <input type="text" asp-for="Endereco.Bairro.Descricao" class="form-control" placeholder="">
+                                    <span asp-validation-for="Endereco.Bairro.Descricao" class="text-danger"></span>
+                                </div>
+                                <div class="col form-group">
+                                    <input type="hidden" asp-for="Endereco.Cidade.CidadeId" />
+                                    <label asp-for="Endereco.Cidade.Descricao" class="text danger"></label>
+                                    <input type="text" asp-for="Endereco.Cidade.Descricao" class="form-control" placeholder="">
+                                    <span asp-validation-for="Endereco.Cidade.Descricao" class="text-danger"></span>
+                                </div>
+                                <div class="col form-group">
+                                    <input type="hidden" asp-for="Endereco.Estado.EstadoId" />
+                                    <label asp-for="Endereco.Estado.Descricao" class="text danger"></label>
+                                    <input type="text" asp-for="Endereco.Estado.Descricao" class="form-control" placeholder="">
+                                    <span asp-validation-for="Endereco.Estado.Descricao" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="mr-auto">
+                                    <a href="javascript:void(0) font-weight-bold">Alterar senha?</a>
+                                </div>
+                                <div class="ml-auto">
+                                    <input type="submit" class="btn btn-rounded btn-primary text-white font-weight-bold border-0" value="Salvar" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="Tmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-0">
+            <div class="modal-body">
+                <div id="modal"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $(".CancelarPagamento").click(function () {
+                $("#modal").load("/Pagamentos/CancelarPagamento/", function () {
+                    $("#Tmodal").modal("show");
+                })
+            });
+
+        })
+    </script>
+}
+
+
+

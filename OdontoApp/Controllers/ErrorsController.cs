@@ -21,8 +21,7 @@ namespace OdontoApp.Controllers
         public IActionResult Error500()
         {
             var exception = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
-
-            ViewBag.Mensagem = exception.Error.Message;
+            ViewBag.Mensagem = exception.Error.Message;           
             return View();
         }
 

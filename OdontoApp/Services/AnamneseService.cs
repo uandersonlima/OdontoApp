@@ -45,7 +45,7 @@ namespace OdontoApp.Services
         public async Task<List<int>> CheckBoxChecked(int anamneseId)
         {
             var checkeD = await GetByIdAsync(anamneseId);
-            return (List<int>)checkeD.AnamnesesPerguntas.Select(AoP => AoP.PerguntaAnamneseId);
+            return checkeD.AnamnesesPerguntas.Select(AoP => AoP.PerguntaAnamneseId).ToList();
         }
         public async Task<bool> CheckEntityAsync(Anamnese entity) => await anamneseRepos.CheckEntityAsync(entity);
 
@@ -81,6 +81,7 @@ namespace OdontoApp.Services
 
         public async Task UpdateAsync(Anamnese entity, List<int> listPerguntaId)
         {
+            entity.AnamnesesPerguntas = new List<AnamnesesPerguntas>();
             listPerguntaId.ForEach(PoAId => entity.AnamnesesPerguntas.Add(new AnamnesesPerguntas { PerguntaAnamneseId = PoAId }));
             await UpdateAsync(entity);
         }

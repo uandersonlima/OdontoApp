@@ -33,7 +33,7 @@ namespace OdontoApp.Controllers
             this.userSvc = userSvc;
         }
 
-        [HttpGet]
+        [HttpGet, Route("Cartao")]
         public IActionResult DadosDoCartao()
         {
             if (loginSvc.GetUser() is null)
@@ -138,14 +138,14 @@ namespace OdontoApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [UserAuthorization, PaymentAuthorization]
+        [UserAuthorization]
         public IActionResult CancelarPagamento()
         {
             return PartialView("_CancelarPagamento");
         }
 
 
-        [HttpPost, UserAuthorization, PaymentAuthorization]
+        [HttpPost, UserAuthorization]
         public async Task<IActionResult> CancelarAssinatura()
         {
             var usuario = await userSvc.GetByIdAsync(loginSvc.GetUser().UsuarioId);

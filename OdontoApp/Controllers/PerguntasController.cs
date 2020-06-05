@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OdontoApp.Libraries.Filtro;
@@ -23,12 +22,12 @@ namespace OdontoApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int? editAdd)
         {
-            if (!(editAdd is null))
+            if (editAdd.HasValue)
             {
-                TempData["HasEdit"] = editAdd;
+                TempData["modal_edit"] = editAdd;
             }
             ViewData["TipoPerguntaId"] = new SelectList(await tipoPerguntaSvc.GetAllAsync(), "TipoPerguntaId", "DescricaoTipoPergunta");
-            return PartialView();
+            return PartialView("_create");
         }
 
 
@@ -38,7 +37,7 @@ namespace OdontoApp.Controllers
             if (ModelState.IsValid)
             {
                 await perguntaAnamneseSvc.AddAsync(perguntaAnamnese);
-                TempData["HasQuestion"] = "tem";
+                TempData["modal_create"] = true;
                 return RedirectToAction("Index", "Anamneses");
             }
             ViewData["TipoPerguntaId"] = new SelectList(await tipoPerguntaSvc.GetAllAsync(), "TipoPerguntaId", "DescricaoTipoPergunta", perguntaAnamnese.TipoPerguntaId);
@@ -60,19 +59,20 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            if (!(editAdd is null))
+            if (editAdd.HasValue)
             {
-                TempData["HasEdit"] = editAdd;
+                TempData["modal_edit"] = editAdd;
             }
 
             ViewData["TipoPerguntaId"] = new SelectList(await tipoPerguntaSvc.GetAllAsync(), "TipoPerguntaId", "DescricaoTipoPergunta", perguntaAnamnese.TipoPerguntaId);
-            return PartialView(perguntaAnamnese);
+            
+            return PartialView("_edit", perguntaAnamnese);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, PerguntaAnamnese perguntaAnamnese)
+        public async Task<IActionResult> Edit(int PerguntaAnamneseId, PerguntaAnamnese perguntaAnamnese)
         {
-            if (id != perguntaAnamnese.PerguntaAnamneseId)
+            if (PerguntaAnamneseId != perguntaAnamnese.PerguntaAnamneseId)
             {
                 return NotFound();
             }
@@ -80,7 +80,7 @@ namespace OdontoApp.Controllers
             if (ModelState.IsValid)
             {
                 await perguntaAnamneseSvc.UpdateAsync(perguntaAnamnese);
-                TempData["HasQuestion"] = "tem";
+                TempData["modal_create"] = true;
                 return RedirectToAction("Index", "Anamneses");
             }
 
@@ -103,7 +103,7 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(perguntaAnamnese);
+            return PartialView("_delete", perguntaAnamnese);
         }
 
         [HttpPost, ActionName("Delete")]

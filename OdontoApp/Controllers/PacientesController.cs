@@ -35,7 +35,7 @@ namespace OdontoApp.Controllers
         [HttpGet]
         public async Task<IActionResult> ListaPacientes(AppView appview)
         {
-            return PartialView(await pacienteSvc.GetAllAsync(appview));
+            return PartialView("_listapacientes", await pacienteSvc.GetAllAsync(appview));
         }
 
         [HttpGet]
@@ -72,7 +72,7 @@ namespace OdontoApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return PartialView();
+            return PartialView("_create");
         }
 
         [HttpPost]
@@ -112,7 +112,7 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(paciente);
+            return PartialView("_edit", paciente);
         }
 
         [HttpPost]
@@ -177,7 +177,7 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(paciente);
+            return PartialView("_delete", paciente);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -201,7 +201,7 @@ namespace OdontoApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Sobre(int pacienteId)
         {
-            return PartialView(await pacienteSvc.GetByIdAsync(pacienteId));
+            return PartialView("_sobre", await pacienteSvc.GetByIdAsync(pacienteId));
         }
     }
 }

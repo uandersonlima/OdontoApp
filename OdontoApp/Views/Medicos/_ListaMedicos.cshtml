@@ -1,0 +1,94 @@
+﻿@model PaginationList<Medico>
+<style>
+    td {
+        border: none !important;
+        border-top: 2px solid #000 !important;
+    }
+</style>
+<div class="page-inner" style="padding-top:12px !important">
+    <div class="row">
+        <div class="container-fluid d-flex justify-content-center col-12 col-md-11">
+            @if (Model.Count > 0)
+            {
+                <div class="card col-md-12" style="border-radius:10px">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead class="text-black-50 font-weight-bold">
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.First().NomeMedico)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.First().NumeroCroMedico)
+                                        </th>
+                                        <th class="text-center">
+                                            Editar
+                                        </th>
+                                        <th class="text-center">
+                                            Excluir
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-dark font-weight-bold">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NomeMedico)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.NumeroCroMedico)
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="javascript:void(0)" data-id="@item.MedicoId" class="btn btn-link edit"><i class="fa fa-edit text-primary h4"></i></a>
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="javascript:void(0)" class="btn btn-link delete" data-id="@item.MedicoId"><i class="fa fa-times text-danger h4"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                <span class="display-4 mt-5 text-center font-weight-bold">Medicos não encontrados</span>
+            }
+        </div>
+    </div>
+</div>
+<input asp-for="Pagination.NumberPag" type="hidden" />
+<input asp-for="Pagination.RecordPerPage" type="hidden" />
+<input asp-for="Pagination.TotalPages" type="hidden" />
+<input asp-for="Pagination.TotalRecords" type="hidden" />
+
+<script>
+    $(".details").click(function () {
+        var id = $(this).attr("data-id")
+
+        $("#modal").load("/Medicos/Details/" + id, function () {
+            $("#Tmodal").modal("show")
+        })
+    })
+
+    $(".edit").click(function () {
+        var id = $(this).attr("data-id")
+
+        $("#modal").load("/Medicos/Edit/" + id, function () {
+            $("#Tmodal").modal()
+        })
+    })
+
+    $(".delete").click(function () {
+        var id = $(this).attr("data-id")
+
+        $("#modal").load("/Medicos/Delete/" + id, function () {
+            $("#Tmodal").modal()
+        })
+    })
+</script>

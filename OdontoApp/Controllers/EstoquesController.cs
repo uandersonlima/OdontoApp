@@ -41,7 +41,7 @@ namespace OdontoApp.Controllers
         [HttpGet]
         public async Task<IActionResult> ListaEstoque(AppView appview)
         {
-            return PartialView(await  estoqueSvc.GetAllAsync(appview));
+            return PartialView("_listaestoque", await  estoqueSvc.GetAllAsync(appview));
         }
 
         [HttpGet]
@@ -59,14 +59,14 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(estoque);
+            return PartialView("_details", estoque);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             ViewData["ProdutoId"] = new SelectList(await produtoSvc.GetAllAsync(), "Id", "Descricao");
-            return PartialView();
+            return PartialView("_create");
         }
 
 
@@ -101,7 +101,7 @@ namespace OdontoApp.Controllers
                 Estoque = estoque
             };
 
-            return PartialView("_AddSub", entradasaida);
+            return PartialView("_gerenciarestoque", entradasaida);
         }
 
         [HttpPost]
@@ -120,6 +120,7 @@ namespace OdontoApp.Controllers
             return RedirectToAction(nameof(GerenciarEstoque), entradasaida);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -133,7 +134,8 @@ namespace OdontoApp.Controllers
             {
                 return NotFound();
             }
-            return PartialView(estoque);
+
+            return PartialView("_edit", estoque);
         }
 
         [HttpPost]

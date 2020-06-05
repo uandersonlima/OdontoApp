@@ -4,7 +4,8 @@ namespace OdontoApp.Controllers
 {
     public class SuporteController : Controller
     {
-        public IActionResult Index()
+        [HttpGet, Route("privacy")]
+        public IActionResult Terms()
         {
             return View();
         }

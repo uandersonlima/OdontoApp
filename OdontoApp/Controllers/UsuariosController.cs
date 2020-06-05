@@ -59,6 +59,29 @@ namespace OdontoApp.Controllers
             }
         }
 
+        [HttpGet, Route("Perfil")]
+        public async Task<IActionResult> MyProfile()
+        {
+            return View(await userSvc.GetByIdAsync(loginSvc.GetUser().UsuarioId));
+        }
+
+        [HttpPost, Route("Perfil")]
+        public async Task<IActionResult> MyProfile(Usuario user)
+        {
+            ModelState.Remove("AcessType");
+            ModelState.Remove("AccountStatus");
+            ModelState.Remove("PaymentStatus");
+            ModelState.Remove("PlanNumber");
+            ModelState.Remove("Senha");
+            ModelState.Remove("ConfirmacaoSenha");
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("MyProfile", user);
+            }
+            await userSvc.UpdateProfileAsync(user);
+            return RedirectToAction("Index", "Agendas");
+        }
+
         [HttpGet, Route("Cadastro")]
         public IActionResult CadastroUsuario()
         {

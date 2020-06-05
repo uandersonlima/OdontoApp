@@ -1,0 +1,27 @@
+﻿@model Anamnese
+
+<h2 class="font-weight-bold text-muted">
+    DETALHES
+</h2>
+<dl class="row">
+    <dt class="col-sm-4">
+        @Html.DisplayNameFor(model => model.DescricaoAnamnese)
+    </dt>
+    <dd class="col-sm-8">
+        @Html.DisplayFor(model => model.DescricaoAnamnese)
+    </dd>
+    @foreach (var perguntas in Model.AnamnesesPerguntas)
+    {
+
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => perguntas.PerguntaAnamnese.Pergunta.DescricaoPergunta) / @Html.DisplayNameFor(model => perguntas.PerguntaAnamnese.TipoPergunta.DescricaoTipoPergunta)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => perguntas.PerguntaAnamnese.Pergunta.DescricaoPergunta) / @Html.DisplayFor(model => perguntas.PerguntaAnamnese.TipoPergunta.DescricaoTipoPergunta)
+        </dd>
+
+    }
+</dl>
+<div class="form-group text-right">
+    <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+</div>

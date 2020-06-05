@@ -1,12 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Error500";
-    Layout = "_Layout_3";
+    ViewData["Title"] = $"Error{ViewBag.StatusCode}";
+    Layout = null;
 }
+
 <div class="container-fluid">
     <div class="row justify-content-center align-items-center vh-100">
         <div class="col-md-4 text-center">
             <h3 class="text-white font-weight-bold text-justify">@ViewBag.Mensagem</h3>
-            <h1 class="text-white font-weight-bold mb-3">Erro 500!</h1>
+            <h1 class="text-white font-weight-bold mb-3">Erro @ViewBag.StatusCode!</h1>
             <h3 class="text-white font-weight-bold text-justify">Eita, algo de errado não está certo! Volte para página inicial.</h3>
             <img src="~/img/error.png" class="ml-3 img-fluid" />
             <div class="mt-5 text-center">

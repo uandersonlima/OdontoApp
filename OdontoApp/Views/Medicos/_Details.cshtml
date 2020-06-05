@@ -1,0 +1,23 @@
+﻿@model Medico
+
+<h2 class="font-weight-bold text-muted">
+    DETALHES
+</h2>
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.NomeMedico)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.NomeMedico)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.NumeroCroMedico)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.NumeroCroMedico)
+    </dd>
+</dl>
+<div class="text-right form-group">
+    <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+</div>
+

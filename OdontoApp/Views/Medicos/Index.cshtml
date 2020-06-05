@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Medicos";
     Layout = "~/Views/Shared/_Layout_1.cshtml";
 }
@@ -19,14 +18,60 @@
                             <span class="input-icon-addon text-primary">
                                 <i class="fa fa-search search-icon"></i>
                             </span>
-                            <input type="text" class="form-control input-pill text-dark font-weight-bold" placeholder="Digite o Nome ou CRO">
+                            <input type="text" class="form-control input-pill text-dark font-weight-bold" id="buscarMedico" placeholder="Digite o Nome ou CRO">
                         </div>
                     </div>
                 </div>
                 <div class="order-md-2 col-sm-2 d-flex align-items-center justify-content-md-start justify-content-end mr-md-0 mr-3">
-                    <button class="btn btn-primary btn-rounded create font-weight-bold">CRIAR NOVO</button>
+                    <button class="btn btn-primary btn-rounded create font-weight-bold">Novo Médico</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="spinner1" id="loading">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
+</div>
+
+<div class="py-md-5" id="ElementsList"></div>
+
+<nav>
+    <ul class="pagination justify-content-center">
+    </ul>
+</nav>
+
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="Tmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body modal-dialog-scrollable">
+                <div id="modal" class="container-fluid"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/assets/js/odontoapp/pagination/app_pagination.js"></script>
+    <script>
+        let buscaHTML = $('input#buscarMedico');
+        console.log(buscaHTML)
+        let url = '/Medicos/ListaMedicos';
+        let totalPagString = 'input[id="Pagination_TotalPages"]';
+        let totalRegString = 'input[id="Pagination_TotalRecords"]';
+        ConstructorUrl(url);
+        ConstructorAppView(buscaHTML, null);
+        ConstructorPagination(totalPagString, totalRegString)
+    </script>
+    <script>
+        $(function () {
+            $(".create").click(function () {
+                $("#modal").load("/Medicos/Create/", function () {
+                    $("#Tmodal").modal()
+                })
+            })
+
+        })
+    </script>
+}

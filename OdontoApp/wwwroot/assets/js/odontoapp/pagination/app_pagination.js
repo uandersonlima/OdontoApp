@@ -2,7 +2,6 @@
     startHTML: null,
     searchHTML: null,
     endHTML: null,
-    numberPageHTML: null,
     recordPerPageHTML: null,
     totalPagesString: null,
     totalRecordsString: null,
@@ -54,11 +53,10 @@ function ConstructorPagination(totalPagesArg = null, totalRecordsArg = null) {
     conf.totalRecordsString = totalRecordsArg;
 }
 
-function ConstructorAppView(searchArg = null, numberpageArg = null, recordperpageArg = null, startArg = null, endArg = null) {
+function ConstructorAppView(searchArg = null, recordperpageArg = null, startArg = null, endArg = null) {
     conf.startHTML = startArg;
     conf.searchHTML = searchArg;
     conf.endHTML = endArg;
-    conf.numberPageHTML = numberpageArg;
     conf.recordPerPageHTML = recordperpageArg;
     AddFunction();
     RefreshPage();
@@ -105,7 +103,7 @@ function PreviousPages(previousPage) {
 }
 
 function CurrentPage(currentPage) {
-    if (Number($(conf.totalRecordsString).val()) > 0)
+    if (Number($(conf.totalRecordsString).val()) > 0 && Number($(conf.totalPagesString)) > 1)
         ulPage.append(`<li class="page-item active" id="${currentPage}"><span class="page-link font-weight-bold">${currentPage}</span></li>`);
 }
 

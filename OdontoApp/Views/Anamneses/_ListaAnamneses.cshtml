@@ -60,3 +60,27 @@
         })
     })
 </script>
+@if (TempData["modal_edit"] != null)
+{
+    <script>
+            $(".edit").show(function () {
+                let id = @TempData["modal_edit"]
+                    console.log(id)
+                $("#modal").load("/Anamneses/Edit?id=" + id, function () {
+                    $("#Tmodal").modal()
+                })
+            })
+    </script>
+}
+else if (TempData["modal_create"] != null)
+{
+    <script>
+        $(function () {
+            $(".create").show(function () {
+                $("#modal").load("/Anamneses/Create/", function () {
+                    $("#Tmodal").modal()
+                })
+            })
+        })
+    </script>
+}

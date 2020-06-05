@@ -31,8 +31,10 @@
     </div>
 </div>
 
-<div id="loading" class="col-md-10 mx-auto d-flex justify-content-center align-items-center form-group">
-    <img src="~/img/loading1.gif" width="150" class="img-fluid" />
+<div class="spinner1" id="loading">
+    <div class="bounce1"></div>
+    <div class="bounce2"></div>
+    <div class="bounce3"></div>
 </div>
 
 <div id="ElementsList"></div>
@@ -66,29 +68,4 @@
 
         })
     </script>
-    @if (TempData["HasEdit"] != null)
-    {
-        <script>
-            $(".edit").show(function () {
-                let id = @TempData["HasEdit"]
-
-                $("#modal").load("/Anamneses/Edit?id=" + id, function () {
-                    $("#Tmodal").modal()
-                })
-            })
-        </script>
-
-    }
-    else if (TempData["HasQuestion"] != null)
-    {
-        <script>
-            $(function () {
-                $(".create").show(function () {
-                    $("#modal").load("/Anamneses/Create/", function () {
-                        $("#Tmodal").modal()
-                    })
-                })
-            })
-        </script>
-    }
 }

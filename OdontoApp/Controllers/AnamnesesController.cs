@@ -34,7 +34,7 @@ namespace OdontoApp.Controllers
         [HttpGet]
         public async Task<IActionResult> ListAnamneses(AppView appview)
         {
-            return PartialView(await anamneseSvc.GetAllAsync(appview));
+            return PartialView("_listaanamneses", await anamneseSvc.GetAllAsync(appview));
         }
 
         [HttpGet]
@@ -44,7 +44,7 @@ namespace OdontoApp.Controllers
             {
                 Perguntas = await perguntaAnamneseSvc.GetAllAsync()
             };
-            return PartialView(viewModel);
+            return PartialView("_create", viewModel);
         }
 
         [HttpPost]
@@ -53,7 +53,7 @@ namespace OdontoApp.Controllers
 
             if (listId.Count == 0)
             {
-                TempData["HasQuestion"] = "tem";
+                TempData["modal_create"] = true;
                 TempData["span"] = "Não foi possível prosseguir, informe nome e perguntas";
                 return RedirectToAction(nameof(Index));
             }
@@ -77,7 +77,7 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(obj);
+            return PartialView("_delete", obj);
         }
 
         [HttpPost, ActionName("Delete")]
@@ -102,7 +102,7 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(obj);
+            return PartialView("_details", obj);
         }
 
         [HttpGet]
@@ -125,7 +125,8 @@ namespace OdontoApp.Controllers
                 Anamnese = obj,
                 Perguntas = await perguntaAnamneseSvc.GetAllAsync()
             };
-            return PartialView(viewModel);
+
+            return PartialView("_edit", viewModel);
         }
 
         [HttpPost]
@@ -139,7 +140,7 @@ namespace OdontoApp.Controllers
 
             if (listId.Count == 0)
             {
-                TempData["HasEdit"] = id;
+                TempData["modal_edit"] = id;
                 TempData["span"] = "Não foi possível prosseguir, informe nome e perguntas";
                 return RedirectToAction(nameof(Index));
             }

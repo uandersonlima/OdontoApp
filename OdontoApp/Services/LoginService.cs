@@ -28,7 +28,7 @@ namespace OdontoApp.Services
             }
             else
             {
-                return context.Usuario.FirstOrDefault();
+                return context.Usuario.FirstOrDefault();//null;
             }
         }
         public void Login(Usuario user)

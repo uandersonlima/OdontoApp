@@ -16,7 +16,7 @@ namespace OdontoApp.Libraries.Filtro
             if (user.AccessType != AccessType.Administrator && (string.IsNullOrEmpty(user.PaymentStatus) ||
                 string.Compare(user.PaymentStatus.Trim(), "canceled") == 0))
             {
-                context.Result = new RedirectToActionResult("DadosDoCartao", "Clientes", null);
+                context.Result = new RedirectToActionResult("DadosDoCartao", "Pagamentos", null);
             }
         }
 

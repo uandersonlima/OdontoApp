@@ -31,13 +31,13 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(produto);
+            return PartialView("_details", produto);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return PartialView();
+            return PartialView("_create");
         }
 
 
@@ -67,7 +67,7 @@ namespace OdontoApp.Controllers
             {
                 return NotFound();
             }
-            return PartialView(produto);
+            return PartialView("_edit", produto);
         }
 
 
@@ -103,7 +103,7 @@ namespace OdontoApp.Controllers
                 return NotFound();
             }
 
-            return PartialView(produto);
+            return PartialView("_delete", produto);
         }
 
 

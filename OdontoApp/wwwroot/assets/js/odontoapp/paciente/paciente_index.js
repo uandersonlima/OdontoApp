@@ -1,11 +1,10 @@
 ﻿let buscaHTML = $('input#buscarPaciente');
 let registroPorPaginaHTML = $('select#RegistroPorPagina');
 let url = '/Pacientes/ListaPacientes';
-let numeroPaginaHTML = $('li.page-item.active');
 let totalPagString = 'input[id="Pagination_TotalPages"]';
 let totalRegString = 'input[id="Pagination_TotalRecords"]';
 ConstructorUrl(url);
-ConstructorAppView(buscaHTML, numeroPaginaHTML, registroPorPaginaHTML);
+ConstructorAppView(buscaHTML, registroPorPaginaHTML);
 ConstructorPagination(totalPagString, totalRegString)
 
 function LoadmodalCreate() {
