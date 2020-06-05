@@ -34,7 +34,7 @@ namespace OdontoApp.Services
         public async Task<List<int>> CheckBoxChecked(int id)
         {
             var orcamento = await GetByIdAsync(id);
-            return (List<int>)orcamento.OrcamentoTratamentos.Select(ot => ot.TratamentoId);
+            return orcamento.OrcamentoTratamentos.Select(ot => ot.TratamentoId).ToList();
         }
         public async Task<bool> CheckEntityAsync(Orcamento entity) => await orcamentoRepos.CheckEntityAsync(entity);
 

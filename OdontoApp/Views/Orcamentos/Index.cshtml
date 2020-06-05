@@ -1,0 +1,81 @@
+﻿@model List<Orcamento>
+
+<p>
+    <a class="btn btn-primary btn-sm text-white font-weight-bold createOrcamento">NOVO ORÇAMENTO</a>
+</p>
+@if (Model.Count() <= 0)
+{
+    <p class="col-md-12"><h2 class="ml-auto mr-auto  text-center"><strong>Não existem Orçamentos para esse Paciente</strong></h2></p>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().DataOrcamento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().DescricaoOrcamento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ValorOrcamento)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DataOrcamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DescricaoOrcamento)
+                    </td>
+
+                    <td>
+                        @item.ValorOrcamento.ToString("C")
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-outline-light border-0 pl-md-3 detailsOrcamento text-muted font-weight-bold" data-id="@item.OrcamentoId">DETALHES</a>
+                        <a class="btn btn-sm btn-outline-light border-0 pl-md-3 editOrcamento text-muted font-weight-bold" data-id="@item.OrcamentoId">EDITAR</a>
+                        <a class="btn btn-sm btn-outline-light border-0 pl-md-3 deleteOrcamento text-muted  font-weight-bold" data-id="@item.OrcamentoId">EXCLUIR</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<script>
+    $(function () {
+        $(".createOrcamento").click(function () {
+            $("#modal").load("@Url.Action("create","orcamentos", new { pacienteId = TempData["pacienteId"]})", function () {
+                $("#Tmodal").modal();
+            })
+        })
+        $(".deleteOrcamento").click(function () {
+            var idOrcamento = $(this).attr("data-id")
+
+            $("#modal").load("/Orcamentos/Delete/" + idOrcamento, function () {
+                $("#Tmodal").modal()
+            })
+        })
+        $(".editOrcamento").click(function () {
+            var idOrcamento = $(this).attr("data-id")
+
+            $("#modal").load("/Orcamentos/Edit/" + idOrcamento, function () {
+                $("#Tmodal").modal()
+            })
+        })
+        $(".detailsOrcamento").click(function () {
+            var idOrcamento = $(this).attr("data-id")
+
+            $("#modal").load("/Orcamentos/details/" + idOrcamento, function () {
+                $("#Tmodal").modal()
+            })
+        })
+    })
+</script>

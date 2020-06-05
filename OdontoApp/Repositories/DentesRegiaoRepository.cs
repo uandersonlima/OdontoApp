@@ -1,8 +1,10 @@
-﻿using OdontoApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OdontoApp.Data;
 using OdontoApp.Models;
 using OdontoApp.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OdontoApp.Repositories
 {
@@ -17,6 +19,10 @@ namespace OdontoApp.Repositories
         public bool HasValue()
         {
             return context.DentesRegiao.Any();
+        }
+        public async Task<List<DentesRegiao>> GetAllAsync()
+        {
+            return await context.DentesRegiao.ToListAsync();
         }
         public void Start(List<DentesRegiao> dentesRegiaos)
         {

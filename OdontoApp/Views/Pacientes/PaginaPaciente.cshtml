@@ -4,9 +4,6 @@
     Layout = "~/Views/Shared/_Layout_1.cshtml";
 }
 
-
-
-
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 <div class="panel-header">
     <div class="page-inner ml-0 ml-md-5 py-sm-1 py-md-3 py-lg-4">
@@ -47,9 +44,9 @@
         </div>
     </div>
     <nav class="justify-content-center d-md-flex d-md-block d-none">
-        <ul class="nav nav-line nav-color-default col-12 col-md-10">
+        <ul class="nav nav-line nav-color-default col-12 col-md-10" id="nav-tab">
             <li class="nav-item">
-                <a class="nav-link active" id="sobre" data-toggle="tab" href="#nav-sobre" role="tab" value="1">Sobre</a>
+                <a class="nav-link" id="sobre" data-toggle="tab" href="#nav-sobre" role="tab" value="1">Sobre</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="orcamento" data-toggle="tab" href="#nav-orcamento" role="tab" value="2">Orçamentos</a>
@@ -65,64 +62,19 @@
 </div>
 <div class="tab-content" id="nav-tabContent">
     <!--Telas sobre-->
-    <div class="tab-pane active show" id="nav-sobre" role="tabpanel" aria-labelledby="sobre">
+    <div class="tab-pane" id="nav-sobre" role="tabpanel" aria-labelledby="sobre">
         <div class="container-fluid mt-md-5">
             <div class="row">
                 <!--Bloco 1 sobre -->
                 <div class="col-md-6">
                     <div class="card col-md-11 mx-auto">
-                        <div class="card-body ">
-                            <div class="row ml-md-5" id="loadDetalhes">
-                                <div class="d-flex flex-column d-md-block form-group col-12">
-                                    <span class="span1 h3">
-                                        Data de Nascimento:
-                                    </span>
-                                    <span class="span2 h3 ml-4">
-                                        <strong>15/05/1999</strong>
-                                    </span>
-                                    <div class="w-100"></div>
-                                    <br>
-                                    <span class="span1 h3">
-                                        Plano Odontologico:
-                                    </span>
-                                    <span class="span2 h3 ml-4">
-                                        <strong>15/05/1999</strong>
-                                    </span>
-                                    <div class="w-100"></div>
-                                    <br>
-                                    <span class="span1 h3">
-                                        CPF:
-                                    </span>
-                                    <span class="span2 h3 ml-4">
-                                        <strong>000-000-000-00</strong>
-                                    </span>
-                                </div>
-                                <div class="w-100"></div>
-                                <div class="form-group col-12">
-                                    <span class="span1 h3 mt-md-5 mt-3">Contatos:   </span>
-                                    <div class="col-12 mt-3 ml-md-4">
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <i class="h1 fas fa-phone-square text-primary"></i>
-                                            <h4 class="col ml-3" style="color: #363636; font-family: 'Roboto', sans-serif;">
-                                                <strong style="margin-left:4px;">(75) 99290-9426</strong>
-                                            </h4>
-                                        </div>
-                                        <div class="d-flex justify-content-start align-items-center">
-                                            <i class="h1 prefix fas fa-envelope text-primary"></i>
-                                            <h4 class="col ml-3" style="color: #363636; font-family: 'Roboto', sans-serif;">
-                                                <strong>drpauloleao.odonto@gmail.comsssssskkkkkkkkkkss</strong>
-                                            </h4>
-                                        </div>
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <i class="h1 prefix fas fa-map-marked-alt text-primary"></i>
-                                            <h4 class="col " style="color: #363636; font-family: 'Roboto', sans-serif; margin-left:12px;">
-                                                <strong>Praça Rio Branco, Nº 217, Sala 06 - Centro, Jacobina- BA</strong>
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card-body">
+                            <div class="spinner1 pt-0" id="loadDetalhes">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
                             </div>
-                            <div id="detalhes"></div>
+                            <div id="detalhes" class="row ml-md-5"></div>
                         </div>
                     </div>
                 </div>
@@ -161,7 +113,12 @@
                 <div class="col-md-6">
                     <div class="card col-md-11 mx-auto">
                         <div class="card-body">
-                            <div class="d-flex  d-md-block row ml-2" id="loadAgenda">
+                            <div class="spinner1" id="loadAgenda">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
+                            </div>
+                            <div class="d-flex  d-md-block row ml-2" id="agendas">
                                 <span class="span1 h3">
                                     Horário:
                                     <span class="span2 ml-4">
@@ -169,8 +126,6 @@
                                     </span>
                                 </span>
                                 <div class="w-100"></div>
-
-
                                 <span class="span1 h3">
                                     Situação:
 
@@ -195,8 +150,6 @@
                                         <strong style="margin-left:12px;">Revisão e realização de restauração dentaria e extração dos dentes molares</strong>
                                     </span>
                                 </span>
-                            </div>
-                            <div id="agendas">
                             </div>
                         </div>
                     </div>
@@ -228,7 +181,7 @@
                             <span class="h3 span2">
                                 <strong>15/05/1999</strong>
                                 <i class="h2 fa fa-minus text-black-50 ml-3 "></i>
-                               <span class="h3 span2 ml-3"><strong>09:00</strong></span>
+                                <span class="h3 span2 ml-3"><strong>09:00</strong></span>
                             </span>
                             <i class="h2 fa fa-times text-danger "></i>
                         </div>
@@ -243,10 +196,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-11 ml-auto mr-auto">
-                        <div class="card rounded-0 shadow-sm">
+                        <div class="card shadow-sm" style="border-radius:10px">
                             <div class="card-body">
-                                <div class="row justify-content-center" id="loadOrcamento">
-                                    <div class="loader loader-primary loader-lg"></div>
+                                <div class="spinner1" id="loadOrcamento">
+                                    <div class="bounce1"></div>
+                                    <div class="bounce2"></div>
+                                    <div class="bounce3"></div>
                                 </div>
                                 <div id="orcamentos"></div>
                             </div>
@@ -266,23 +221,20 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-11 ml-auto mr-auto">
-                        <div class="card rounded-0 shadow-sm">
+                        <div class="form-group col-md-4 float-right">
+                            <div class="input-icon">
+                                <span class="input-icon-addon text-primary">
+                                    <i class="fa fa-search search-icon"></i>
+                                </span>
+                                <input type="text" class="form-control input-pill text-dark font-weight-bold" id="buscarMedico" placeholder="Buscar Anamneses">
+                            </div>
+                        </div>
+                        <div class="card shadow-sm col-12" style="border-radius:10px">
                             <div class="card-body">
-                                <div class="container">
-                                    <div class="col-md-6">
-                                        <div class="input-group mb-2 mr-sm-2">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text nav-search">
-                                                    <i class="fa fa-search search-icon"></i>
-                                                </div>
-                                            </div>
-                                            <input class="form-control " type="text" name="buscaAnamnese" placeholder="Pesquisar " />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" id="loadAnamnese">
-                                    <div class="loader loader-primary loader-lg"></div>
+                                <div class="spinner1" id="loadAnamnese">
+                                    <div class="bounce1"></div>
+                                    <div class="bounce2"></div>
+                                    <div class="bounce3"></div>
                                 </div>
                                 <div id="anamneses"></div>
                             </div>
@@ -294,12 +246,156 @@
     </div>
 </div>
 <!-----Carrega Modal-->
-<div class="modal fade" data-backdrop="static" data-keyboard="false" id="Tmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="Tmodal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-body">
-                <div id="modal"></div>
+            <div class="modal-body modal-dialog-scrollable">
+                <div id="modal" class="container-fluid"></div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    @if (TempData["aba"] is null || (int)TempData["aba"] == 1)
+    {
+        <script>
+            window.addEventListener('load', function () {
+                document.querySelector('ul#nav-tab a#sobre').classList.add('active')
+                document.querySelector('div#nav-sobre').classList.add('show', 'active')
+                Detalhes()
+                Agenda()
+            })
+        </script>
+    }
+    else if ((int)TempData["aba"] == 2)
+    {
+        <script>
+            window.addEventListener('load', function () {
+                document.querySelector('ul#nav-tab a#orcamento').classList.add('active')
+                document.querySelector('div#nav-orcamento').classList.add('show', 'active')
+                Orcamento()
+            })
+        </script>
+    }
+    else if ((int)TempData["aba"] == 3)
+    {
+        <script>
+            window.addEventListener('load', function () {
+                document.querySelector('ul#nav-tab a#tratamento').classList.add('active')
+                document.querySelector('div#nav-tratamento').classList.add('show', 'active')
+                Tratamento()
+            })
+        </script>
+    }
+    else if ((int)TempData["aba"] == 4)
+    {
+        <script>
+            window.addEventListener('load', function () {
+                document.querySelector('ul#nav-tab a#anamnese').classList.add('active')
+                document.querySelector('div#nav-anamnese').classList.add('show', 'active')
+                Anamnese()
+            })
+        </script>
+    }
+    <script type="text/javascript" defer="defer">
+        window.addEventListener('load', function () {
+            document.querySelectorAll('ul.nav a').forEach(el => el.addEventListener('click', function () {
+            if (this.id == 'sobre') {
+                Detalhes()
+                Agenda()
+            }
+            else if (this.id == 'orcamento') {
+                Orcamento()
+            }
+            else if (this.id == 'tratamento') {
+                Tratamento()
+            }
+            else if (this.id == 'anamnese') {
+                Anamnese()
+            }
+        }))
+        })
+        document.addEventListener('DOMContentLoaded', function () { })
+        let loadDetalhes = document.querySelector('div#loadDetalhes')
+        let loadAgenda = document.querySelector('div#loadAgenda')
+        let loadOrcamento = document.querySelector('div#loadOrcamento')
+
+        function Detalhes() {
+            loadDetalhes.hidden = false
+            $.ajax({
+                type: "GET",
+                url: `/Pacientes/Sobre?id=${@Model.PacienteId}`,
+                contentType: 'application/json',
+                success: function (PartialView) {
+                    loadDetalhes.hidden = true
+                    $("#detalhes").html(PartialView)
+                },
+                error: function (code) {
+                    loadDetalhes.hidden = true
+                    $("#detalhes").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
+                }
+            })
+        }
+        function Orcamento() {
+            loadOrcamento.hidden = false
+            $.ajax({
+                type: "GET",
+                url: `/Orcamentos/Index?pacienteId=${@Model.PacienteId}`,
+                contentType: 'application/json',
+                success: function (PartialView) {
+                    loadOrcamento.hidden = true
+                    $("#orcamentos").html(PartialView)
+                },
+                error: function (code) {
+                    loadOrcamento.hidden = true
+                    $("#orcamentos").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
+                }
+            })
+        }
+        function Anamnese(search = null) {
+            loadAnamnese.hidden = false
+            $.ajax({
+                type: "GET",
+                data: {id:@Model.PacienteId, busca:search},
+                url: '/Pacientes/AnamnesesInPaciente/',
+                success: function (PartialView) {
+                loadAnamnese.hidden = true
+                $("#anamneses").html(PartialView)
+                },
+                error: function (code) {
+                loadAnamnese.hidden = true
+                $("#anamneses").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
+                }
+            })
+        }
+        function Agenda(inicio = null, fim = null) {
+            loadAgenda.hidden = false;
+            $('#agendas').load(`/Pacientes/AgendasPaciente?id=${@Model.PacienteId}&inicio=${inicio}&fim=${fim}`, function () {
+                loadAgenda.hidden = true;
+            })
+        }
+        function Tratamento() {
+            $('#tratamentos').load(`/Pacientes/PacienteTratamento?id=${@Model.PacienteId}`)
+        }
+        document.querySelector('input[name="buscaAnamnese"]').addEventListener('input', function () { Anamnese(this.value) })
+
+        /*---------MODAL_EDIT------------*/
+        $(".editPaciente").click(function () {
+            let idEditPaciente = $(this).attr("data-id");
+            $("#modal").load("/Pacientes/Edit/" + idEditPaciente, function () {
+                $("#Tmodal").modal();
+            })
+        })
+        /*------------------------------*/
+    </script>
+    @*Carrega em caso de erro no modelstate*@
+    @if (TempData["Edit"] != null)
+    {
+        <script>
+            $("#modal").load("/Pacientes/Edit/" + @TempData["Edit"], function () {
+                $("#Tmodal").modal();
+            })
+        </script>
+    }
+}

@@ -2,6 +2,7 @@
 using OdontoApp.Repositories.Interfaces;
 using OdontoApp.Services.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OdontoApp.Services
 {
@@ -17,6 +18,11 @@ namespace OdontoApp.Services
         public bool HasValue()
         {
             return dentesRegiaoRepos.HasValue();
+        }
+
+        public async Task<List<DentesRegiao>> GetAllAsync()
+        {
+            return await dentesRegiaoRepos.GetAllAsync();
         }
 
         public void Start(List<DentesRegiao> dentesRegiaos)

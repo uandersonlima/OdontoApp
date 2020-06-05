@@ -1,0 +1,74 @@
+﻿@model Paciente
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout_1.cshtml";
+}
+
+<div class="content p-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-11 ml-auto mr-auto">
+                <div class="card rounded-0 shadow-sm">
+                    <div class="card-header bg-light rounded-0">
+                        <h4 class="text-muted font-weight-bold text-uppercase">Adicionar Tratamento</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center" id="loadTratamento">
+                            <div class="loader loader-primary loader-lg"></div>
+                        </div>
+                        <!--Div que carrega o Create-->
+                        <div id="divCreate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content p-3">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-11 ml-auto mr-auto">
+                <div class="card rounded-0 shadow-sm">
+                    <div class="card-header bg-light rounded-sm border-0">
+                        <h4 class="text-muted font-weight-bold text-uppercase">Tratamentos</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-center" id="loadListTratamento">
+                            <div class="loader loader-primary loader-lg"></div>
+                        </div>
+                        <!--Div que carrega Todos os Tratamentos-->
+                        <div id="divList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+     $.ajax({
+        type: "GET",
+        url: `/Pacientes/PacienteAddTratamento?idpaciente=${@Model.PacienteId}`,
+        contentType: 'application/json',
+         success: function (PartialView) {
+            document.querySelector('div#loadTratamento').hidden = true
+            $("#divCreate").html(PartialView)
+        },
+         error: function (code) {
+            document.querySelector('div#loadTratamento').hidden = true
+            $("#divCreate").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
+        }
+     })
+     $.ajax({
+        type: "GET",
+        url: `/Pacientes/TratamentosInPaciente?idpaciente=${@Model.PacienteId}`,
+        contentType: 'application/json',
+         success: function (PartialView) {
+            document.querySelector('div#loadListTratamento').hidden = true
+            $("#divList").html(PartialView)
+        },
+         error: function (code) {
+            document.querySelector('div#loadListTratamento').hidden = true
+            $("#divList").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
+        }
+    })
+</script>

@@ -32,9 +32,9 @@ namespace OdontoApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(int pacienteId)
+        public async Task<IActionResult> Create(int pacienteId, AppView appview)
         {
-            ViewData["Tratamentos"] = await tratamentoSvc.GetByPatientAsync(null, pacienteId);
+            ViewData["Tratamentos"] = await tratamentoSvc.GetByPatientAsync(appview, pacienteId);
             return PartialView(new Orcamento { PacienteId = pacienteId });
         }
 

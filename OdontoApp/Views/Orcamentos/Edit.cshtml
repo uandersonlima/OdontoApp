@@ -1,0 +1,211 @@
+﻿@model Orcamento
+
+<div class="container">
+    <h2 class="">ORÇAMENTO</h2>
+    <form asp-action="Edit">
+        <input asp-for="OrcamentoId" type="hidden" />
+        <input asp-for="UsuarioId" type="hidden" />
+        <input asp-for="PacienteId" type="hidden" />
+        <input asp-for="ValorOrcamento" type="hidden" />
+        @if (TempData["span"] != null)
+        {
+            <span class="text-danger">@TempData["span"]</span>
+        }
+        <div class="row">
+
+            @if (TempData["span"] != null)
+            {
+                <span class="text-danger">@TempData["span"]</span>
+            }
+            <div class="col-sm">
+                <div class="form-group">
+                    <label asp-for="DescricaoOrcamento" class="control-label"></label>
+                    <input asp-for="DescricaoOrcamento" class="form-control" />
+                </div>
+
+
+            </div>
+            <div class="col-sm">
+                <div class="form-group">
+                    <label asp-for="DataOrcamento" class="control-label"></label>
+                    <input asp-for="DataOrcamento" class="form-control" />
+                    <span asp-validation-for="DataOrcamento" class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+
+            <table class="table table-responsive">
+                <tbody class="">
+                    @foreach (var tratamentos in ViewBag.Tratamentos as List<Tratamento>)
+                    {
+                        <tr class="border-0">
+                            <td>
+                                <div class="">
+                                    Tratamento
+                                </div>
+                                <div class="">
+                                    @tratamentos.NomeTratamento
+                                </div>
+                            </td>
+                            <td>
+                                <div class="">
+                                    Região Dentária
+                                </div>
+                                <div class="">
+                                    @tratamentos.DentesRegiao.Descricao
+                                </div>
+                            </td>
+                            <td>
+                                <div class="title">
+                                    Valor
+                                </div>
+                                <div class="">
+                                    @tratamentos.ValorTratamento.ToString("C")
+                                    <input type="hidden" id="valor[@tratamentos.TratamentoId]" value="@tratamentos.ValorTratamento" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="custom-control custom-checkbox mr-sm-2 ">
+                                    <input name="ListId[]" type="checkbox" class="custom-control-input" id="List[@tratamentos.TratamentoId]" value="@tratamentos.TratamentoId">
+                                    <label class="custom-control-label text-muted d-flex justify-content-center" for="List[@tratamentos.TratamentoId]">Adicionar ao Orçamento</label>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label asp-for="ObsOrcamento" class="control-label"></label>
+                    <input asp-for="ObsOrcamento" class="form-control" />
+                    <span asp-validation-for="ObsOrcamento" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label asp-for="ValorDescontoOrcamento" class="control-label"></label>
+                    <input asp-for="ValorDescontoOrcamento" class="form-control" />
+                    <span asp-validation-for="ValorDescontoOrcamento" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 ">
+            <div class="card bg-grey2">
+                <div class="row">
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold">Subtotal</span>
+                    </div>
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold" id="subtotal">R$ 0,00</span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold">Desconto %</span>
+                    </div>
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold" id="desconto">0 %</span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold">Desconto R$</span>
+                    </div>
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold" id="desconto1">R$ 0,00</span>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold">Total</span>
+                    </div>
+                    <div class="col-sm">
+                        <span class="text-muted font-weight-bold" id="total">R$ 0,00</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group text-right">s
+            <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+            <input type="submit" value="SALVAR" class="ml-1 btn btn-primary btn-sm font-weight-bold" />
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    $(function () {
+        let subtotal = 0
+        let descontoReal = 0
+        let desconto = 0
+        let total = 0
+        let inputValorOrcamento = document.querySelector('input[id="ValorOrcamento"]')
+        let subtotalHTML = document.querySelector('span#subtotal')
+        let descontoHTML = document.querySelector('span#desconto')
+        let descontoRealHTML = document.querySelector('span#desconto1')
+        let totalHTML = document.querySelector('span#total')
+
+        document.querySelectorAll('input[name="ListId[]"]').forEach(checkbox => checkbox.addEventListener("change", function () {
+            if (this.checked) {
+                subtotal += Number(document.querySelector(`input[id="valor[${this.value}]"]`).value.replace(/\./gi, '').replace(/,/gi, '.'))
+            }
+            else {
+                subtotal -= Number(document.querySelector(`input[id="valor[${this.value}]"]`).value.replace(/\./gi, '').replace(/,/gi, '.'))
+            }
+            total = subtotal - subtotal * desconto / 100
+            descontoReal = subtotal - total
+            subtotalHTML.innerText = "R$ " + subtotal.toFixed(2).replace('.', ',')
+            descontoRealHTML.innerText = "R$ " + descontoReal.toFixed(2).replace('.', ',')
+            totalHTML.innerText = "R$ " + total.toFixed(2).replace('.', ',')
+            inputValorOrcamento.value = total.toFixed(3).replace('.', ',')
+        }))
+        document.querySelector('input[id="ValorDescontoOrcamento"]').addEventListener('input', function () {
+            desconto = Number(this.value.replace(/\./gi, '').replace(/,/gi, '.'))
+            descontoHTML.innerText = desconto + " %"
+            total = subtotal - subtotal * desconto / 100
+            descontoReal = subtotal - total
+            descontoRealHTML.innerText = "R$ " + descontoReal.toFixed(2).replace('.', ',')
+            totalHTML.innerText = "R$ " + total.toFixed(2).replace('.', ',')
+            inputValorOrcamento.value = total.toFixed(3).replace('.', ',')
+        })
+        $.ajax({
+            type: "GET",
+            url: "/Orcamentos/PreencherCheckBox",
+            data: { id: @Model.OrcamentoId },
+            success: function (dados) {
+                dados.map(dados => (document.querySelector(`input[id="List[${dados}]"]`).checked = true,
+                    subtotal += Number(document.querySelector(`input[id="valor[${dados}]"]`).value.replace(/\./gi, '').replace(/,/gi, '.'))
+                ))
+                subtotalHTML.innerText = "R$ " + subtotal.toFixed(2).replace('.', ',')
+                desconto = Number(document.querySelector('input[id="ValorDescontoOrcamento"]').value.replace(/\./gi, '').replace(/,/gi, '.'))
+                total = total = subtotal - subtotal * desconto / 100
+                descontoReal = subtotal - total
+                descontoHTML.innerText = desconto + " %"
+                descontoRealHTML.innerText = "R$ " + descontoReal.toFixed(2).replace('.', ',')
+                totalHTML.innerText = "R$ " + total.toFixed(2).replace('.', ',')
+            },
+            error: function (error) {
+                console.log('Error inesperado')
+            }
+        })
+    })
+</script>

@@ -1,0 +1,48 @@
+﻿@model  Orcamento
+
+
+
+<div class="container">
+    <h2>
+        ORÇAMENTO
+    </h2>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.DescricaoOrcamento)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.DescricaoOrcamento)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.DataOrcamento)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.DataOrcamento)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.ValorOrcamento)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.ValorOrcamento)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.ObsOrcamento)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.ObsOrcamento)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.ValorDescontoOrcamento)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.ValorDescontoOrcamento)  %
+        </dd>
+    </dl>
+    <div class="form-group text-right">
+        <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+    </div>
+</div>
+
+
+
