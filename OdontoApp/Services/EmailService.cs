@@ -1,50 +1,57 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.Extensions.Options;
+using MimeKit;
+using MimeKit.Text;
 using OdontoApp.Models;
+using OdontoApp.Models.Helpers;
 using OdontoApp.Services.Interfaces;
-using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace OdontoApp.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly SmtpClient smtp;
-        private readonly IConfiguration conf;
+        private readonly AppSettings appsettings;
 
-        public EmailService(SmtpClient smtp, IConfiguration conf)
+        public EmailService(IOptions<AppSettings> appsettings)
         {
-            this.smtp = smtp;
-            this.conf = conf;
+            this.appsettings = appsettings.Value;
         }
-        public async Task SendEmailRecoveryAsync(Usuario usuario, string code_encrypted)
+
+        public async Task SendEmailRecoveryAsync(ApplicationUser usuario, string code_encrypted)
         {
-            string corpoMsg = string.Format("<h1>DEV4 - OrtoApp</h1>" +
+            var Html = string.Format("<h1>DEV4 - OrtoApp</h1>" +
                                "Seu código de Recuperação é:" + $"<h2>{code_encrypted}</h2>");
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(appsettings.SmtpUser));
+            email.To.Add(MailboxAddress.Parse(usuario.Email));
+            email.Subject = "DEV4 - OrtoApp - Codigo de Recuperação - " + usuario.Nome;
+            email.Body = new TextPart(TextFormat.Html) { Text = Html };
 
-            MailMessage mensagem = new MailMessage
-            {
-                From = new MailAddress(conf.GetValue<string>("Email:Username")),
-                Subject = "DEV4 - OrtoApp - Codigo de Recuperação - " + usuario.Nome,
-                Body = corpoMsg,
-                IsBodyHtml = true
-            };
-            mensagem.To.Add(usuario.Email);
-            await smtp.SendMailAsync(mensagem);
+            // Send email
+            using var smtp = new SmtpClient();
+            await smtp.ConnectAsync(appsettings.SmtpHost, appsettings.SmtpPort, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(appsettings.SmtpUser, appsettings.SmtpPassword);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
         }
-        public async Task SendEmailVerificationAsync(Usuario usuario, string code_encrypted)
+        public async Task SendEmailVerificationAsync(ApplicationUser usuario, string code_encrypted)
         {
-            string corpoMsg = string.Format("<h1>DEV4 - OrtoApp</h1>" +
+            var Html = string.Format("<h1>DEV4 - OrtoApp</h1>" +
                                             "Seu código de Ativação é: " + $"<h2>{code_encrypted}</h2>");
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse(appsettings.SmtpUser));
+            email.To.Add(MailboxAddress.Parse(usuario.Email));
+            email.Subject = "DEV4 - OrtoApp - Código de Ativação - " + usuario.Nome;
+            email.Body = new TextPart(TextFormat.Html) { Text = Html };
 
-            MailMessage mensagem = new MailMessage
-            {
-                From = new MailAddress(conf.GetValue<string>("Email:Username")),
-                Subject = "DEV4 - OrtoApp - Código de Ativação - " + usuario.Nome,
-                Body = corpoMsg,
-                IsBodyHtml = true
-            };
-            mensagem.To.Add(usuario.Email);
-            await smtp.SendMailAsync(mensagem);
+            // Send email
+            using var smtp = new SmtpClient();
+            await smtp.ConnectAsync(appsettings.SmtpHost, appsettings.SmtpPort, SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(appsettings.SmtpUser, appsettings.SmtpPassword);
+            await smtp.SendAsync(email);
+            await smtp.DisconnectAsync(true);
         }
 
     }

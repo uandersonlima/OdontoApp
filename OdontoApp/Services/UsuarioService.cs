@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Options;
 using OdontoApp.Models;
 using OdontoApp.Models.AccessCode;
 using OdontoApp.Models.Const;
+using OdontoApp.Models.DTO;
 using OdontoApp.Models.Helpers;
 using OdontoApp.Repositories.Interfaces;
 using OdontoApp.Services.Exceptions;
@@ -12,18 +13,19 @@ using System.Threading.Tasks;
 namespace OdontoApp.Services
 {
     public class UsuarioService : IUsuarioService
-    {       
+    {
         private readonly ICodigoService codigoSvc;
-        private readonly IConfiguration conf;
+        private readonly AppSettings appsettings;
         private readonly IUsuarioRepository usuarioRepos;
-        public UsuarioService(IUsuarioRepository usuarioRepos, ICodigoService codigoSvc, IConfiguration conf)
+
+        public UsuarioService(ICodigoService codigoSvc, IOptions<AppSettings> appsettings, IUsuarioRepository usuarioRepos)
         {
-            this.conf = conf;
-            this.codigoSvc = codigoSvc; 
+            this.codigoSvc = codigoSvc;
+            this.appsettings = appsettings.Value;
             this.usuarioRepos = usuarioRepos;
         }
 
-        public async Task<bool> ActiveAccountAsync(Usuario entity, AccessCode accessCode)
+        public async Task<bool> ActiveAccountAsync(ApplicationUser entity, AccessCode accessCode)
         {
             var receivedCode = await codigoSvc.SearchAndValidateCodeAsync(accessCode);
             if (!(receivedCode is null))
@@ -35,27 +37,26 @@ namespace OdontoApp.Services
             }
             return false;
         }
-        public async Task AddAsync(Usuario entity)
+        public async Task AddAsync(ApplicationUser entity)
         {
-            if (entity.Email.ToLower() == conf.GetValue<string>("Email:Username").ToLower())
+            if (entity.Email.ToLower() == appsettings.SmtpUser.ToLower())
             {
                 entity.AccessType = AccessType.Administrator;
-                entity.AccountStatus = Status.Enabled;
             }
             else
             {
                 entity.AccessType = AccessType.User;
-                entity.AccountStatus = Status.Disabled;
+                entity.EmailConfirmed = true;
             }
             await usuarioRepos.AddAsync(entity);
         }
 
-        public async Task ChangePasswordAsync(Usuario entity)
+        public async Task ChangePasswordAsync(ApplicationUser entity)
         {
             await usuarioRepos.ChangePasswordAsync(entity);
         }
 
-        public async Task<bool> ChangePasswordByCodeAsync(Usuario entity, AccessCode accessCode)
+        public async Task<bool> ChangePasswordByCodeAsync(ApplicationUser entity, AccessCode accessCode)
         {
             var receivedCode = await codigoSvc.SearchAndValidateCodeAsync(accessCode);
             if (!(receivedCode is null))
@@ -69,54 +70,61 @@ namespace OdontoApp.Services
             return false;
         }
 
-        public async Task<bool> CheckEntityAsync(Usuario entity)
+        public async Task<bool> CheckEntityAsync(ApplicationUser entity)
         {
             return await usuarioRepos.CheckEntityAsync(entity);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<List<string>> CreateAsync(ApplicationUser appUser, string password)
         {
-            await DeleteAsync(await GetByIdAsync(id));
+            return await usuarioRepos.CreateAsync(appUser, password);
+        }
+        public async Task DeleteAsync(string userId)
+        {
+            await DeleteAsync(await GetByIdAsync(userId));
         }
 
-        public async Task DeleteAsync(Usuario entity)
+        public async Task DeleteAsync(ApplicationUser entity)
         {
             await usuarioRepos.DeleteAsync(entity);
         }
-
-        public async Task EnableOrDisableAsync(Usuario entity)
+        public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            entity.AccountStatus = entity.AccountStatus is Status.Disabled ? Status.Enabled : Status.Disabled;
+            return await usuarioRepos.FindByEmailAsync(email);
+        }
+        public async Task EnableOrDisableAsync(ApplicationUser entity)
+        {
+            entity.EmailConfirmed = !entity.EmailConfirmed;
             await UpdateAsync(entity);
         }
 
-        public async Task<List<Usuario>> GetAllAsync()
+        public async Task<List<ApplicationUser>> GetAllAsync()
         {
-           return await usuarioRepos.GetAllAsync(new AppView());
+            return await usuarioRepos.GetAllAsync(new AppView());
         }
 
-        public async Task<PaginationList<Usuario>> GetAllAsync(AppView appQuery)
+        public async Task<PaginationList<ApplicationUser>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
             return await usuarioRepos.GetAllAsync(appQuery);
         }
 
-        public async Task<Usuario> GetByIdAsync(int id)
+        public async Task<ApplicationUser> GetByIdAsync(string userId)
         {
-            return await usuarioRepos.GetByIdAsync(id);
+            return await usuarioRepos.GetByIdAsync(userId);
         }
+
+        public async Task<ApplicationUser> FindUserByLoginAsync(SignInUser signInUser)
+        {
+            return await usuarioRepos.FindUserByLoginAsync(signInUser);
+        }
+
         //nao implementa async nesse
-        public List<Usuario> GetUserByEmail(string email)
+        public async Task<bool> ValidateEmailAsync(string email)
         {
-            return usuarioRepos.GetUserByEmail(email);
+            return await usuarioRepos.ValidateEmailAsync(email);
         }
-
-        public async Task<Usuario> GetUserByLogin(string email, string senha)
-        {
-            return await usuarioRepos.GetUserByLogin(email, senha);
-        }
-
         public async Task<int> NumberOfUserWithADM()
         {
             return await usuarioRepos.NumberOfUserWithADM();
@@ -127,14 +135,14 @@ namespace OdontoApp.Services
             return usuarioRepos.NumberOfUserWithoutADM();
         }
 
-        public async Task UpdateAsync(Usuario entity)
+        public async Task UpdateAsync(ApplicationUser entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Usuario não existe");
             await usuarioRepos.UpdateAsync(entity);
         }
 
-        public async Task UpdateProfileAsync(Usuario entity)
+        public async Task UpdateProfileAsync(ApplicationUser entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Usuario não existe");

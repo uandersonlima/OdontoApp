@@ -1,6 +1,6 @@
 ﻿using OdontoApp.Models.ClassesRelacionais;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OdontoApp.Models
 {
@@ -13,8 +13,10 @@ namespace OdontoApp.Models
         public Pergunta Pergunta { get; set; }
         public int? RespostaId { get; set; }
         public Resposta Resposta { get; set; }
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
 
         public List<AnamnesesPerguntas> AnamnesesPerguntas { get; set; }
     }

@@ -6,7 +6,7 @@ namespace OdontoApp.Repositories.Interfaces
 {
     public interface IEntradaSaidaRepository:IRepositoryBase<EntradaSaida>
     {
-        Task<PaginationList<EntradaSaida>> GetAllInputsAsync(AppView appQuery, int idUser);
-        Task<PaginationList<EntradaSaida>> GetAllOutputsAsync(AppView appQuery, int idUser);
+        Task<PaginationList<EntradaSaida>> GetAllInputsAsync(AppView appQuery, string idUser);
+        Task<PaginationList<EntradaSaida>> GetAllOutputsAsync(AppView appQuery, string idUser);
     }
 }

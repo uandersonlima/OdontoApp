@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using OdontoApp.Data;
 using OdontoApp.Models;
 using OdontoApp.Models.Const;
+using OdontoApp.Models.DTO;
 using OdontoApp.Models.Helpers;
 using OdontoApp.Repositories.Interfaces;
 using OdontoApp.Services.Exceptions;
@@ -15,31 +17,31 @@ namespace OdontoApp.Repositories
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly OdontoAppContext context;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public UsuarioRepository(OdontoAppContext context)
+        public UsuarioRepository(OdontoAppContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
-        public async Task AddAsync(Usuario entity)
+
+        public async Task AddAsync(ApplicationUser entity)
         {
             await context.AddAsync(entity);
             await context.SaveChangesAsync();
         }
 
-        public async Task ChangePasswordAsync(Usuario entity)
+        public async Task ChangePasswordAsync(ApplicationUser entity)
         {
             try
             {
                 context.Update(entity);
                 context.Entry(entity).Property(a => a.Nome).IsModified = false;
-                context.Entry(entity).Property(a => a.AccountStatus).IsModified = false;
                 context.Entry(entity).Property(a => a.Email).IsModified = false;
                 context.Entry(entity).Property(a => a.AccessType).IsModified = false;
                 context.Entry(entity).Property(a => a.Nascimento).IsModified = false;
                 context.Entry(entity).Property(a => a.Sexo).IsModified = false;
                 context.Entry(entity).Property(a => a.CPF).IsModified = false;
-                context.Entry(entity).Property(a => a.DDD).IsModified = false;
-                context.Entry(entity).Property(a => a.Telefone).IsModified = false;
                 context.Entry(entity).Property(a => a.PaymentStatus).IsModified = false;
                 context.Entry(entity).Property(a => a.PlanNumber).IsModified = false;
                 context.Entry(entity).Property(a => a.EnderecoId).IsModified = false;
@@ -50,22 +52,47 @@ namespace OdontoApp.Repositories
                 throw new DbConcurrencyException(e.Message);
             }
         }
-
-        public async Task<bool> CheckEntityAsync(Usuario entity)
+        public async Task ChangePasswordAsync(ApplicationUser appUser, string currentPassword, string newPassword)
         {
-            return await context.Usuario.AnyAsync(user => user.UsuarioId == entity.UsuarioId);
+            await userManager.ChangePasswordAsync(appUser, currentPassword, newPassword);
         }
 
-        public async Task DeleteAsync(Usuario entity)
+        public async Task ResetPasswordAsync(ApplicationUser appUser, string token, string newPassword)
+        {
+            await userManager.ResetPasswordAsync(appUser, token, newPassword);
+        }
+        public async Task<bool> CheckEntityAsync(ApplicationUser entity)
+        {
+            return await context.User.AnyAsync(user => user.Id == entity.Id);
+        }
+
+        public async Task<List<string>> CreateAsync(ApplicationUser appUser, string password)
+        {
+            var response = await userManager.CreateAsync(appUser, password);
+            if (!response.Succeeded)
+            {
+                List<string> sb = new List<string>();
+                foreach (var erro in response.Errors)
+                {
+                    sb.Add(erro.Description);
+                }
+                return sb;
+            }
+            return null;
+        }
+        public async Task DeleteAsync(ApplicationUser entity)
         {
             context.Remove(entity);
             await context.SaveChangesAsync();
         }
-
-        public async Task<PaginationList<Usuario>> GetAllAsync(AppView appQuery)
+        public async Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            var pagList = new PaginationList<Usuario>();
-            var usuarios = context.Usuario.AsNoTracking().AsQueryable();
+            return await userManager.FindByEmailAsync(email);
+        }
+        public async Task<PaginationList<ApplicationUser>> GetAllAsync(AppView appQuery)
+        {
+            var pagList = new PaginationList<ApplicationUser>();
+            var usuarios = context.User.AsNoTracking().AsQueryable();
             if (appQuery.CheckSearch())
             {
                 usuarios = usuarios.Where(anm => anm.Nome.Contains(appQuery.Search) || anm.CPF.Contains(appQuery.Search));
@@ -89,50 +116,48 @@ namespace OdontoApp.Repositories
             return pagList;
         }
 
-        public async Task<Usuario> GetByIdAsync(int id)
+        public async Task<ApplicationUser> FindUserByLoginAsync(SignInUser signInUser)
         {
-            return await context.Usuario.AsNoTracking()
+            var user = await userManager.FindByEmailAsync(signInUser.Username);
+            if (user is null)
+                return null;
+            if (await userManager.CheckPasswordAsync(user, signInUser.Password))
+                return user;
+            return null;
+        }
+        public async Task<ApplicationUser> GetByIdAsync(string id)
+        {
+            return await context.User.AsNoTracking()
                 .Include(obj => obj.Endereco)
                 .Include(obj => obj.Endereco.Rua)
                 .Include(obj => obj.Endereco.Bairro)
                 .Include(obj => obj.Endereco.Cidade)
                 .Include(obj => obj.Endereco.Estado)
                 .Include(obj => obj.Endereco.Cep)
-                .Where(user => user.UsuarioId == id)
+                .Where(user => user.Id == id)
                 .FirstOrDefaultAsync();
         }
 
-        //não pode ser assíncrono por causa do filtro
-        public List<Usuario> GetUserByEmail(string email)
+        public async Task<bool> ValidateEmailAsync(string email)
         {
-            return context.Usuario.AsNoTracking().Where(a => a.Email.ToLower() == email.ToLower()).ToList();
-        }
-        public async Task<Usuario> GetUserByLogin(string email, string senha)
-        {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
-            {
-                return null;
-            }
-            var user = await context.Usuario.Where(m => m.Email.ToLower() == email.ToLower() && m.Senha == senha).FirstOrDefaultAsync();
-            return user;
+            return await context.User.AnyAsync(a => a.Email.ToLower() == email.ToLower());
         }
 
         public async Task<int> NumberOfUserWithADM()
         {
-            return await context.Usuario.CountAsync();
+            return await context.User.CountAsync();
         }
 
         public int NumberOfUserWithoutADM()
         {
-            return context.Usuario.Count(user => user.AccessType != AccessType.Administrator);
+            return context.User.Count(user => user.AccessType != AccessType.Administrator);
         }
 
-        public async Task UpdateAsync(Usuario entity)
+        public async Task UpdateAsync(ApplicationUser entity)
         {
             try
             {
                 context.Update(entity);
-                context.Entry(entity).Property(a => a.Senha).IsModified = false;
                 await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException e)
@@ -141,16 +166,14 @@ namespace OdontoApp.Repositories
             }
         }
 
-        public async Task UpdateProfileAsync(Usuario entity)
+        public async Task UpdateProfileAsync(ApplicationUser entity)
         {
             try
             {
                 context.Update(entity);
-                context.Entry(entity).Property(a => a.AccountStatus).IsModified = false;
                 context.Entry(entity).Property(a => a.PaymentStatus).IsModified = false;
                 context.Entry(entity).Property(a => a.AccessType).IsModified = false;
                 context.Entry(entity).Property(a => a.PlanNumber).IsModified = false;
-                context.Entry(entity).Property(a => a.Senha).IsModified = false;
                 context.Entry(entity).Property(a => a.Email).IsModified = false;
                 await context.SaveChangesAsync();
             }
@@ -158,6 +181,10 @@ namespace OdontoApp.Repositories
             {
                 throw new DbConcurrencyException(e.Message);
             }
+        }
+        public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser appUser)
+        {
+            return await userManager.GeneratePasswordResetTokenAsync(appUser);
         }
     }
 }

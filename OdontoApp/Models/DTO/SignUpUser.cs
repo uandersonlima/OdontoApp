@@ -1,19 +1,11 @@
-﻿using OdontoApp.Libraries.Validation;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using OdontoApp.Libraries.Validation;
 
-namespace OdontoApp.Models
+namespace OdontoApp.Models.DTO
 {
-    public class Usuario
+    public class SignUpUser
     {
-        public int UsuarioId { get; set; }
-        public string AccessType { get; set; }
-        public string AccountStatus { get; set; }
-        public string PaymentStatus { get; set; }
-        public string PlanNumber { get; set; }
-
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         [MinLength(4, ErrorMessage = "Nome e sobrenome muito curto")]
         public string Nome { get; set; }
@@ -49,18 +41,16 @@ namespace OdontoApp.Models
         public string Email { get; set; }
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         [MinLength(6, ErrorMessage = "Senha deve conter no mínimo 6 caracteres")]
+        [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])(?:([0-9a-zA-Z$*&@#])(?!\\1)){8,}$", ErrorMessage="Sua senha deve conter um dígito não alfanumérico, letras maiúsculas, minúsculas e números")]
         [DataType(DataType.Password)]
         public string Senha { get; set; }
 
-        [NotMapped]
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         [Display(Name = "Confirme a senha")]
         [Compare("Senha", ErrorMessage = "Senhas diferentes")]
         [DataType(DataType.Password)]
         public string ConfirmacaoSenha { get; set; }
-        public int EnderecoId { get; set; }
-        public Endereco Endereco { get; set; }
-        public List<Clinica> Clinicas { get; set; }
 
+        public Endereco Endereco { get; set; }
     }
 }

@@ -33,9 +33,9 @@ namespace OdontoApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DetalhesCliente(int id)
+        public async Task<IActionResult> DetalhesCliente(string userId)
         {
-            return PartialView(await userSvc.GetByIdAsync(id));
+            return PartialView(await userSvc.GetByIdAsync(userId));
         }
 
         [HttpGet]

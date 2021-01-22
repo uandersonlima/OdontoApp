@@ -15,14 +15,14 @@ namespace OdontoApp.Controllers
     {
         private readonly ICodigoService codeSvc;
         private readonly IConfiguration conf;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
         private readonly IUsuarioService userSvc;
 
-        public UsuariosController(ICodigoService codeSvc, IConfiguration conf, ILoginService loginSvc, IUsuarioService userSvc)
+        public UsuariosController(ICodigoService codeSvc, IConfiguration conf, IAuthService authService, IUsuarioService userSvc)
         {
             this.codeSvc = codeSvc;
             this.conf = conf;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
             this.userSvc = userSvc;
         }
 
@@ -31,42 +31,14 @@ namespace OdontoApp.Controllers
             return View();
         }
 
-        [HttpGet, Route("Login")]
-        public IActionResult Login()
-        {
-            if (loginSvc.GetUser() is null)
-            {
-                return View();
-            }
-            return RedirectToAction("Index", "Agendas");
-        }
-
-        [HttpPost, Route("Login")]
-        public async Task<IActionResult> Login([FromForm]Usuario usuario)
-        {
-
-            Usuario usuarioDB = await userSvc.GetUserByLogin(usuario.Email, usuario.Senha);
-
-            if (!(usuarioDB is null))
-            {
-                loginSvc.Login(usuarioDB);
-                return RedirectToAction("Index", "Agendas");
-            }
-            else
-            {
-                ViewData["MSG_E"] = Mensagem.MSG_E007;
-                return View();
-            }
-        }
-
         [HttpGet, Route("Perfil")]
         public async Task<IActionResult> MyProfile()
         {
-            return View(await userSvc.GetByIdAsync(loginSvc.GetUser().UsuarioId));
+            return View(await userSvc.GetByIdAsync(authService.GetLoggedUserAsync().Result.Id));
         }
 
         [HttpPost, Route("Perfil")]
-        public async Task<IActionResult> MyProfile(Usuario user)
+        public async Task<IActionResult> MyProfile(ApplicationUser user)
         {
             ModelState.Remove("AcessType");
             ModelState.Remove("AccountStatus");
@@ -82,32 +54,6 @@ namespace OdontoApp.Controllers
             return RedirectToAction("Index", "Agendas");
         }
 
-        [HttpGet, Route("Cadastro")]
-        public IActionResult CadastroUsuario()
-        {
-            if (loginSvc.GetUser() is null)
-            {
-                return View();
-            }
-            return RedirectToAction("Index", "Agendas");
-        }
-
-        [HttpPost, Route("Cadastro")]
-        public async Task<IActionResult> CadastroUsuario([FromForm]Usuario usuario)
-        {
-
-            if (ModelState.IsValid)
-            {
-                await userSvc.AddAsync(usuario);
-                TempData["MSG_S"] = Mensagem.MSG_S006;
-                if (!(usuario.Email.ToLower() == conf.GetValue<string>("Email:Username").ToLower()))
-                {
-                    await codeSvc.CreateNewKeyAsync(usuario, CodeType.Verification);
-                }
-                return RedirectToAction(nameof(Login));
-            }
-            return View(usuario);
-        }
         [HttpGet]
         public IActionResult RecuperarSenha()
         {
@@ -115,15 +61,14 @@ namespace OdontoApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RecuperarSenha(Usuario usuario)
+        public async Task<IActionResult> RecuperarSenha(ApplicationUser usuario)
         {
-            var usuarios = userSvc.GetUserByEmail(usuario.Email);
-            if (usuarios.Count is 0)
+            var user = await userSvc.FindByEmailAsync(usuario.Email);
+            if (user == null)
             {
                 TempData["MSG_E"] = Mensagem.MSG_E014;
                 return View();
             }
-
             var codigo = new AccessCode { Email = usuario.Email, CodeType = CodeType.Recovery };
             var elapsedTime = await codeSvc.ElapsedTimeAsync(codigo);
             var _15min = new TimeSpan(0, 15, 0);
@@ -132,16 +77,15 @@ namespace OdontoApp.Controllers
             if (elapsedTime >= _15min)
             {
                 TempData["MSG_E"] = null;
-                await codeSvc.CreateNewKeyAsync(usuarios[0], CodeType.Recovery);
+                await codeSvc.CreateNewKeyAsync(user, CodeType.Recovery);
                 TempData["MSG_S"] = Mensagem.MSG_S003;
             }
-
-            usuario.UsuarioId = usuarios[0].UsuarioId;
+            usuario.Id = user.Id;
             return RedirectToAction("NovaSenha", usuario);
         }
 
         [HttpGet]
-        public IActionResult NovaSenha(Usuario usuario)
+        public IActionResult NovaSenha(ApplicationUser usuario)
         {
             UserCode viewModel = new UserCode
             {
@@ -191,16 +135,16 @@ namespace OdontoApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult AtivarConta()
+        public async Task<IActionResult> AtivarConta()
         {
-            var loggedUser = loginSvc.GetUser();
+            var loggedUser = await authService.GetLoggedUserAsync();
 
             if (loggedUser is null)
             {
                 return RedirectToAction("Login", "Usuarios");
             }
 
-            if (loggedUser.AccountStatus != Status.Enabled)
+            if (!loggedUser.EmailConfirmed)
             {
                 UserCode viewModel = new UserCode
                 {
@@ -216,9 +160,9 @@ namespace OdontoApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AtivarConta(UserCode usercode)
         {
-            var loggedUser = loginSvc.GetUser();
+            var loggedUser = await authService.GetLoggedUserAsync();
 
-            if (loggedUser.AccountStatus != Status.Enabled)
+            if (!loggedUser.EmailConfirmed)
             {
                 ModelState.Remove("Usuario.Nome");
                 ModelState.Remove("Usuario.TipoAcesso");
@@ -249,7 +193,7 @@ namespace OdontoApp.Controllers
                             return View(usercode);
                         }
 
-                        loginSvc.Login(await userSvc.GetByIdAsync(loggedUser.UsuarioId));
+                        await authService.SignInAsync(await userSvc.GetByIdAsync(loggedUser.Id));
                         TempData["MSG_S"] = Mensagem.MSG_S008;
                         return RedirectToAction("Index", "Agendas");
                     }
@@ -266,7 +210,7 @@ namespace OdontoApp.Controllers
         [HttpPost]
         public async Task<IActionResult> NovoCodigoConfirmacao(string codeType)
         {
-            var loggedUser = loginSvc.GetUser();
+            var loggedUser = await authService.GetLoggedUserAsync();
             if (!(loggedUser is null))
             {
                 var codigo = new AccessCode { Email = loggedUser.Email, CodeType = codeType };
@@ -285,13 +229,6 @@ namespace OdontoApp.Controllers
                 return RedirectToAction("AtivarConta", new UserCode { Usuario = loggedUser });
             }
 
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
-        public IActionResult Logout()
-        {
-            loginSvc.Logout();
             return RedirectToAction(nameof(Index));
         }
     }

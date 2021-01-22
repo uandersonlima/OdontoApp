@@ -14,12 +14,12 @@ namespace OdontoApp.Services
     public class AnamneseService : IAnamneseService
     {
         private readonly IAnamneseRepository anamneseRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public AnamneseService(IAnamneseRepository anamneseRepos, ILoginService loginSvc)
+        public AnamneseService(IAnamneseRepository anamneseRepos, IAuthService authService)
         {
             this.anamneseRepos = anamneseRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
 
         public async Task AddAsync(Anamnese entity, List<int> listPerguntaId)
@@ -30,7 +30,7 @@ namespace OdontoApp.Services
         }
         public async Task AddAsync(Anamnese entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await anamneseRepos.AddAsync(entity);
         }
 
@@ -38,7 +38,8 @@ namespace OdontoApp.Services
         {
             entity.PacienteId = pacienteId;
             entity.AnamneseId = 0; //cancela ID para adicionar um novo Modelo
-            entity.AnamnesesPerguntas.ForEach(AoP => AoP.PerguntaAnamnese.UsuarioId = loginSvc.GetUser().UsuarioId);
+            var LoggedUserId = authService.GetLoggedUserAsync().Result.Id;
+            entity.AnamnesesPerguntas.ForEach(AoP => AoP.PerguntaAnamnese.UsuarioId = LoggedUserId);
             await AddAsync(entity);
         }
 
@@ -53,7 +54,7 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Anamnese entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await anamneseRepos.DeleteAsync(entity);
         }
 
@@ -64,18 +65,18 @@ namespace OdontoApp.Services
                 await anamneseRepos.DeleteAllAsync(entity);
         }
 
-        public async Task<List<Anamnese>> GetAllAsync() => await anamneseRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Anamnese>> GetAllAsync() => await anamneseRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Anamnese>> GetAllAsync(AppView appQuery)
         {
-            return await anamneseRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await anamneseRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
 
-        public async Task<Anamnese> GetByIdAsync(int id) => await anamneseRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Anamnese> GetByIdAsync(int id) => await anamneseRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task UpdateAsync(Anamnese entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await anamneseRepos.UpdateAsync(entity);
         }
 

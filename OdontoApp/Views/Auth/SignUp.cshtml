@@ -1,19 +1,26 @@
-﻿@model Usuario
+@model SignUpUser
 @{
     ViewData["Title"] = "Cadastra-se";
     Layout = "~/Views/Shared/_Layout_3.cshtml";
+    var response = new List<String>();
+    if(ViewBag.Response != null)
+        response = ViewBag.Response as List<String>; 
 }
 <form method="post">
     <div class="container-fluid">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="card col-12 col-md-6 col-lg-4 text-center d-flex" id="pag1">
                 <div class="card-body">
-                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                    <a class="logo" asp-area="" asp-controller="Usuarios" asp-action="Index">
                         <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
                     </a>
                     <h1 class="text-muted">CADASTRO</h1>
                     <p class="text-muted">Vamos iniciar sua experiência</p>
                     @{ await Html.RenderPartialAsync("~/Views/Shared/_Mensagem.cshtml"); }
+                    @foreach(var resp in response)
+                    {
+                        <p class="alert alert-danger">@resp</p>
+                    }
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-row">
@@ -72,7 +79,7 @@
                     </div>
                     <div class="form-row mt-5">
                         <div class="col-md-6 mt-4 mt-md-0 col-12 order-1 order-md-0 ml-auto align-self-center">
-                            <a asp-action="Login" asp-controller="Usuarios" class="font-weight-bold">Ir para o Login</a>
+                            <a asp-action="signin" asp-controller="auth" class="font-weight-bold">Ir para o Login</a>
                         </div>
                         <div class="col-md-6 col-12 ml-auto">
                             <button onclick="mudarPagina(this,'pag1','pag2')" id="pag2" type="button" class="btn btn-lg btn-primary btn-block text-capitalize"> Próximo </button>
@@ -82,7 +89,7 @@
             </div>
             <div class="card col-12 col-md-6 col-lg-4 text-center d-none" id="pag2">
                 <div class="card-body">
-                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                    <a class="logo" asp-area="" asp-controller="Usuarios" asp-action="Index">
                         <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
                     </a>
                     <h1 class="text-muted">CADASTRO</h1>
@@ -169,7 +176,7 @@
             </div>
             <div class="card col-12 col-md-6 col-lg-4 text-center d-none" id="pag3">
                 <div class="card-body">
-                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                    <a class="logo" asp-area="" asp-controller="Usuarios" asp-action="Index">
                         <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
                     </a>
                     <h1 class="text-muted">CADASTRO</h1>
@@ -229,7 +236,7 @@
             </div>
             <div class="card col-12 col-md-6 col-lg-4 text-center d-none" id="pag4">
                 <div class="card-body">
-                    <a class="logo" asp-area="" asp-controller="Clientes" asp-action="Index">
+                    <a class="logo" asp-area="" asp-controller="Usuarios" asp-action="Index">
                         <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
                     </a>
                     <h1 class="text-muted">CADASTRO</h1>
@@ -314,7 +321,8 @@
             pagA.classList.add("d-none")
             pagF.classList.remove("d-none")
             pagF.classList.add("d-flex")
-            pagF.querySelector('input').focus()
+            if(pagF.querySelector('input') != null)
+                pagF.querySelector('input').focus()
         }
         function VerificaPaginaAtual(pagA) {
             let camposValidos = pagA.querySelectorAll("input")

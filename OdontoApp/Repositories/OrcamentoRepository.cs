@@ -33,7 +33,7 @@ namespace OdontoApp.Repositories
             context.Orcamento.Remove(entity);
             await context.SaveChangesAsync();
         }
-        public async Task<PaginationList<Orcamento>> GetAllAsync(AppView appQuery, int idUser)
+        public async Task<PaginationList<Orcamento>> GetAllAsync(AppView appQuery, string idUser)
         {
             var pagList = new PaginationList<Orcamento>();
             var orcamentos = context.Orcamento.Where(orc => orc.UsuarioId == idUser).AsNoTracking().AsQueryable();
@@ -60,12 +60,12 @@ namespace OdontoApp.Repositories
 
             return pagList;
         }
-        public async Task<Orcamento> GetByIdAsync(int id, int idUser)
+        public async Task<Orcamento> GetByIdAsync(int id, string idUser)
         {
             return await context.Orcamento.Include(orc => orc.Plano).Include(plan => plan.OrcamentoTratamentos).ThenInclude(ot => ot.Tratamento).ThenInclude(trat => trat.DentesRegiao)
                     .Include(dr => dr.Medico).Where(p => p.UsuarioId == idUser && p.OrcamentoId == id).FirstOrDefaultAsync();
         }
-        public async Task<PaginationList<Orcamento>> GetByPatientAsync(AppView appQuery, int pacienteId, int userId)
+        public async Task<PaginationList<Orcamento>> GetByPatientAsync(AppView appQuery, int pacienteId, string userId)
         {
             var pagList = new PaginationList<Orcamento>();
             var orcamentos = context.Orcamento.Where(p => p.UsuarioId == userId && p.PacienteId == pacienteId).AsNoTracking().AsQueryable();

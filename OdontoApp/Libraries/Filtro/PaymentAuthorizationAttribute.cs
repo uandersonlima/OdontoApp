@@ -8,11 +8,11 @@ namespace OdontoApp.Libraries.Filtro
 {
     public sealed class PaymentAuthorizationAttribute : Attribute, IAuthorizationFilter
     {
-        private ILoginService loginSvc;
+        private IAuthService authService;
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            loginSvc = (ILoginService)context.HttpContext.RequestServices.GetService(typeof(ILoginService));
-            var user = loginSvc.GetUser();
+            authService = (IAuthService)context.HttpContext.RequestServices.GetService(typeof(IAuthService));
+            var user = authService.GetLoggedUserAsync().Result;
             if (user.AccessType != AccessType.Administrator && (string.IsNullOrEmpty(user.PaymentStatus) ||
                 string.Compare(user.PaymentStatus.Trim(), "canceled") == 0))
             {

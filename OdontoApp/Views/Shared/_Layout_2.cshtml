@@ -1,5 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<ApplicationUser> signInManager
+@inject IAuthService authService
+@{
+    var usuarioNome = string.Empty;
+    if(signInManager.IsSignedIn(User))
+        usuarioNome = authService.GetLoggedUserAsync().Result.Nome;
+}
+<!DOCTYPE html>
 <html lang="pt-br" style="font-size: 1rem;">
+
 <head>
     <title>@ViewData["Title"]</title>
     <link rel="icon" href="~/img/logo1.png" />
@@ -11,6 +19,7 @@
     <link rel="stylesheet" href="~/assets/css/atlantis.min.css">
     <link rel="stylesheet" href="~/assets/css/all.min.css" />
 </head>
+
 <body>
     <header>
         <nav class="navbar fixed-top navbar-expand-lg navbar-toggleable-lg navbar-light bg-light border-bottom box-shadow mb-5 justify-content-between">
@@ -18,27 +27,55 @@
                 <a class="navbar-brand" href="#tela1" onclick="deslizar(this); return false;">
                     <img width="150" src="~/img/Logoprimaryline.png" alt="..." class="img-fluid mr-auto mr-md-0 ml-3">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         <li class="nav-item">
-                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela2"><h5 class="font-weight-bold text-dark">Ferramentas</h5></a>
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela2">
+                                <h5 class="font-weight-bold text-dark">Ferramentas</h5>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela3"><h5 class="font-weight-bold text-dark">Teste</h5></a>
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela3">
+                                <h5 class="font-weight-bold text-dark">Teste</h5>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela4"><h5 class="font-weight-bold text-dark">Outra tela</h5></a>
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark" href="#tela4">
+                                <h5 class="font-weight-bold text-dark">Outra tela</h5>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a onclick="deslizar(this); return false;" class="nav-link text-dark mr-sm-0 mr-lg-3" href="#tela5"><h5 class="font-weight-bold text-dark">Planos</h5></a>
+                            <a onclick="deslizar(this); return false;" class="nav-link text-dark mr-sm-0 mr-lg-3"
+                               href="#tela5">
+                                <h5 class="font-weight-bold text-dark">Planos</h5>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="btn btn-round btn-outline-primary mr-1 mr-md-2 mr-lg-3 font-weight-bold" style="border-width:medium" asp-controller="Usuarios" asp-action="Login">Login</a>
-                            <a class="btn btn-round btn-primary font-weight-bold" style="border-width:medium" asp-controller="Usuarios" asp-action="CadastroUsuario">Cadastrar</a>
-                        </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item dropdown hidden-caret text-center">
+                                <a class="btn btn-round btn-outline-primary mr-1 mr-md-2 mr-lg-3 p-1 font-weight-bold" style="border-width:2px" asp-controller="agendas" asp-action="index">
+                                    <div class="avatar avatar-xs">
+                                        <span class="avatar-title rounded-circle text-white font-weight-bold h1 bg-primary">@Mask.PrimeirasDuasLetrasNome(usuarioNome).ToUpper()</span>
+                                    </div>
+                                    <span>
+                                        @Mask.PrimeiroNome(usuarioNome).ToUpper()
+                                    </span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-round btn-outline-primary mr-1 mr-md-2 mr-lg-3 py-2 font-weight-bold"
+                                   style="border-width:2px" asp-controller="auth" asp-action="signIn">Entre</a>
+                                <a class="btn btn-round btn-primary font-weight-bold py-2" style="border-width:2px"
+                                   asp-controller="auth" asp-action="signUp">Inscreva-se</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -59,7 +96,7 @@
                     </a>
                     <!-- Twitter -->
                     <a class="text-white mr-md-5 mr-3 h4">
-                        Copyright  &copy;2019 - @DateTime.Now.Year DEV4
+                        Copyright &copy;2019 - @DateTime.Now.Year DEV4
                     </a>
                 </div>
             </div>
@@ -100,4 +137,5 @@
     </script>
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>

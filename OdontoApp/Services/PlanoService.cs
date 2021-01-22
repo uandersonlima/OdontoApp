@@ -12,16 +12,16 @@ namespace OdontoApp.Services
     public class PlanoService : IPlanoService
     {
         private readonly IPlanoRepository planoRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public PlanoService(IPlanoRepository planoRepos, ILoginService loginSvc)
+        public PlanoService(IPlanoRepository planoRepos, IAuthService authService)
         {
             this.planoRepos = planoRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
         public async Task AddAsync(Plano entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await planoRepos.AddAsync(entity);
         }
 
@@ -31,25 +31,25 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Plano entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await planoRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Plano>> GetAllAsync() => await planoRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Plano>> GetAllAsync() => await planoRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
 
-        public async Task<Plano> GetByIdAsync(int id) => await planoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Plano> GetByIdAsync(int id) => await planoRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Plano>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await planoRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await planoRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
         public async Task UpdateAsync(Plano entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Plano não existe");
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await planoRepos.UpdateAsync(entity);
         }
     }

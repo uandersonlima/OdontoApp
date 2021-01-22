@@ -33,11 +33,11 @@ namespace OdontoApp.Repositories
             context.Medico.Remove(entity);
             await context.SaveChangesAsync();
         }
-        public async Task<Medico> GetByIdAsync(int id, int idUser)
+        public async Task<Medico> GetByIdAsync(int id, string idUser)
         {
             return await context.Medico.Where(md => md.MedicoId == id && md.UsuarioId == idUser).FirstOrDefaultAsync();
         }
-        public async Task<PaginationList<Medico>> GetAllAsync(AppView appQuery, int idUser)
+        public async Task<PaginationList<Medico>> GetAllAsync(AppView appQuery, string idUser)
         {
             var pagList = new PaginationList<Medico>();
             var medicos = context.Medico.Where(cnc => cnc.UsuarioId == idUser).AsNoTracking().AsQueryable();

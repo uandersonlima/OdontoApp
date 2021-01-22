@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OdontoApp.Models
 {
@@ -10,8 +10,9 @@ namespace OdontoApp.Models
         [Required(ErrorMessage = "Infome o campo {0}", AllowEmptyStrings = false)]
         [Display(Name = "Cargo Clínica")]
         public string DescricaoCargoClinica { get; set; }
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
         public List<ClinicaCargoClinica> ClinicaCargoClinicas { get; set; }
     }
 }

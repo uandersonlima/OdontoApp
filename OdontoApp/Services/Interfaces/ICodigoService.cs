@@ -9,7 +9,7 @@ namespace OdontoApp.Services.Interfaces
     {
         Task AddAsync(AccessCode acessCode);
         bool CodeIsValid(string KeyCrip);
-        Task CreateNewKeyAsync(Usuario entity, string codeType);
+        Task CreateNewKeyAsync(ApplicationUser entity, string codeType);
         Task DeleteAsync(AccessCode acessCode);
         Task<TimeSpan> ElapsedTimeAsync(AccessCode acessCode);
         Task<AccessCode> SearchCodeAsync(AccessCode entity);

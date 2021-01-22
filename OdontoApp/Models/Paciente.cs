@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OdontoApp.Models
 {
@@ -71,8 +72,9 @@ namespace OdontoApp.Models
         public int EnderecoId { get; set; }
         public Endereco Endereco { get; set; }
 
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
 
         public List<Anamnese> Anamneses { get; set; }
         public List<Agenda> Agendas { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OdontoApp.Models
 {
@@ -20,8 +21,9 @@ namespace OdontoApp.Models
         [Required(ErrorMessage = "Informe o Campo", AllowEmptyStrings = false)]
         public string ComprovanteDespesa { get; set; }
 
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
         public int CaixaId { get; set; }
         public Caixa Caixa { get; set; }
         public int CategoriaId { get; set; }

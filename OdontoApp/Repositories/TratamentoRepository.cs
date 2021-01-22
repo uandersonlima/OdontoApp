@@ -32,11 +32,11 @@ namespace OdontoApp.Repositories
             context.Tratamento.Remove(entity);
             await context.SaveChangesAsync();
         }
-        public async Task<Tratamento> GetByIdAsync(int id, int idUser)
+        public async Task<Tratamento> GetByIdAsync(int id, string idUser)
         {
             return await context.Tratamento.Where(cnc => cnc.TratamentoId == id && cnc.UsuarioId == idUser).FirstOrDefaultAsync();
         }
-        public async Task<PaginationList<Tratamento>> GetAllAsync(AppView appQuery, int idUser)
+        public async Task<PaginationList<Tratamento>> GetAllAsync(AppView appQuery, string idUser)
         {
             var pagList = new PaginationList<Tratamento>();
             var tratamentos = context.Tratamento.Where(cnc => cnc.UsuarioId == idUser).AsNoTracking().AsQueryable();
@@ -76,7 +76,7 @@ namespace OdontoApp.Repositories
             }
         }
 
-        public async Task<PaginationList<Tratamento>> GetByPatientAsync(AppView appQuery, int pacienteId, int userId)
+        public async Task<PaginationList<Tratamento>> GetByPatientAsync(AppView appQuery, int pacienteId, string userId)
         {
             var pagList = new PaginationList<Tratamento>();
             var tratamentos = context.Tratamento.Where(p => p.UsuarioId == userId && p.PacienteId == pacienteId).AsNoTracking().AsQueryable();

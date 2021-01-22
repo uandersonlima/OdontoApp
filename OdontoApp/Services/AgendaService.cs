@@ -12,16 +12,16 @@ namespace OdontoApp.Services
     public class AgendaService : IAgendaService
     {
         private readonly IAgendaRepository agendaRepos;
-        private readonly ILoginService loginSvc;
-        public AgendaService(IAgendaRepository agendaRepos, ILoginService loginSvc)
+        private readonly IAuthService authService;
+        public AgendaService(IAgendaRepository agendaRepos, IAuthService authService)
         {
             this.agendaRepos = agendaRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
 
         public async Task AddAsync(Agenda entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await agendaRepos.AddAsync(entity);
         }
 
@@ -31,25 +31,25 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Agenda entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await agendaRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Agenda>> GetAllAsync() => await agendaRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Agenda>> GetAllAsync() => await agendaRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
 
-        public async Task<Agenda> GetByIdAsync(int id) => await agendaRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Agenda> GetByIdAsync(int id) => await agendaRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Agenda>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await agendaRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await agendaRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
         public async Task UpdateAsync(Agenda entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Agendamento não existe");
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await agendaRepos.UpdateAsync(entity);
         }
 
@@ -57,7 +57,7 @@ namespace OdontoApp.Services
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await agendaRepos.GetByPatientAsync(appQuery, pacienteId, loginSvc.GetUser().UsuarioId);
+            return await agendaRepos.GetByPatientAsync(appQuery, pacienteId, authService.GetLoggedUserAsync().Result.Id);
         }
     }
 }

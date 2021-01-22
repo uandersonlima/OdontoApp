@@ -1,4 +1,6 @@
-﻿namespace OdontoApp.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace OdontoApp.Models
 {
     public class Receituario
     {
@@ -19,8 +21,9 @@
         public int ClinicaId { get; set; }
         public Clinica Clinica { get; set; }
 
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
 
     }
 }

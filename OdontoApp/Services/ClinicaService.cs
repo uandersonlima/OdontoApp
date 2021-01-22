@@ -12,17 +12,17 @@ namespace OdontoApp.Services
     public class ClinicaService : IClinicaService
     {
         private readonly IClinicaRepository clinicaRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public ClinicaService(IClinicaRepository clinicaRepos, ILoginService loginSvc)
+        public ClinicaService(IClinicaRepository clinicaRepos, IAuthService authService)
         {
             this.clinicaRepos = clinicaRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
 
         public async Task AddAsync(Clinica entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await clinicaRepos.AddAsync(entity);
         }
 
@@ -32,25 +32,25 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Clinica entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await clinicaRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Clinica>> GetAllAsync() => await clinicaRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Clinica>> GetAllAsync() => await clinicaRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
 
-        public async Task<Clinica> GetByIdAsync(int id) => await clinicaRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Clinica> GetByIdAsync(int id) => await clinicaRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Clinica>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await clinicaRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await clinicaRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
         public async Task UpdateAsync(Clinica entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Clinica não existe");
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await clinicaRepos.UpdateAsync(entity);
         }
     }

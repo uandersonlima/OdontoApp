@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OdontoApp.Migrations
 {
-    public partial class OdontoApp : Migration
+    public partial class OdontoV3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,6 +21,20 @@ namespace OdontoApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AccessCodes", x => x.Codigo);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,6 +131,17 @@ namespace OdontoApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    NotificationCode = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.NotificationCode);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Pergunta",
                 columns: table => new
                 {
@@ -169,6 +194,27 @@ namespace OdontoApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AnamnesesPerguntas",
                 columns: table => new
                 {
@@ -178,6 +224,272 @@ namespace OdontoApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AnamnesesPerguntas", x => new { x.AnamneseId, x.PerguntaAnamneseId });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Agenda",
+                columns: table => new
+                {
+                    AgendaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titulo = table.Column<string>(nullable: true),
+                    Descricao = table.Column<string>(nullable: true),
+                    Inicio = table.Column<DateTime>(nullable: false),
+                    Fim = table.Column<DateTime>(nullable: true),
+                    Situacao = table.Column<string>(nullable: true),
+                    Realizado = table.Column<bool>(nullable: false),
+                    PacienteId = table.Column<int>(nullable: true),
+                    UsuarioId = table.Column<string>(nullable: true),
+                    MedicoId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Agenda", x => x.AgendaId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Anamnese",
+                columns: table => new
+                {
+                    AnamneseId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoAnamnese = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true),
+                    PacienteId = table.Column<int>(nullable: true),
+                    MedicoId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Anamnese", x => x.AnamneseId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Atestado",
+                columns: table => new
+                {
+                    AtestadoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoAtestado = table.Column<string>(nullable: false),
+                    DataAtestado = table.Column<DateTime>(nullable: false),
+                    NMasAtestado = table.Column<string>(nullable: false),
+                    ObsAtestado = table.Column<string>(nullable: false),
+                    CidAtestado = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true),
+                    PacienteId = table.Column<int>(nullable: false),
+                    MedicoId = table.Column<int>(nullable: false),
+                    EnderecoId = table.Column<int>(nullable: false),
+                    ClinicaId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Atestado", x => x.AtestadoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Caixa",
+                columns: table => new
+                {
+                    CaixaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoCaixa = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Caixa", x => x.CaixaId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CargoClinica",
+                columns: table => new
+                {
+                    CargoClinicaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoCargoClinica = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CargoClinica", x => x.CargoClinicaId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clinica",
+                columns: table => new
+                {
+                    ClinicaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeClinica = table.Column<string>(nullable: false),
+                    CnpjClinica = table.Column<string>(nullable: false),
+                    TelefoneClinica = table.Column<string>(nullable: false),
+                    QuantidaDeCadeiraClinica = table.Column<string>(nullable: false),
+                    EnderecoId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clinica", x => x.ClinicaId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ClinicaCargoClinica",
+                columns: table => new
+                {
+                    ClinicaId = table.Column<int>(nullable: false),
+                    CargoClinicaId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClinicaCargoClinica", x => new { x.ClinicaId, x.CargoClinicaId });
+                    table.ForeignKey(
+                        name: "FK_ClinicaCargoClinica_CargoClinica_CargoClinicaId",
+                        column: x => x.CargoClinicaId,
+                        principalTable: "CargoClinica",
+                        principalColumn: "CargoClinicaId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ClinicaCargoClinica_Clinica_ClinicaId",
+                        column: x => x.ClinicaId,
+                        principalTable: "Clinica",
+                        principalColumn: "ClinicaId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Despesa",
+                columns: table => new
+                {
+                    DespesaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoDespesa = table.Column<string>(nullable: false),
+                    DataDespesa = table.Column<DateTime>(nullable: false),
+                    ComprovanteDespesa = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true),
+                    CaixaId = table.Column<int>(nullable: false),
+                    CategoriaId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Despesa", x => x.DespesaId);
+                    table.ForeignKey(
+                        name: "FK_Despesa_Caixa_CaixaId",
+                        column: x => x.CaixaId,
+                        principalTable: "Caixa",
+                        principalColumn: "CaixaId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Despesa_Categoria_CategoriaId",
+                        column: x => x.CategoriaId,
+                        principalTable: "Categoria",
+                        principalColumn: "CategoriaId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Imagem",
+                columns: table => new
+                {
+                    ImagemId = table.Column<Guid>(nullable: false),
+                    Diretorio = table.Column<string>(nullable: true),
+                    PacienteId = table.Column<int>(nullable: false),
+                    MedicoId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Imagem", x => x.ImagemId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medicamento",
+                columns: table => new
+                {
+                    MedicamentoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoMedicamento = table.Column<string>(nullable: false),
+                    StatusMedicamentoId = table.Column<int>(nullable: false),
+                    PosologiaId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medicamento", x => x.MedicamentoId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Medico",
+                columns: table => new
+                {
+                    MedicoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeMedico = table.Column<string>(nullable: false),
+                    NumeroCroMedico = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Medico", x => x.MedicoId);
                 });
 
             migrationBuilder.CreateTable(
@@ -222,6 +534,12 @@ namespace OdontoApp.Migrations
                         principalColumn: "EstadoId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_Endereco_Medico_MedicoId",
+                        column: x => x.MedicoId,
+                        principalTable: "Medico",
+                        principalColumn: "MedicoId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Endereco_Rua_RuaId",
                         column: x => x.RuaId,
                         principalTable: "Rua",
@@ -230,30 +548,38 @@ namespace OdontoApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuario",
+                name: "AspNetUsers",
                 columns: table => new
                 {
-                    UsuarioId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
                     AccessType = table.Column<string>(nullable: true),
-                    AccountStatus = table.Column<string>(nullable: true),
                     PaymentStatus = table.Column<string>(nullable: true),
                     PlanNumber = table.Column<string>(nullable: true),
                     Nome = table.Column<string>(nullable: false),
                     Nascimento = table.Column<DateTime>(nullable: false),
                     Sexo = table.Column<string>(nullable: false),
                     CPF = table.Column<string>(nullable: false),
-                    DDD = table.Column<string>(maxLength: 2, nullable: false),
-                    Telefone = table.Column<string>(maxLength: 10, nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    Senha = table.Column<string>(nullable: false),
                     EnderecoId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuario", x => x.UsuarioId);
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usuario_Endereco_EnderecoId",
+                        name: "FK_AspNetUsers_Endereco_EnderecoId",
                         column: x => x.EnderecoId,
                         principalTable: "Endereco",
                         principalColumn: "EnderecoId",
@@ -261,257 +587,32 @@ namespace OdontoApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Caixa",
+                name: "Message",
                 columns: table => new
                 {
-                    CaixaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoCaixa = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    Messagecode = table.Column<Guid>(nullable: false),
+                    SenderUserId = table.Column<string>(nullable: true),
+                    ReceiverUserId = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    TimeSent = table.Column<DateTime>(nullable: true),
+                    TimeReceived = table.Column<DateTime>(nullable: true),
+                    ViewedTime = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Caixa", x => x.CaixaId);
+                    table.PrimaryKey("PK_Message", x => x.Messagecode);
                     table.ForeignKey(
-                        name: "FK_Caixa_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CargoClinica",
-                columns: table => new
-                {
-                    CargoClinicaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoCargoClinica = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CargoClinica", x => x.CargoClinicaId);
-                    table.ForeignKey(
-                        name: "FK_CargoClinica_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Clinica",
-                columns: table => new
-                {
-                    ClinicaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeClinica = table.Column<string>(nullable: false),
-                    CnpjClinica = table.Column<string>(nullable: false),
-                    TelefoneClinica = table.Column<string>(nullable: false),
-                    QuantidaDeCadeiraClinica = table.Column<string>(nullable: false),
-                    EnderecoId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clinica", x => x.ClinicaId);
-                    table.ForeignKey(
-                        name: "FK_Clinica_Endereco_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Endereco",
-                        principalColumn: "EnderecoId",
+                        name: "FK_Message_AspNetUsers_ReceiverUserId",
+                        column: x => x.ReceiverUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Clinica_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Medico",
-                columns: table => new
-                {
-                    MedicoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NomeMedico = table.Column<string>(nullable: false),
-                    NumeroCroMedico = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Medico", x => x.MedicoId);
-                    table.ForeignKey(
-                        name: "FK_Medico_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Plano",
-                columns: table => new
-                {
-                    PlanoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NomePlano = table.Column<string>(nullable: true),
-                    NumeroPlano = table.Column<string>(nullable: true),
-                    CpfResponsavelPlano = table.Column<string>(nullable: true),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Plano", x => x.PlanoId);
-                    table.ForeignKey(
-                        name: "FK_Plano_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posologia",
-                columns: table => new
-                {
-                    PosologiaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoPosologia = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posologia", x => x.PosologiaId);
-                    table.ForeignKey(
-                        name: "FK_Posologia_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Produto",
-                columns: table => new
-                {
-                    ProdutoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descricao = table.Column<string>(nullable: true),
-                    EstoqueMinimo = table.Column<int>(nullable: false),
-                    EstoqueMaximo = table.Column<int>(nullable: false),
-                    Marca = table.Column<string>(nullable: true),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Produto", x => x.ProdutoId);
-                    table.ForeignKey(
-                        name: "FK_Produto_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Receita",
-                columns: table => new
-                {
-                    ReceitaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Receita", x => x.ReceitaId);
-                    table.ForeignKey(
-                        name: "FK_Receita_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StatusMedicamento",
-                columns: table => new
-                {
-                    StatusMedicamentoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoStatusMedicamento = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StatusMedicamento", x => x.StatusMedicamentoId);
-                    table.ForeignKey(
-                        name: "FK_StatusMedicamento_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Despesa",
-                columns: table => new
-                {
-                    DespesaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoDespesa = table.Column<string>(nullable: false),
-                    DataDespesa = table.Column<DateTime>(nullable: false),
-                    ComprovanteDespesa = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false),
-                    CaixaId = table.Column<int>(nullable: false),
-                    CategoriaId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Despesa", x => x.DespesaId);
-                    table.ForeignKey(
-                        name: "FK_Despesa_Caixa_CaixaId",
-                        column: x => x.CaixaId,
-                        principalTable: "Caixa",
-                        principalColumn: "CaixaId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Despesa_Categoria_CategoriaId",
-                        column: x => x.CategoriaId,
-                        principalTable: "Categoria",
-                        principalColumn: "CategoriaId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Despesa_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClinicaCargoClinica",
-                columns: table => new
-                {
-                    ClinicaId = table.Column<int>(nullable: false),
-                    CargoClinicaId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClinicaCargoClinica", x => new { x.ClinicaId, x.CargoClinicaId });
-                    table.ForeignKey(
-                        name: "FK_ClinicaCargoClinica_CargoClinica_CargoClinicaId",
-                        column: x => x.CargoClinicaId,
-                        principalTable: "CargoClinica",
-                        principalColumn: "CargoClinicaId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ClinicaCargoClinica_Clinica_ClinicaId",
-                        column: x => x.ClinicaId,
-                        principalTable: "Clinica",
-                        principalColumn: "ClinicaId",
+                        name: "FK_Message_AspNetUsers_SenderUserId",
+                        column: x => x.SenderUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -524,7 +625,7 @@ namespace OdontoApp.Migrations
                     TipoPerguntaId = table.Column<int>(nullable: false),
                     PerguntaId = table.Column<int>(nullable: false),
                     RespostaId = table.Column<int>(nullable: true),
-                    UsuarioId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true),
                     MedicoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -555,10 +656,114 @@ namespace OdontoApp.Migrations
                         principalColumn: "TipoPerguntaId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PerguntaAnamnese_Usuario_UsuarioId",
+                        name: "FK_PerguntaAnamnese_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plano",
+                columns: table => new
+                {
+                    PlanoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomePlano = table.Column<string>(nullable: true),
+                    NumeroPlano = table.Column<string>(nullable: true),
+                    CpfResponsavelPlano = table.Column<string>(nullable: true),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plano", x => x.PlanoId);
+                    table.ForeignKey(
+                        name: "FK_Plano_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posologia",
+                columns: table => new
+                {
+                    PosologiaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoPosologia = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posologia", x => x.PosologiaId);
+                    table.ForeignKey(
+                        name: "FK_Posologia_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Produto",
+                columns: table => new
+                {
+                    ProdutoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descricao = table.Column<string>(nullable: true),
+                    EstoqueMinimo = table.Column<int>(nullable: false),
+                    EstoqueMaximo = table.Column<int>(nullable: false),
+                    Marca = table.Column<string>(nullable: true),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Produto", x => x.ProdutoId);
+                    table.ForeignKey(
+                        name: "FK_Produto_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Receita",
+                columns: table => new
+                {
+                    ReceitaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Receita", x => x.ReceitaId);
+                    table.ForeignKey(
+                        name: "FK_Receita_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StatusMedicamento",
+                columns: table => new
+                {
+                    StatusMedicamentoId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DescricaoStatusMedicamento = table.Column<string>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StatusMedicamento", x => x.StatusMedicamentoId);
+                    table.ForeignKey(
+                        name: "FK_StatusMedicamento_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -571,8 +776,8 @@ namespace OdontoApp.Migrations
                     NomePaciente = table.Column<string>(nullable: false),
                     Sexo = table.Column<string>(nullable: false),
                     Nascimento = table.Column<DateTime>(nullable: false),
-                    CPF = table.Column<string>(maxLength: 11, nullable: false),
-                    RgPaciente = table.Column<string>(nullable: false),
+                    CPF = table.Column<string>(maxLength: 14, nullable: false),
+                    RgPaciente = table.Column<string>(maxLength: 14, nullable: false),
                     ObsPaciente = table.Column<string>(nullable: false),
                     EmailPaciente = table.Column<string>(nullable: false),
                     ComoChegouPaciente = table.Column<string>(nullable: false),
@@ -581,7 +786,7 @@ namespace OdontoApp.Migrations
                     NumeroProntuarioPaciente = table.Column<string>(nullable: false),
                     PlanoId = table.Column<int>(nullable: true),
                     EnderecoId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    UsuarioId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -599,10 +804,10 @@ namespace OdontoApp.Migrations
                         principalColumn: "PlanoId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Paciente_Usuario_UsuarioId",
+                        name: "FK_Paciente_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -625,6 +830,30 @@ namespace OdontoApp.Migrations
                         column: x => x.ProdutoId,
                         principalTable: "Produto",
                         principalColumn: "ProdutoId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReceitaMedicamentos",
+                columns: table => new
+                {
+                    ReceitaId = table.Column<int>(nullable: false),
+                    MedicamentoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReceitaMedicamentos", x => new { x.MedicamentoId, x.ReceitaId });
+                    table.ForeignKey(
+                        name: "FK_ReceitaMedicamentos_Medicamento_MedicamentoId",
+                        column: x => x.MedicamentoId,
+                        principalTable: "Medicamento",
+                        principalColumn: "MedicamentoId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ReceitaMedicamentos_Receita_ReceitaId",
+                        column: x => x.ReceitaId,
+                        principalTable: "Receita",
+                        principalColumn: "ReceitaId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -653,199 +882,6 @@ namespace OdontoApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Medicamento",
-                columns: table => new
-                {
-                    MedicamentoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoMedicamento = table.Column<string>(nullable: false),
-                    StatusMedicamentoId = table.Column<int>(nullable: false),
-                    PosologiaId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Medicamento", x => x.MedicamentoId);
-                    table.ForeignKey(
-                        name: "FK_Medicamento_Posologia_PosologiaId",
-                        column: x => x.PosologiaId,
-                        principalTable: "Posologia",
-                        principalColumn: "PosologiaId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Medicamento_StatusMedicamento_StatusMedicamentoId",
-                        column: x => x.StatusMedicamentoId,
-                        principalTable: "StatusMedicamento",
-                        principalColumn: "StatusMedicamentoId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Medicamento_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Agenda",
-                columns: table => new
-                {
-                    AgendaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(nullable: true),
-                    Descricao = table.Column<string>(nullable: true),
-                    Inicio = table.Column<DateTime>(nullable: false),
-                    Fim = table.Column<DateTime>(nullable: true),
-                    Situacao = table.Column<string>(nullable: true),
-                    Realizado = table.Column<bool>(nullable: false),
-                    PacienteId = table.Column<int>(nullable: true),
-                    UsuarioId = table.Column<int>(nullable: false),
-                    MedicoId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Agenda", x => x.AgendaId);
-                    table.ForeignKey(
-                        name: "FK_Agenda_Medico_MedicoId",
-                        column: x => x.MedicoId,
-                        principalTable: "Medico",
-                        principalColumn: "MedicoId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Agenda_Paciente_PacienteId",
-                        column: x => x.PacienteId,
-                        principalTable: "Paciente",
-                        principalColumn: "PacienteId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Agenda_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Anamnese",
-                columns: table => new
-                {
-                    AnamneseId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoAnamnese = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false),
-                    PacienteId = table.Column<int>(nullable: true),
-                    MedicoId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Anamnese", x => x.AnamneseId);
-                    table.ForeignKey(
-                        name: "FK_Anamnese_Medico_MedicoId",
-                        column: x => x.MedicoId,
-                        principalTable: "Medico",
-                        principalColumn: "MedicoId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Anamnese_Paciente_PacienteId",
-                        column: x => x.PacienteId,
-                        principalTable: "Paciente",
-                        principalColumn: "PacienteId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Anamnese_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Atestado",
-                columns: table => new
-                {
-                    AtestadoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DescricaoAtestado = table.Column<string>(nullable: false),
-                    DataAtestado = table.Column<DateTime>(nullable: false),
-                    NMasAtestado = table.Column<string>(nullable: false),
-                    ObsAtestado = table.Column<string>(nullable: false),
-                    CidAtestado = table.Column<string>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false),
-                    PacienteId = table.Column<int>(nullable: false),
-                    MedicoId = table.Column<int>(nullable: false),
-                    EnderecoId = table.Column<int>(nullable: false),
-                    ClinicaId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Atestado", x => x.AtestadoId);
-                    table.ForeignKey(
-                        name: "FK_Atestado_Clinica_ClinicaId",
-                        column: x => x.ClinicaId,
-                        principalTable: "Clinica",
-                        principalColumn: "ClinicaId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Atestado_Endereco_EnderecoId",
-                        column: x => x.EnderecoId,
-                        principalTable: "Endereco",
-                        principalColumn: "EnderecoId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Atestado_Medico_MedicoId",
-                        column: x => x.MedicoId,
-                        principalTable: "Medico",
-                        principalColumn: "MedicoId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Atestado_Paciente_PacienteId",
-                        column: x => x.PacienteId,
-                        principalTable: "Paciente",
-                        principalColumn: "PacienteId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Atestado_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Imagem",
-                columns: table => new
-                {
-                    ImagemId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImgImagem = table.Column<byte[]>(nullable: true),
-                    PacienteId = table.Column<int>(nullable: false),
-                    MedicoId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Imagem", x => x.ImagemId);
-                    table.ForeignKey(
-                        name: "FK_Imagem_Medico_MedicoId",
-                        column: x => x.MedicoId,
-                        principalTable: "Medico",
-                        principalColumn: "MedicoId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Imagem_Paciente_PacienteId",
-                        column: x => x.PacienteId,
-                        principalTable: "Paciente",
-                        principalColumn: "PacienteId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Imagem_Usuario_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Orcamento",
                 columns: table => new
                 {
@@ -859,7 +895,7 @@ namespace OdontoApp.Migrations
                     PlanoId = table.Column<int>(nullable: true),
                     MedicoId = table.Column<int>(nullable: true),
                     PacienteId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<string>(nullable: true),
                     DentesRegiaoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -890,10 +926,10 @@ namespace OdontoApp.Migrations
                         principalColumn: "PlanoId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Orcamento_Usuario_UsuarioId",
+                        name: "FK_Orcamento_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -908,7 +944,7 @@ namespace OdontoApp.Migrations
                     ReceitaId = table.Column<int>(nullable: false),
                     MedicoId = table.Column<int>(nullable: false),
                     ClinicaId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    UsuarioId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -944,10 +980,10 @@ namespace OdontoApp.Migrations
                         principalColumn: "ReceitaId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Receituario_Usuario_UsuarioId",
+                        name: "FK_Receituario_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -962,7 +998,7 @@ namespace OdontoApp.Migrations
                     DentesRegiaoId = table.Column<int>(nullable: false),
                     PlanoId = table.Column<int>(nullable: true),
                     PacienteId = table.Column<int>(nullable: true),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    UsuarioId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -986,10 +1022,10 @@ namespace OdontoApp.Migrations
                         principalColumn: "PlanoId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Tratamento_Usuario_UsuarioId",
+                        name: "FK_Tratamento_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1013,30 +1049,6 @@ namespace OdontoApp.Migrations
                         column: x => x.EstoqueId,
                         principalTable: "Estoque",
                         principalColumn: "EstoqueId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ReceitaMedicamentos",
-                columns: table => new
-                {
-                    ReceitaId = table.Column<int>(nullable: false),
-                    MedicamentoId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReceitaMedicamentos", x => new { x.MedicamentoId, x.ReceitaId });
-                    table.ForeignKey(
-                        name: "FK_ReceitaMedicamentos_Medicamento_MedicamentoId",
-                        column: x => x.MedicamentoId,
-                        principalTable: "Medicamento",
-                        principalColumn: "MedicamentoId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReceitaMedicamentos_Receita_ReceitaId",
-                        column: x => x.ReceitaId,
-                        principalTable: "Receita",
-                        principalColumn: "ReceitaId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1101,7 +1113,7 @@ namespace OdontoApp.Migrations
                     TratamentoId = table.Column<int>(nullable: false),
                     DentesRegiaoId = table.Column<int>(nullable: false),
                     MedicoId = table.Column<int>(nullable: false),
-                    UsuarioId = table.Column<int>(nullable: false)
+                    UsuarioId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1137,10 +1149,10 @@ namespace OdontoApp.Migrations
                         principalColumn: "TratamentoId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Recebimento_Usuario_UsuarioId",
+                        name: "FK_Recebimento_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Usuario",
-                        principalColumn: "UsuarioId",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1178,6 +1190,50 @@ namespace OdontoApp.Migrations
                 name: "IX_AnamnesesPerguntas_PerguntaAnamneseId",
                 table: "AnamnesesPerguntas",
                 column: "PerguntaAnamneseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_EnderecoId",
+                table: "AspNetUsers",
+                column: "EnderecoId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Atestado_ClinicaId",
@@ -1318,6 +1374,16 @@ namespace OdontoApp.Migrations
                 name: "IX_Medico_UsuarioId",
                 table: "Medico",
                 column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_ReceiverUserId",
+                table: "Message",
+                column: "ReceiverUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_SenderUserId",
+                table: "Message",
+                column: "SenderUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orcamento_DentesRegiaoId",
@@ -1509,11 +1575,6 @@ namespace OdontoApp.Migrations
                 table: "Tratamento",
                 column: "UsuarioId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuario_EnderecoId",
-                table: "Usuario",
-                column: "EnderecoId");
-
             migrationBuilder.AddForeignKey(
                 name: "FK_AnamnesesPerguntas_Anamnese_AnamneseId",
                 table: "AnamnesesPerguntas",
@@ -1531,11 +1592,219 @@ namespace OdontoApp.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Endereco_Medico_MedicoId",
-                table: "Endereco",
+                name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                table: "AspNetUserRoles",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Agenda_Medico_MedicoId",
+                table: "Agenda",
                 column: "MedicoId",
                 principalTable: "Medico",
                 principalColumn: "MedicoId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Agenda_Paciente_PacienteId",
+                table: "Agenda",
+                column: "PacienteId",
+                principalTable: "Paciente",
+                principalColumn: "PacienteId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Agenda_AspNetUsers_UsuarioId",
+                table: "Agenda",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Anamnese_Medico_MedicoId",
+                table: "Anamnese",
+                column: "MedicoId",
+                principalTable: "Medico",
+                principalColumn: "MedicoId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Anamnese_Paciente_PacienteId",
+                table: "Anamnese",
+                column: "PacienteId",
+                principalTable: "Paciente",
+                principalColumn: "PacienteId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Anamnese_AspNetUsers_UsuarioId",
+                table: "Anamnese",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                table: "AspNetUserTokens",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Atestado_Medico_MedicoId",
+                table: "Atestado",
+                column: "MedicoId",
+                principalTable: "Medico",
+                principalColumn: "MedicoId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Atestado_Paciente_PacienteId",
+                table: "Atestado",
+                column: "PacienteId",
+                principalTable: "Paciente",
+                principalColumn: "PacienteId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Atestado_AspNetUsers_UsuarioId",
+                table: "Atestado",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Atestado_Endereco_EnderecoId",
+                table: "Atestado",
+                column: "EnderecoId",
+                principalTable: "Endereco",
+                principalColumn: "EnderecoId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Atestado_Clinica_ClinicaId",
+                table: "Atestado",
+                column: "ClinicaId",
+                principalTable: "Clinica",
+                principalColumn: "ClinicaId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Caixa_AspNetUsers_UsuarioId",
+                table: "Caixa",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CargoClinica_AspNetUsers_UsuarioId",
+                table: "CargoClinica",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Clinica_AspNetUsers_UsuarioId",
+                table: "Clinica",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Clinica_Endereco_EnderecoId",
+                table: "Clinica",
+                column: "EnderecoId",
+                principalTable: "Endereco",
+                principalColumn: "EnderecoId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Despesa_AspNetUsers_UsuarioId",
+                table: "Despesa",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Imagem_Medico_MedicoId",
+                table: "Imagem",
+                column: "MedicoId",
+                principalTable: "Medico",
+                principalColumn: "MedicoId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Imagem_Paciente_PacienteId",
+                table: "Imagem",
+                column: "PacienteId",
+                principalTable: "Paciente",
+                principalColumn: "PacienteId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Imagem_AspNetUsers_UsuarioId",
+                table: "Imagem",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Medicamento_AspNetUsers_UsuarioId",
+                table: "Medicamento",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Medicamento_Posologia_PosologiaId",
+                table: "Medicamento",
+                column: "PosologiaId",
+                principalTable: "Posologia",
+                principalColumn: "PosologiaId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Medicamento_StatusMedicamento_StatusMedicamentoId",
+                table: "Medicamento",
+                column: "StatusMedicamentoId",
+                principalTable: "StatusMedicamento",
+                principalColumn: "StatusMedicamentoId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Medico_AspNetUsers_UsuarioId",
+                table: "Medico",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
 
@@ -1555,6 +1824,21 @@ namespace OdontoApp.Migrations
                 name: "AnamnesesPerguntas");
 
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "Atestado");
 
             migrationBuilder.DropTable(
@@ -1571,6 +1855,12 @@ namespace OdontoApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Imagem");
+
+            migrationBuilder.DropTable(
+                name: "Message");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "OrcamentosTratamentos");
@@ -1595,6 +1885,9 @@ namespace OdontoApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "PerguntaAnamnese");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "CargoClinica");
@@ -1654,7 +1947,7 @@ namespace OdontoApp.Migrations
                 name: "Medico");
 
             migrationBuilder.DropTable(
-                name: "Usuario");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Endereco");

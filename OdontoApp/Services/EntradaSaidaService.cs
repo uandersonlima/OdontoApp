@@ -14,13 +14,13 @@ namespace OdontoApp.Services
     {
         private readonly IEntradaSaidaRepository entradaSaidaRepos;
         private readonly IEstoqueService estoqueSvc;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public EntradaSaidaService(IEntradaSaidaRepository entradaSaidaRepos, IEstoqueService estoqueSvc, ILoginService loginSvc)
+        public EntradaSaidaService(IEntradaSaidaRepository entradaSaidaRepos, IEstoqueService estoqueSvc, IAuthService authService)
         {
             this.entradaSaidaRepos = entradaSaidaRepos;
             this.estoqueSvc = estoqueSvc;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
 
         public async Task AddAsync(EntradaSaida entity)
@@ -74,39 +74,39 @@ namespace OdontoApp.Services
 
         public async Task<List<EntradaSaida>> GetAllAsync()
         {
-            return await entradaSaidaRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+            return await entradaSaidaRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task<PaginationList<EntradaSaida>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await entradaSaidaRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await entradaSaidaRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task<PaginationList<EntradaSaida>> GetAllInputsAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await entradaSaidaRepos.GetAllInputsAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await entradaSaidaRepos.GetAllInputsAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task<PaginationList<EntradaSaida>> GetAllOutputsAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await entradaSaidaRepos.GetAllInputsAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await entradaSaidaRepos.GetAllInputsAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task<EntradaSaida> GetByIdAsync(int id)
         {
-            return await entradaSaidaRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+            return await entradaSaidaRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
         }
         public async Task UpdateAsync(EntradaSaida entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Entrada ou Saída não existem");
-            if (entity.Estoque.Produto.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.Estoque.Produto.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await entradaSaidaRepos.UpdateAsync(entity);
         }
     }

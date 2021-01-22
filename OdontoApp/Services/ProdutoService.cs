@@ -12,16 +12,16 @@ namespace OdontoApp.Services
     public class ProdutoService: IProdutoService
     {
         private readonly IProdutoRepository produtoRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public ProdutoService(IProdutoRepository produtoRepos, ILoginService loginSvc)
+        public ProdutoService(IProdutoRepository produtoRepos, IAuthService authService)
         {
             this.produtoRepos = produtoRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
         public async Task AddAsync(Produto entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await produtoRepos.AddAsync(entity);
         }
 
@@ -31,25 +31,25 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Produto entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await produtoRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Produto>> GetAllAsync() => await produtoRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Produto>> GetAllAsync() => await produtoRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
 
-        public async Task<Produto> GetByIdAsync(int id) => await produtoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Produto> GetByIdAsync(int id) => await produtoRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Produto>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await produtoRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await produtoRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
         public async Task UpdateAsync(Produto entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Produto não existe");
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await produtoRepos.UpdateAsync(entity);
         }
     }

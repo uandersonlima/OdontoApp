@@ -45,8 +45,9 @@ namespace OdontoApp.Models
         public Medico Medico { get; set; }
         public int PacienteId { get; set; }
         public Paciente Paciente { get; set; }
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
 
 
         public List<OrcamentoTratamento> OrcamentoTratamentos { get; set; }

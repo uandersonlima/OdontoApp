@@ -12,16 +12,17 @@ namespace OdontoApp.Services
     public class MedicoService : IMedicoService
     {
         private readonly IMedicoRepository medicoRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public MedicoService(IMedicoRepository medicoRepos, ILoginService loginSvc)
+        public MedicoService(IMedicoRepository medicoRepos, IAuthService authService)
         {
             this.medicoRepos = medicoRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
+
         public async Task AddAsync(Medico entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await medicoRepos.AddAsync(entity);
         }
 
@@ -31,25 +32,25 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Medico entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await medicoRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Medico>> GetAllAsync() => await medicoRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Medico>> GetAllAsync() => await medicoRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
 
-        public async Task<Medico> GetByIdAsync(int id) => await medicoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Medico> GetByIdAsync(int id) => await medicoRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Medico>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await medicoRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await medicoRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
         public async Task UpdateAsync(Medico entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Médico não existe");
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await medicoRepos.UpdateAsync(entity);
         }
     }

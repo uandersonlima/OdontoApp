@@ -10,16 +10,147 @@ using OdontoApp.Data;
 namespace OdontoApp.Migrations
 {
     [DbContext(typeof(OdontoAppContext))]
-    [Migration("20200523143219_OdontoApp")]
-    partial class OdontoApp
+    [Migration("20210121225215_OdontoV3")]
+    partial class OdontoV3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.4")
+                .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
+                });
 
             modelBuilder.Entity("OdontoApp.Models.AccessCode.AccessCode", b =>
                 {
@@ -77,8 +208,8 @@ namespace OdontoApp.Migrations
                     b.Property<string>("Titulo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AgendaId");
 
@@ -108,8 +239,8 @@ namespace OdontoApp.Migrations
                     b.Property<int?>("PacienteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AnamneseId");
 
@@ -120,6 +251,100 @@ namespace OdontoApp.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Anamnese");
+                });
+
+            modelBuilder.Entity("OdontoApp.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AccessType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CPF")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTime>("Nascimento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PlanNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sexo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EnderecoId");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Atestado", b =>
@@ -160,8 +385,8 @@ namespace OdontoApp.Migrations
                     b.Property<int>("PacienteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AtestadoId");
 
@@ -205,8 +430,8 @@ namespace OdontoApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CaixaId");
 
@@ -226,8 +451,8 @@ namespace OdontoApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CargoClinicaId");
 
@@ -386,8 +611,8 @@ namespace OdontoApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ClinicaId");
 
@@ -453,8 +678,8 @@ namespace OdontoApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("DespesaId");
 
@@ -603,8 +828,8 @@ namespace OdontoApp.Migrations
                     b.Property<string>("Marca")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ProdutoId");
 
@@ -615,13 +840,12 @@ namespace OdontoApp.Migrations
 
             modelBuilder.Entity("OdontoApp.Models.Imagem", b =>
                 {
-                    b.Property<int>("ImagemId")
+                    b.Property<Guid>("ImagemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("ImgImagem")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Diretorio")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MedicoId")
                         .HasColumnType("int");
@@ -629,8 +853,8 @@ namespace OdontoApp.Migrations
                     b.Property<int>("PacienteId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ImagemId");
 
@@ -660,8 +884,8 @@ namespace OdontoApp.Migrations
                     b.Property<int>("StatusMedicamentoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("MedicamentoId");
 
@@ -689,14 +913,61 @@ namespace OdontoApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("MedicoId");
 
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Medico");
+                });
+
+            modelBuilder.Entity("OdontoApp.Models.Message", b =>
+                {
+                    b.Property<Guid>("Messagecode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReceiverUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("TimeReceived")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("TimeSent")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ViewedTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Messagecode");
+
+                    b.HasIndex("ReceiverUserId");
+
+                    b.HasIndex("SenderUserId");
+
+                    b.ToTable("Message");
+                });
+
+            modelBuilder.Entity("OdontoApp.Models.Notification", b =>
+                {
+                    b.Property<Guid>("NotificationCode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("NotificationCode");
+
+                    b.ToTable("Notification");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Orcamento", b =>
@@ -729,8 +1000,8 @@ namespace OdontoApp.Migrations
                     b.Property<int?>("PlanoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("ValorDescontoOrcamento")
                         .HasColumnType("decimal(10, 2)");
@@ -762,8 +1033,8 @@ namespace OdontoApp.Migrations
 
                     b.Property<string>("CPF")
                         .IsRequired()
-                        .HasColumnType("nvarchar(11)")
-                        .HasMaxLength(11);
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<string>("ComoChegouPaciente")
                         .IsRequired()
@@ -801,7 +1072,8 @@ namespace OdontoApp.Migrations
 
                     b.Property<string>("RgPaciente")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(14)")
+                        .HasMaxLength(14);
 
                     b.Property<string>("Sexo")
                         .IsRequired()
@@ -812,8 +1084,8 @@ namespace OdontoApp.Migrations
                         .HasColumnType("nvarchar(9)")
                         .HasMaxLength(9);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PacienteId");
 
@@ -861,8 +1133,8 @@ namespace OdontoApp.Migrations
                     b.Property<int>("TipoPerguntaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PerguntaAnamneseId");
 
@@ -895,8 +1167,8 @@ namespace OdontoApp.Migrations
                     b.Property<string>("NumeroPlano")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PlanoId");
 
@@ -916,8 +1188,8 @@ namespace OdontoApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PosologiaId");
 
@@ -976,8 +1248,8 @@ namespace OdontoApp.Migrations
                     b.Property<int>("TratamentoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("RecebimentoId");
 
@@ -1003,8 +1275,8 @@ namespace OdontoApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ReceitaId");
 
@@ -1035,8 +1307,8 @@ namespace OdontoApp.Migrations
                     b.Property<int>("ReceitaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ReceituarioId");
 
@@ -1098,8 +1370,8 @@ namespace OdontoApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("StatusMedicamentoId");
 
@@ -1144,8 +1416,8 @@ namespace OdontoApp.Migrations
                     b.Property<int?>("PlanoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("ValorTratamento")
                         .HasColumnType("decimal(10, 2)");
@@ -1163,66 +1435,49 @@ namespace OdontoApp.Migrations
                     b.ToTable("Tratamento");
                 });
 
-            modelBuilder.Entity("OdontoApp.Models.Usuario", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("UsuarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .IsRequired();
+                });
 
-                    b.Property<string>("AccessType")
-                        .HasColumnType("nvarchar(max)");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("OdontoApp.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+                });
 
-                    b.Property<string>("AccountStatus")
-                        .HasColumnType("nvarchar(max)");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("OdontoApp.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+                });
 
-                    b.Property<string>("CPF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .IsRequired();
 
-                    b.Property<string>("DDD")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(2)")
-                        .HasMaxLength(2);
+                    b.HasOne("OdontoApp.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+                });
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EnderecoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Nascimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlanNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sexo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
-
-                    b.HasKey("UsuarioId");
-
-                    b.HasIndex("EnderecoId");
-
-                    b.ToTable("Usuario");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("OdontoApp.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Agenda", b =>
@@ -1235,10 +1490,9 @@ namespace OdontoApp.Migrations
                         .WithMany("Agendas")
                         .HasForeignKey("PacienteId");
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Anamnese", b =>
@@ -1251,9 +1505,16 @@ namespace OdontoApp.Migrations
                         .WithMany("Anamneses")
                         .HasForeignKey("PacienteId");
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
+                        .HasForeignKey("UsuarioId");
+                });
+
+            modelBuilder.Entity("OdontoApp.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("OdontoApp.Models.Endereco", "Endereco")
+                        .WithMany()
+                        .HasForeignKey("EnderecoId")
                         .IsRequired();
                 });
 
@@ -1279,26 +1540,23 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("PacienteId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Caixa", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.CargoClinica", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.ClassesRelacionais.AnamnesesPerguntas", b =>
@@ -1373,10 +1631,9 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("EnderecoId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany("Clinicas")
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.ClinicaCargoClinica", b =>
@@ -1404,10 +1661,9 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("CategoriaId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Endereco", b =>
@@ -1460,10 +1716,9 @@ namespace OdontoApp.Migrations
 
             modelBuilder.Entity("OdontoApp.Models.Estoque.Produto", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Imagem", b =>
@@ -1478,10 +1733,9 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("PacienteId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Medicamento", b =>
@@ -1496,18 +1750,27 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("StatusMedicamentoId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Medico", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
+                });
+
+            modelBuilder.Entity("OdontoApp.Models.Message", b =>
+                {
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "ReceiverUser")
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserId");
+
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "SenderUser")
+                        .WithMany()
+                        .HasForeignKey("SenderUserId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Orcamento", b =>
@@ -1529,10 +1792,9 @@ namespace OdontoApp.Migrations
                         .WithMany("Orcamentos")
                         .HasForeignKey("PlanoId");
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Paciente", b =>
@@ -1546,10 +1808,9 @@ namespace OdontoApp.Migrations
                         .WithMany("Pacientes")
                         .HasForeignKey("PlanoId");
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.PerguntaAnamnese", b =>
@@ -1572,26 +1833,23 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("TipoPerguntaId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Plano", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Posologia", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Recebimento", b =>
@@ -1621,18 +1879,16 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("TratamentoId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Receita", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Receituario", b =>
@@ -1662,18 +1918,16 @@ namespace OdontoApp.Migrations
                         .HasForeignKey("ReceitaId")
                         .IsRequired();
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.StatusMedicamento", b =>
                 {
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Tratamento", b =>
@@ -1691,18 +1945,9 @@ namespace OdontoApp.Migrations
                         .WithMany("Tratamentos")
                         .HasForeignKey("PlanoId");
 
-                    b.HasOne("OdontoApp.Models.Usuario", "Usuario")
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OdontoApp.Models.Usuario", b =>
-                {
-                    b.HasOne("OdontoApp.Models.Endereco", "Endereco")
-                        .WithMany()
-                        .HasForeignKey("EnderecoId")
-                        .IsRequired();
+                        .HasForeignKey("UsuarioId");
                 });
 #pragma warning restore 612, 618
         }

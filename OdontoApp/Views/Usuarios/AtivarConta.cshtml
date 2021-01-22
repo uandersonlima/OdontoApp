@@ -1,4 +1,4 @@
-﻿@inject ILoginService login
+﻿@inject IAuthService authService
 @model UserCode
 @{
     ViewData["Title"] = "Habilitar conta";
@@ -14,7 +14,7 @@
                     </a>
                     <h1 class="h3 mb-3 font-weight-normal text-muted">Ativar a Conta</h1>
                     @{ await Html.RenderPartialAsync("~/Views/Shared/_Mensagem.cshtml"); }
-                    <input asp-for="Usuario.UsuarioId" type="hidden" />
+                    <input asp-for="Usuario.Id" type="hidden" />
                     @if (!string.IsNullOrEmpty(Model.Usuario.Email))
                     {
                         <div class="form-group text-center">
@@ -33,7 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 text-left ml-0 ml-md-5">
-                                    @if (!(login.GetUser() is null))
+                                    @if (!(await authService.GetLoggedUserAsync() is null))
                                     {
                                         <a href="#" class="font-weight-bold reenviar">Sem código de verificação? Clique aqui</a>
                                     }

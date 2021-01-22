@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OdontoApp.Data;
+using OdontoApp.Models;
+using OdontoApp.Models.Helpers;
 using OdontoApp.Repositories;
 using OdontoApp.Repositories.Interfaces;
 using OdontoApp.Services.Interfaces;
@@ -15,16 +17,49 @@ namespace OdontoApp.Services.IoC
 {
     public static class DependencyInjection
     {
-        public static void Injetar(IServiceCollection svc, IConfiguration conf)
+        public static void Inject(IServiceCollection svc, IConfiguration conf)
         {
-            svc.AddControllersWithViews().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
-            svc.AddHttpContextAccessor();
-            svc.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            svc.Configure<CookiePolicyOptions>(options =>
+            svc.Configure<ApiBehaviorOptions>(op =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                op.SuppressModelStateInvalidFilter = true;
+            });
+
+            svc.AddControllersWithViews().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
+
+            svc.AddHttpContextAccessor();
+
+            svc.AddSignalR();
+            
+            svc.Configure<AppSettings>(conf.GetSection(AppSettings.Position));
+           
+            svc.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+
+            svc.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.LoginPath = "/Auth/SignIn";
+                options.AccessDeniedPath = "/Auth/AccessDenied";
+                options.SlidingExpiration = true;
             });
 
             //Email - Gerenciamento
@@ -41,25 +76,16 @@ namespace OdontoApp.Services.IoC
 
                 return smtp;
             });
+            
             svc.AddScoped<EmailService>();
             svc.AddScoped<ICodigoRepository, CodigoRepository>();
-
-
-            //Session - Configuration
-            svc.AddMemoryCache(); //Guardar os dados na memória
-            svc.AddSession(options =>
-            {
-                //// Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromHours(2);
-                options.Cookie.HttpOnly = true;
-                //// Make the session cookie essential
-                options.Cookie.IsEssential = true;
-            });
-
+           
             //Banco de Dados
             svc.AddDbContext<OdontoAppContext>(options =>
             options.UseSqlServer(conf.GetConnectionString("OdontoAppContext"),
                                      x => x.MigrationsAssembly("OdontoApp")));
+
+            svc.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<OdontoAppContext>().AddDefaultTokenProviders();
 
             //Injeções Repositorios
             svc.AddScoped<IAgendaRepository, AgendaRepository>();
@@ -72,6 +98,7 @@ namespace OdontoApp.Services.IoC
             svc.AddScoped<IEntradaSaidaRepository, EntradaSaidaRepository>();
             svc.AddScoped<IEstoqueRepository, EstoqueRepository>();
             svc.AddScoped<IMedicoRepository, MedicoRepository>();
+            svc.AddScoped<IMessageRepository, MessageRepository>();
             svc.AddScoped<IOrcamentoRepository, OrcamentoRepository>();
             svc.AddScoped<IPacienteRepository, PacienteRepository>();
             svc.AddScoped<IPerguntaAnamneseRepository, PerguntaAnamneseRepository>();
@@ -82,13 +109,11 @@ namespace OdontoApp.Services.IoC
             svc.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 
-            //Injeções do login
-            svc.AddScoped<ISessionService, SessionService>();
-            svc.AddScoped<ILoginService, LoginService>();
 
             //Injeções Serviços
             svc.AddScoped<IAgendaService, AgendaService>();
             svc.AddScoped<IAnamneseService, AnamneseService>();
+            svc.AddScoped<IAuthService, AuthService>();
             svc.AddScoped<IClinicaService, ClinicaService>();
             svc.AddScoped<ICodigoService, CodigoService>();
             svc.AddScoped<ICodigoPromocionalService, CodigoPromocionalService>();
@@ -97,20 +122,28 @@ namespace OdontoApp.Services.IoC
             svc.AddScoped<IEnderecoService, EnderecoService>();
             svc.AddScoped<IEntradaSaidaService, EntradaSaidaService>();
             svc.AddScoped<IEstoqueService, EstoqueService>();
-            svc.AddScoped<ILoginService, LoginService>();
             svc.AddScoped<IMedicoService, MedicoService>();
+            svc.AddScoped<IMessageService, MessageService>();
             svc.AddScoped<IOrcamentoService, OrcamentoService>();
             svc.AddScoped<IPacienteService, PacienteService>();
             svc.AddScoped<IPerguntaAnamneseService, PerguntaAnamneseService>();
             svc.AddScoped<IPlanoService, PlanoService>();
             svc.AddScoped<IProdutoService, ProdutoService>();
-            svc.AddScoped<ISessionService, SessionService>();
             svc.AddScoped<ITipoPerguntaService, TipoPerguntaService>();
             svc.AddScoped<ITratamentoService, TratamentoService>();
             svc.AddScoped<IUsuarioService, UsuarioService>();
 
             //Startup of app
             svc.AddScoped<InicializarDados>();
+
+            svc.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyOrigin();
+                    });
+            });
         }
     }
 }

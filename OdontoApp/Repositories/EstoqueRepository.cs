@@ -36,7 +36,7 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<PaginationList<Estoque>> GetAllAsync(AppView appQuery, int idUser)
+        public async Task<PaginationList<Estoque>> GetAllAsync(AppView appQuery, string idUser)
         {
             var pagList = new PaginationList<Estoque>();
             var estoques = context.Estoque.
@@ -70,7 +70,7 @@ namespace OdontoApp.Repositories
             return pagList;
         }
 
-        public async Task<Estoque> GetByIdAsync(int id, int idUser)
+        public async Task<Estoque> GetByIdAsync(int id, string idUser)
         {
             return await context.Estoque.Include(est => est.Produto).Where(est => est.Produto.UsuarioId == idUser && est.EstoqueId == id).FirstOrDefaultAsync();
         }

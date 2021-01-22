@@ -46,7 +46,7 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<PaginationList<Anamnese>> GetAllAsync(AppView appQuery, int idUser)
+        public async Task<PaginationList<Anamnese>> GetAllAsync(AppView appQuery, string idUser)
         {
             var pagList = new PaginationList<Anamnese>();
             var anamneses = context.Anamnese.Where(anm => anm.UsuarioId == idUser && !anm.PacienteId.HasValue).AsNoTracking().AsQueryable();
@@ -73,7 +73,7 @@ namespace OdontoApp.Repositories
             return pagList;
         }
 
-        public async Task<Anamnese> GetByIdAsync(int id, int idUser)
+        public async Task<Anamnese> GetByIdAsync(int id, string idUser)
         {
             return await context.Anamnese.
                         Include(anm => anm.Usuario).

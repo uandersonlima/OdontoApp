@@ -12,7 +12,7 @@
                         <img class="d-block mx-auto mb-4" src="~/img/Logoprimary.png" alt="" width="150">
                     </a>
                     <h4 class="card-title mb-4 mt-1 text-center">Recuperação de conta</h4>
-                    <input asp-for="Usuario.UsuarioId" type="hidden" />
+                    <input asp-for="Usuario.Id" type="hidden" />
                     @if (!string.IsNullOrEmpty(Model.Usuario.Email))
                     {
                         <div class="form-group text-center">
@@ -25,14 +25,14 @@
                         <input id="cod" asp-for="AcessCode.Key" class="form-control" type="text">
                         <label for="cod">Código de Verificação</label>
                     </div>
-                    <div class="md-form">
+                    @* <div class="md-form">
                         <input id="newSenha" asp-for="Usuario.Senha" class="form-control" type="password">
                         <label for="newSenha">Nova Senha</label>
                     </div>
                     <div class="md-form">
                         <input id="Senha" asp-for="Usuario.ConfirmacaoSenha" class="form-control" type="password">
                         <label for="Senha">Confirmação de nova senha</label>
-                    </div>
+                    </div> *@
                     <div class="form-row mt-5">
                         <div class="col-md-6 mt-4 mt-md-0 col-12 order-1 order-md-0 ml-auto align-self-center">
                             <a asp-action="RecuperarSenha" asp-controller="Usuarios" class="font-weight-bold">Anterior</a>

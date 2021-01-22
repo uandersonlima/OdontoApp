@@ -13,14 +13,14 @@ namespace OdontoApp.Controllers
     [AutoValidateAntiforgeryToken, UserAuthorization]
     public class PacientesController : Controller
     {
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
         private readonly IPacienteService pacienteSvc;
         private readonly IPlanoService planoSvc;
         private readonly OdontoAppContext context;
 
-        public PacientesController(ILoginService loginSvc, IPacienteService pacienteSvc, IPlanoService planoSvc, OdontoAppContext context)
+        public PacientesController(IAuthService authService, IPacienteService pacienteSvc, IPlanoService planoSvc, OdontoAppContext context)
         {
-            this.loginSvc = loginSvc;
+            this.authService = authService;
             this.pacienteSvc = pacienteSvc;
             this.planoSvc = planoSvc;
             this.context = context;
@@ -41,7 +41,7 @@ namespace OdontoApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GerarPacientes()
         {
-            var usuario = loginSvc.GetUser();
+            var usuario = await authService.GetLoggedUserAsync();
             var list = new List<Paciente>();
             for (int i = 0; i < 1000; i++)
             {
@@ -59,7 +59,7 @@ namespace OdontoApp.Controllers
                     DDD = "71",
                     Telefone = "997788445",
                     EnderecoId = usuario.EnderecoId,
-                    UsuarioId = usuario.UsuarioId
+                    UsuarioId = usuario.Id
                 };
                 list.Add(pacienteAux);
             }

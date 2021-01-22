@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OdontoApp.Data;
+using OdontoApp.Services;
 using OdontoApp.Services.IoC;
 
 namespace OdontoApp
@@ -23,7 +24,7 @@ namespace OdontoApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            DependencyInjection.Injetar(services, Configuration);
+            DependencyInjection.Inject(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,19 +52,24 @@ namespace OdontoApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSession();
             app.UseRouting();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Usuarios}/{action=Index}/{id?}");
-            });
+                endpoints.MapHub<NotificationHubService>("/notifications");
+                endpoints.MapHub<MessageHubService>("/messages");
+            }
+            );
 
         }
     }

@@ -8,8 +8,8 @@ namespace OdontoApp.Repositories.Interfaces
         Task AddAsync(T entity);
         Task<bool> CheckEntityAsync(T entity);
         Task DeleteAsync(T entity);
-        Task<T> GetByIdAsync(int entityId, int userId);
-        Task<PaginationList<T>> GetAllAsync(AppView appQuery, int userId);
+        Task<T> GetByIdAsync(int entityId, string userId);
+        Task<PaginationList<T>> GetAllAsync(AppView appQuery, string userId);
         Task UpdateAsync(T entity);
     }
 }

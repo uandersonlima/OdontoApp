@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,8 +31,9 @@ namespace OdontoApp.Models
 
         public int EnderecoId { get; set; }
         public Endereco Endereco { get; set; }
-        public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
+        [ForeignKey("Usuario")]
+        public string UsuarioId { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
         public List<ClinicaCargoClinica> ClinicaCargoClinicas { get; set; }
         public List<Atestado> Atestados { get; set; }
         public List<Receituario> Receituarios { get; set; }

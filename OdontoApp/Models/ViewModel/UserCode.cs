@@ -6,7 +6,7 @@ namespace OdontoApp.Models.ViewModel
     [NotMapped]
     public class UserCode
     {
-        public Usuario Usuario { get; set; }
+        public ApplicationUser Usuario { get; set; }
         public AccessCode.AccessCode AcessCode { get; set; }
     }
 }

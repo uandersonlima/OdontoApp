@@ -14,12 +14,12 @@ namespace OdontoApp.Services
     public class OrcamentoService : IOrcamentoService
     {
         private readonly IOrcamentoRepository orcamentoRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public OrcamentoService(IOrcamentoRepository orcamentoRepos, ILoginService loginSvc)
+        public OrcamentoService(IOrcamentoRepository orcamentoRepos, IAuthService authService)
         {
             this.orcamentoRepos = orcamentoRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
         public async Task AddAsync(Orcamento entity, List<int> listTratamentoId)
         {
@@ -28,7 +28,7 @@ namespace OdontoApp.Services
         }
         public async Task AddAsync(Orcamento entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await orcamentoRepos.AddAsync(entity);
         }
         public async Task<List<int>> CheckBoxChecked(int id)
@@ -42,31 +42,31 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Orcamento entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await orcamentoRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Orcamento>> GetAllAsync() => await orcamentoRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Orcamento>> GetAllAsync() => await orcamentoRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
         public async Task<PaginationList<Orcamento>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await orcamentoRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await orcamentoRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
-        public async Task<Orcamento> GetByIdAsync(int id) => await orcamentoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Orcamento> GetByIdAsync(int id) => await orcamentoRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Orcamento>> GetByPatientAsync(AppView appQuery, int pacienteId)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await orcamentoRepos.GetByPatientAsync(appQuery, pacienteId, loginSvc.GetUser().UsuarioId);
+            return await orcamentoRepos.GetByPatientAsync(appQuery, pacienteId, authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task UpdateAsync(Orcamento entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Orcamento não existe");
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await orcamentoRepos.UpdateAsync(entity);
         }
 

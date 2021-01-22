@@ -12,16 +12,16 @@ namespace OdontoApp.Services
     public class TratamentoService: ITratamentoService
     {
         private readonly ITratamentoRepository tratamentoRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public TratamentoService(ITratamentoRepository tratamentoRepos, ILoginService loginSvc)
+        public TratamentoService(ITratamentoRepository tratamentoRepos, IAuthService authService)
         {
             this.tratamentoRepos = tratamentoRepos;
-            this.loginSvc = loginSvc;
+            this.authService= authService;
         }
         public async Task AddAsync(Tratamento entity)
         {
-            entity.UsuarioId = loginSvc.GetUser().UsuarioId;
+            entity.UsuarioId = authService.GetLoggedUserAsync().Result.Id;
             await tratamentoRepos.AddAsync(entity);
         }
 
@@ -31,25 +31,25 @@ namespace OdontoApp.Services
 
         public async Task DeleteAsync(Tratamento entity)
         {
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await tratamentoRepos.DeleteAsync(entity);
         }
 
-        public async Task<List<Tratamento>> GetAllAsync() => await tratamentoRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+        public async Task<List<Tratamento>> GetAllAsync() => await tratamentoRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
 
-        public async Task<Tratamento> GetByIdAsync(int id) => await tratamentoRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+        public async Task<Tratamento> GetByIdAsync(int id) => await tratamentoRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
 
         public async Task<PaginationList<Tratamento>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await tratamentoRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await tratamentoRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
         public async Task UpdateAsync(Tratamento entity)
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("tratamento não existe");
-            if (entity.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await tratamentoRepos.UpdateAsync(entity);
         }
 
@@ -57,7 +57,7 @@ namespace OdontoApp.Services
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await tratamentoRepos.GetByPatientAsync(appQuery, pacienteId, loginSvc.GetUser().UsuarioId);
+            return await tratamentoRepos.GetByPatientAsync(appQuery, pacienteId, authService.GetLoggedUserAsync().Result.Id);
         }
     }
 }

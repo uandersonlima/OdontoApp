@@ -31,7 +31,7 @@ namespace OdontoApp.Services
             await codigoRepos.AddAsync(acessCode);
         }
         public bool CodeIsValid(string KeyCrip) => Base64Cipher.IsBase64String(KeyCrip);
-        public async Task CreateNewKeyAsync(Usuario entity, string codeType)
+        public async Task CreateNewKeyAsync(ApplicationUser entity, string codeType)
         {
             var Key = KeyGenerator.GetUniqueKey(8);
             var keyCrip = Base64Cipher.Base64Encode(Key);

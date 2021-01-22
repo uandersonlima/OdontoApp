@@ -5,15 +5,14 @@ using OdontoApp.Models.AccessCode;
 using OdontoApp.Models.Estoque;
 using OdontoApp.Models.Promocoes;
 using System.Linq;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace OdontoApp.Data
 {
-    public class OdontoAppContext : DbContext
+    public class OdontoAppContext : IdentityDbContext<ApplicationUser>
     {
-
         public OdontoAppContext(DbContextOptions<OdontoAppContext> options) : base(options) { }
-
-        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<ApplicationUser> User { get; set; }
         public DbSet<CodigoPromocional> CodigosPromocionais { get; set; }
         public DbSet<AccessCode> AccessCodes { get; set; }
         public DbSet<Agenda> Agenda { get; set; }
@@ -46,7 +45,9 @@ namespace OdontoApp.Data
         public DbSet<Imagem> Imagem { get; set; }
         public DbSet<StatusMedicamento> StatusMedicamento { get; set; }
         public DbSet<Posologia> Posologia { get; set; }
+        public DbSet<Notification> Notification { get; set; }
         public DbSet<Medicamento> Medicamento { get; set; }
+        public DbSet<Message> Message { get; set; }
         public DbSet<Receita> Receita { get; set; }
         public DbSet<ReceitaMedicamento> ReceitaMedicamentos { get; set; }
         public DbSet<Receituario> Receituario { get; set; }
@@ -60,6 +61,8 @@ namespace OdontoApp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;

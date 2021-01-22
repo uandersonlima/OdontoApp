@@ -1,4 +1,4 @@
-﻿@model Usuario
+﻿@model ApplicationUser
 @{
     ViewData["Title"] = "Meu Perfil";
     Layout = "~/Views/Shared/_Layout_1.cshtml";
@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <div class="col form-group">
                         <form asp-action="myprofile" asp-controller="usuarios" method="post">
-                            <input type="hidden" asp-for="UsuarioId" />
+                            <input type="hidden" asp-for="Id" />
                             <div class="form-row">
                                 <div class="col-md-8 col-sm-8 col-lg-8 form-group">
                                     <label asp-for="Nome" class="text danger">Nome</label>
@@ -47,15 +47,10 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="col-md-2 form-group">
-                                    <label asp-for="DDD">DDD</label>
-                                    <input asp-for="DDD" class="form-control">
-                                    <span asp-validation-for="DDD" class="text-danger"></span>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label asp-for="Telefone">Telefone</label>
-                                    <input asp-for="Telefone" class="form-control tel">
-                                    <span asp-validation-for="Telefone" class="text-danger"></span>
+                                <div class="col-md-6 form-group">
+                                    <label asp-for="PhoneNumber">DDD</label>
+                                    <input asp-for="PhoneNumber" class="form-control">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                                 <div class="col form-group">
                                     <label asp-for="Email">E-mail</label>

@@ -13,12 +13,12 @@ namespace OdontoApp.Services
     public class EstoqueService : IEstoqueService
     {
         private readonly IEstoqueRepository estoqueRepos;
-        private readonly ILoginService loginSvc;
+        private readonly IAuthService authService;
 
-        public EstoqueService(IEstoqueRepository estoqueRepos, ILoginService loginSvc)
+        public EstoqueService(IEstoqueRepository estoqueRepos, IAuthService authService)
         {
             this.estoqueRepos = estoqueRepos;
-            this.loginSvc = loginSvc;
+            this.authService = authService;
         }
 
         public async Task AddAsync(Estoque entity)
@@ -63,19 +63,19 @@ namespace OdontoApp.Services
 
         public async Task<List<Estoque>> GetAllAsync()
         {
-            return await estoqueRepos.GetAllAsync(new AppView(), loginSvc.GetUser().UsuarioId);
+            return await estoqueRepos.GetAllAsync(new AppView(), authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task<PaginationList<Estoque>> GetAllAsync(AppView appQuery)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await estoqueRepos.GetAllAsync(appQuery, loginSvc.GetUser().UsuarioId);
+            return await estoqueRepos.GetAllAsync(appQuery, authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task<Estoque> GetByIdAsync(int id)
         {
-            return await estoqueRepos.GetByIdAsync(id, loginSvc.GetUser().UsuarioId);
+            return await estoqueRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
         }
 
         public async Task<Estoque> LastStockAddedAsync()
@@ -87,7 +87,7 @@ namespace OdontoApp.Services
         {
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Estoque não existe");
-            if (entity.Produto.UsuarioId == loginSvc.GetUser().UsuarioId)
+            if (entity.Produto.UsuarioId == authService.GetLoggedUserAsync().Result.Id)
                 await estoqueRepos.UpdateAsync(entity);
 
         }
