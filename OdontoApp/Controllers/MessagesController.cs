@@ -12,7 +12,7 @@ namespace OdontoApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class MessagesController : ControllerBase
+    public class MessagesController : Controller
     {
         private readonly IAuthService authService;
         private readonly IUsuarioService userSvc;
@@ -25,6 +25,11 @@ namespace OdontoApp.Controllers
             this.userSvc = userSvc;
             this.msgSvc = msgSvc;
             this.messageHub = messageHub;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
         }
 
         [HttpGet(""), UserAuthorization]
