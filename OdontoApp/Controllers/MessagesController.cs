@@ -27,9 +27,11 @@ namespace OdontoApp.Controllers
             this.messageHub = messageHub;
         }
 
+
+        [HttpGet("/messages"), UserAuthorization]
         public IActionResult Index()
         {
-            return View();
+            return View("~/Views/Messages/Index.cshtml");
         }
 
         [HttpGet(""), UserAuthorization]
