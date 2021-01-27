@@ -90,7 +90,7 @@ namespace OdontoApp.Controllers
         [HttpGet("GetUniqueIdentifier"), UserAuthorization]
         public async Task<IActionResult> GetUniqueIdentifier()
         {       
-            return Ok(Guid.NewGuid());
+            return Ok(await Task.Run(() => Guid.NewGuid()));
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OdontoApp.Data;
 using OdontoApp.Services;
-using OdontoApp.Services.IoC;
+using OdontoApp.Services.Extensions;
 
 namespace OdontoApp
 {
@@ -24,7 +24,7 @@ namespace OdontoApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            DependencyInjection.Inject(services, Configuration);
+            services.AddDependencyInjection(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,8 +66,8 @@ namespace OdontoApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Usuarios}/{action=Index}/{id?}");
-                endpoints.MapHub<NotificationHubService>("/notifications");
-                endpoints.MapHub<MessageHubService>("/messages");
+                endpoints.MapHub<NotificationHubService>("/notificationhubservice");
+                endpoints.MapHub<MessageHubService>("/messagehubservice");
             }
             );
 

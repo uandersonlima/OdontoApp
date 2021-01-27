@@ -10,14 +10,12 @@ using OdontoApp.Repositories;
 using OdontoApp.Repositories.Interfaces;
 using OdontoApp.Services.Interfaces;
 using System;
-using System.Net;
-using System.Net.Mail;
 
-namespace OdontoApp.Services.IoC
+namespace OdontoApp.Services.Extensions
 {
     public static class DependencyInjection
     {
-        public static void Inject(IServiceCollection svc, IConfiguration conf)
+        public static void AddDependencyInjection(this IServiceCollection svc, IConfiguration conf)
         {
             svc.Configure<ApiBehaviorOptions>(op =>
             {
@@ -60,21 +58,6 @@ namespace OdontoApp.Services.IoC
                 options.LoginPath = "/Auth/SignIn";
                 options.AccessDeniedPath = "/Auth/AccessDenied";
                 options.SlidingExpiration = true;
-            });
-
-            //Email - Gerenciamento
-            svc.AddScoped<SmtpClient>(options =>
-            {
-                SmtpClient smtp = new SmtpClient()
-                {
-                    Host = conf.GetValue<string>("Email:ServerSMTP"),
-                    Port = conf.GetValue<int>("Email:ServerPort"),
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(conf.GetValue<string>("Email:Username"), conf.GetValue<string>("Email:Password")),
-                    EnableSsl = true
-                };
-
-                return smtp;
             });
             
             svc.AddScoped<EmailService>();

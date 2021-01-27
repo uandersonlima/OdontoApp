@@ -1,4 +1,7 @@
-let connectionMsg = new signalR.HubConnectionBuilder().withUrl("/messages").build();
+let connectionMsg = new signalR.HubConnectionBuilder()
+.withUrl("/messagehubservice")
+.configureLogging(signalR.LogLevel.Information)
+.build();
 connectionMsg.start().then(() => connectionMsg.on("reportnewmessagesasync", (msg,cdc) => console.log(msg, cdc)));
 connectionMsg.on("UserIsConnectedAsync", msg => console.log(msg))
 connectionMsg.on("UserIsDisconnectedAsync", msg => console.log(msg))
