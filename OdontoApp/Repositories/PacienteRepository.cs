@@ -34,7 +34,15 @@ namespace OdontoApp.Repositories
         }
         public async Task<Paciente> GetByIdAsync(int id, string userId)
         {
-            return await context.Paciente.Where(cnc => cnc.PacienteId == id && cnc.UsuarioId == userId).FirstOrDefaultAsync();
+            return await context.Paciente.Where(cnc => cnc.PacienteId == id && cnc.UsuarioId == userId)
+                                         .Include(paciente => paciente.Plano)
+                                         .Include(paciente => paciente.Endereco)
+                                         .Include(paciente => paciente.Endereco.Rua)
+                                         .Include(paciente => paciente.Endereco.Cep)
+                                         .Include(paciente => paciente.Endereco.Estado)
+                                         .Include(paciente => paciente.Endereco.Bairro)
+                                         .Include(paciente => paciente.Endereco.Cidade)
+                                         .FirstOrDefaultAsync();
         }
         public async Task<PaginationList<Paciente>> GetAllAsync(AppView appQuery, string userId)
         {
@@ -43,7 +51,7 @@ namespace OdontoApp.Repositories
 
             if (appQuery.CheckSearch())
             {
-                pacientes = pacientes.Where(paciente => paciente.NomePaciente.Contains(appQuery.Search.Trim()) || paciente.EmailPaciente.Contains(appQuery.Search.Trim()));
+                pacientes = pacientes.Where(paciente => paciente.NomePaciente.Contains(appQuery.Search.Trim()) || paciente.EmailPaciente.Contains(appQuery.Search.Trim()) || paciente.CPF.Contains(appQuery.Search.Trim()));
             }
             if (appQuery.CheckPagination())
             {

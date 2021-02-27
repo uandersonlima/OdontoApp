@@ -103,8 +103,12 @@ function PreviousPages(previousPage) {
 }
 
 function CurrentPage(currentPage) {
-    if (Number($(conf.totalRecordsString).val()) > 0 && Number($(conf.totalPagesString)) > 1)
+    let totalRecords = Number($(conf.totalRecordsString).val())
+    let totalPages = Number($(conf.totalPagesString).val())
+    if ( totalRecords > 0 && totalPages > 1)
+    {  
         ulPage.append(`<li class="page-item active" id="${currentPage}"><span class="page-link font-weight-bold">${currentPage}</span></li>`);
+    }  
 }
 
 function NextPages(nextPage) {

@@ -185,7 +185,7 @@ namespace OdontoApp.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Fim")
+                    b.Property<DateTime>("Fim")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Inicio")

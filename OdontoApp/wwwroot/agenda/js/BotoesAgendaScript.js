@@ -3,6 +3,22 @@ const urlAdd = '/Agendas/AddEvent'
 const urlUpdate = '/Agendas/UpdateEvent'
 const urlDelete = '/Agendas/DeleteEvent'
 
+let formHTML = document.querySelector('form#formAgenda')
+let formObject = {
+    title: formHTML.querySelector('input[id="titulo"]'),
+    deleteButton: formHTML.parentNode.parentNode.querySelector('button.deleteEvent'),
+    agendaId: formHTML.querySelector('input[id="agendaId"]'),
+    horaInicio: formHTML.querySelector('input[id="inicio"]'),
+    horaFim: formHTML.querySelector('input[id="fim"]'),
+    dia: formHTML.querySelector('input[id="dia"]'),
+    situacao:  formHTML.querySelector('select[id="situacao"]'),
+    pacienteId: formHTML.querySelector('input[id="pacienteId"]'),
+    medicoId: formHTML.querySelector('input[id="medicoId"]'),
+    usuarioId: formHTML.querySelector('input[id="usuarioId"]'),
+    descricao: formHTML.querySelector('textarea[id="descricao"]'),
+    span: formHTML.querySelector('span.circle')
+}
+
 /*função responsável por atualizar o dado no banco de dados*/
 function UpdateAgendaObject(data) {
     $.ajax({
@@ -14,9 +30,6 @@ function UpdateAgendaObject(data) {
         },
         success: function (dados) {
             if (dados.status) {
-                objCalendar.refetchEvents()
-                //Refresh the calender
-                console.log('tudo certo graças a Deus')
                 //fecha modal
                 $('#modalAgenda').modal('hide')
                 //atualiza eventos
@@ -39,8 +52,6 @@ function AddAgendaObject(data) {
         },
         success: function (dados) {
             if (dados.status) {
-                objCalendar.refetchEvents()
-                console.log("Adicionado tranquilamente")
                 //fecha modal
                 $('#modalAgenda').modal('hide')
                 //atualiza eventos
@@ -48,14 +59,13 @@ function AddAgendaObject(data) {
             }
         },
         error: function () {
-            alert('falha na hora de adicionar')
+            alert('Falha na hora de adicionar')
         }
     })
 }
 /*função responsável por deletar o dado no banco de dados*/
 function DeleteAgendaObject(id, titulo) {
     if (confirm(`Tem certeza que deseja excluir ${titulo}?`))
-        console.log(id)
     $.ajax({
         type: "POST",
         url: urlDelete,
@@ -65,7 +75,6 @@ function DeleteAgendaObject(id, titulo) {
         },
         success: function (dados) {
             if (dados.status) {
-                console.log("Excluiu, safe")
                 //fecha modal
                 $('#modalAgenda').modal('hide')
                 //atualiza eventos
@@ -89,60 +98,152 @@ $('#diatodo').change(function verifica() {
 document.querySelector('.saveEvent').onclick = function () {
     //Validation/
     if ($('#titulo').val().trim() == "") {
-        alert('Titulo necessário')
+        alert('Título necessário')
         return
     }
+    if ($('#dia').val().trim() == "") {
+        alert('dia necessário')
+        return
+    }    
     if ($('#inicio').val().trim() == "") {
-        alert('Data inicial necessária')
+        alert('hora inicial necessária')
         return
     }
-    if ($('#diatodo').is(':checked') == false && $('#fim').val().trim() == "") {
-        alert('Data final necessária')
+    if ($('#fim').val().trim() == "") {
+        alert('hora final necessária')
         return
     }
     else {
-        let inicio = moment(document.querySelector('#modalAgenda input[id="inicio"]').value, "DD/MM/YYYY HH:mm:ss").format("YYYY/MM/DD HH:mm:ss")
-        let fim = moment(document.querySelector('#modalAgenda input[id="fim"]').value, "DD/MM/YYYY HH:mm:ss").format("YYYY/MM/DD HH:mm:ss")
+        let inicio = moment(formObject.horaInicio.value, "DD/MM/YYYY HH:mm:ss").format("YYYY/MM/DD HH:mm:ss")
+        let fim = moment(formObject.horaFim.value, "DD/MM/YYYY HH:mm:ss").format("YYYY/MM/DD HH:mm:ss")
         if (inicio > fim) {
-            alert('Data final não pode ser menor que a Data inicial');
+            alert('horário final não pode ser menor que o horário inicial');
             return
         }
     }
 
-    let id = document.querySelector('#modalAgenda input[id="agendaId"]').value
-    let clienteid = document.querySelector('#modalAgenda input[id="clienteId"]').value
-    let pacienteid = document.querySelector('#modalAgenda select[id="NomePaciente"]').value
-    let titulo = document.querySelector('#modalAgenda input[id="titulo"]').value
-    let inicio = moment(document.querySelector('#modalAgenda input[id="inicio"]').value, "DD/MM/YYYY HH:mm:ss").format("YYYY/MM/DD HH:mm:ss")
-    let fim = moment(document.querySelector('#modalAgenda input[id="fim"]').value, "DD/MM/YYYY HH:mm:ss").format("YYYY/MM/DD HH:mm:ss")
-    let situacao = document.querySelector('#modalAgenda select[id="situacao"]').value
-    let descricao = document.querySelector('#modalAgenda textarea[id="descricao"]').value
-    let diatodo = document.querySelector('#modalAgenda input[id="diatodo"]').checked
+    
+    let inicio = new Date(formObject.dia.value + " " + formObject.horaInicio.value)
+    let fim = new Date(formObject.dia.value + " " + formObject.horaFim.value)
+
+    
     let agenda = {
-        Id: id,
-        Titulo: titulo,
-        Descricao: descricao,
-        Inicio: inicio,
-        Fim: fim,
-        DiaTodo: diatodo,
-        Situacao: situacao,
-        ClienteId: clienteid,
-        PacienteId: pacienteid
+        AgendaId: formObject.agendaId.value,
+        Titulo: formObject.title.value,
+        Descricao: formObject.descricao.value,
+        Inicio: inicio.toJSON(),
+        Fim: fim.toJSON(),
+        Realizado: false,
+        Situacao: formObject.situacao.value,
+        UsuarioId: formObject.usuarioId.value,
+        PacienteId: formObject.pacienteId.value,
+        MedicoId: formObject.medicoId.value
     }
-    console.log(agenda)
-    if (id == '') {
+
+    if (agenda.AgendaId == '') {
         AddAgendaObject(agenda)
     } else {
         UpdateAgendaObject(agenda)
     }
 }
 /*--função acionada no click apagar--*/
-document.querySelector('.deleteEvent').onclick = function () {
-    console.log('apagou')
+formObject.deleteButton.onclick = function () {
     let id = document.querySelector('#modalAgenda input[id="agendaId"]').value
-    console.log(id)
     let titulo = document.querySelector('#modalAgenda input[id="titulo"]').value
     DeleteAgendaObject(Number(id), titulo)
 }
 
-
+let inputPaciente = $('input#Paciente_NomePaciente')
+let inputPacienteId = $('input#pacienteId')
+let loadingPaciente = document.querySelector('div#loadPaciente.autocomplete-feedback')
+inputPaciente.autocomplete({
+        autoFocus: false,
+        source: (request, response) => {                   
+            fetch('/pacientes/autocomplete?query=' + request.term)
+            .then(resp => resp.json())
+            .then(dados => {                       
+                    if(!dados.length){
+                        var result = [
+                            {
+                                label: 'Nenhum resultado encontrado', 
+                                value: ''
+                            }
+                        ];
+                        response(result);
+                    }
+                    else{
+                        // normal response
+                        response($.map(dados, item => {
+                            return {
+                                label: item.nomePaciente,
+                                nomePaciente: item.nomePaciente,
+                                pacienteId: item.pacienteId,
+                            }
+                        }));
+                    }
+            })                  
+        },
+        search: () => {
+            loadingPaciente.style.display = 'flex';
+        },
+        response: () => {
+            loadingPaciente.style.display = 'none';                      
+        },
+        select: (event, ui) => {
+            inputPaciente.val(ui.item.nomePaciente);
+            inputPacienteId.val(ui.item.pacienteId);
+            event.preventDefault();
+        },
+        focus: (event, ui) => {
+            inputPaciente.val(ui.item.nomePaciente);
+            inputPacienteId.val(ui.item.pacienteId);
+            event.preventDefault();
+        },
+})
+let inputMedico = $('input#Medico_NomeMedico')
+let inputMedicoId = $('input#medicoId')
+let loadingMedico = document.querySelector('div#loadMedico.autocomplete-feedback')
+inputMedico.autocomplete({
+        autoFocus: false,
+        source: (request, response) => {                   
+            fetch('/medicos/autocomplete?query=' + request.term)
+            .then(resp => resp.json())
+            .then(dados => {                       
+                    if(!dados.length){
+                        var result = [
+                            {
+                                label: 'Nenhum resultado encontrado', 
+                                value: ''
+                            }
+                        ];
+                        response(result);
+                    }
+                    else{
+                        // normal response
+                        response($.map(dados, item => {
+                            return {
+                                label: item.nomeMedico,
+                                nomeMedico: item.nomeMedico,
+                                medicoId: item.medicoId,
+                            }
+                        }));
+                    }
+            })                  
+        },
+        search: () => {
+            loadingMedico.style.display = 'flex';
+        },
+        response: () => {
+            loadingMedico.style.display = 'none';                      
+        },
+        select: (event, ui) => {
+            inputMedico.val(ui.item.nomeMedico);
+            inputMedicoId.val(ui.item.medicoId);
+            event.preventDefault();
+        },
+        focus: (event, ui) => {
+            inputMedico.val(ui.item.nomeMedico);
+            inputMedicoId.val(ui.item.medicoId);
+            event.preventDefault();
+        },
+})

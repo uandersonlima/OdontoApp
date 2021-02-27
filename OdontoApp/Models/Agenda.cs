@@ -9,7 +9,7 @@ namespace OdontoApp.Models
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public DateTime Inicio { get; set; }
-        public Nullable<DateTime> Fim { get; set; }
+        public DateTime Fim { get; set; }
         public string Situacao { get; set; }
         public bool Realizado { get; set; }
         public int? PacienteId { get; set; }

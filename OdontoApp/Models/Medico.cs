@@ -20,10 +20,6 @@ namespace OdontoApp.Models
         [ForeignKey("Usuario")]
         public string UsuarioId { get; set; }
         public virtual ApplicationUser Usuario { get; set; }
-
-
-
-
         public List<Agenda> Agendas { get; set; } 
         public List<PerguntaAnamnese> PerguntaAnamneses { get; set; } 
         public List<Atestado> Atestados { get; set; }

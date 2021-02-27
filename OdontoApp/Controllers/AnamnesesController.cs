@@ -160,5 +160,9 @@ namespace OdontoApp.Controllers
             }
             return Json(jsondata, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore, Formatting = Formatting.None });
         }
+
+        #region Tarefas entre Anamnese e Paciente
+
+        #endregion
     }
 }

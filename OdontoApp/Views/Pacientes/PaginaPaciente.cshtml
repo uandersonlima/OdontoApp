@@ -36,9 +36,6 @@
                             </select>
                         </div>
                     </div>
-                    <div class="">
-                        <button class="btn btn-primary btn-rounded editPaciente font-weight-bold">Editar</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -67,129 +64,25 @@
             <div class="row">
                 <!--Bloco 1 sobre -->
                 <div class="col-md-6">
+                    <div class="spinner1 pt-0" id="loadDetalhes">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
+                    </div>
                     <div class="card col-md-11 mx-auto">
                         <div class="card-body">
-                            <div class="spinner1 pt-0" id="loadDetalhes">
-                                <div class="bounce1"></div>
-                                <div class="bounce2"></div>
-                                <div class="bounce3"></div>
-                            </div>
                             <div id="detalhes" class="row ml-md-5"></div>
                         </div>
                     </div>
                 </div>
                 <!--Bloco 2 sobre -->
-                <style>
-                    .card {
-                        border-radius: 10px;
-                    }
-
-                    .border {
-                        border-radius: 10px;
-                    }
-
-                    .span1 {
-                        color: #9C9C9C;
-                        font-family: 'Roboto', sans-serif;
-                    }
-
-                    .span2 {
-                        color: #363636;
-                    }
-
-                    .confirmed {
-                        color: #00CD00;
-                        font-family: 'Roboto', sans-serif;
-                    }
-
-                    select {
-                        font-size: 50px;
-                    }
-
-                    .ic {
-                        text-align: right;
-                    }
-                </style>
-                <div class="col-md-6">
-                    <div class="card col-md-11 mx-auto">
-                        <div class="card-body">
-                            <div class="spinner1" id="loadAgenda">
-                                <div class="bounce1"></div>
-                                <div class="bounce2"></div>
-                                <div class="bounce3"></div>
-                            </div>
-                            <div class="d-flex  d-md-block row ml-2" id="agendas">
-                                <span class="span1 h3">
-                                    Horário:
-                                    <span class="span2 ml-4">
-                                        <strong style="margin-left:12px;">09:00</strong>
-                                    </span>
-                                </span>
-                                <div class="w-100"></div>
-                                <span class="span1 h3">
-                                    Situação:
-
-                                </span>
-                                <span class="confirmed h4 ml-4">
-                                    <strong>Confirmado</strong>
-                                    <i class="h4 fa fa-check text-success ml-2"></i>
-                                </span>
-
-                                <!-- <span class="h4 ml-4 text-warning" style=" font-family: 'Roboto', sans-serif; ">
-                                    <strong>Pendente</strong>
-                                        <i class="h4 fa fa-minus text-warning ml-2"></i>
-                                </span>
-                                 <span class="h4 ml-4 text-danger" style=" font-family: 'Roboto', sans-serif; ">
-                                    <strong>Cancelado</strong>
-                                         <i class="h4 fa fa-times text-danger ml-2"></i>
-                                </span>              -->
-                                <div class="w-100"></div>
-                                <span class="span1 h3">
-                                    Descrição:
-                                    <span class="span2 ml-1 h4">
-                                        <strong style="margin-left:12px;">Revisão e realização de restauração dentaria e extração dos dentes molares</strong>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
+                <div class="col-md-6 mb-4">
+                    <div class="spinner1" id="loadAgenda">
+                        <div class="bounce1"></div>
+                        <div class="bounce2"></div>
+                        <div class="bounce3"></div>
                     </div>
-                    <div class="form-group col-md-4 ml-md-5">
-                        <select class="form-control form-control-md input-pill bg-primary text-white font-weight-bold">
-                            <option>Consultas Realizadas</option>
-                            <option>Consultas Pendentes</option>
-                            <option>Consultas Canceladas</option>
-                        </select>
-                    </div>
-                    <div class="card col-md-11 mx-auto p-0 m-0 border border-secondary">
-                        <div class="card-body p-2">
-                            <span class="h3 span2">
-                                <strong>15/05/1999</strong>
-                                <i class="h2 fa fa-minus text-black-50 ml-3 "></i>
-                                <span class="h3 span2 ml-3"><strong>09:00</strong></span>
-                            </span>
-                            <i class="h2 fa fa-minus text-warning"></i>
-                        </div>
-                    </div>
-                    <div class="card col-md-11 mx-auto p-0 m-0 border border-secondary">
-                        <div class="card-body p-2">
-                            <span class="h3 span2">
-                                <strong>15/05/1999</strong>
-                                <i class="h2 fa fa-minus text-black-50 ml-3 "></i>
-                                <span class="h3 span2 ml-3"><strong>09:00</strong></span>
-                            </span>
-                            <i class="h2 fa fa-check text-success"></i>
-                        </div>
-                    </div>
-                    <div class="card col-md-11 mx-auto p-0 m-0 border border-secondary">
-                        <div class="card-body p-2">
-                            <span class="h3 span2">
-                                <strong>15/05/1999</strong>
-                                <i class="h2 fa fa-minus text-black-50 ml-3 "></i>
-                                <span class="h3 span2 ml-3"><strong>09:00</strong></span>
-                            </span>
-                            <i class="h2 fa fa-times text-danger "></i>
-                        </div>
-                    </div>
+                    <div id="agendas"></div>
                 </div>
             </div>
         </div>
@@ -329,13 +222,13 @@
             loadDetalhes.hidden = false
             $.ajax({
                 type: "GET",
-                url: `/Pacientes/Sobre?id=${@Model.PacienteId}`,
+                url: `/Pacientes/Sobre?pacienteid=${@Model.PacienteId}`,
                 contentType: 'application/json',
-                success: function (PartialView) {
+                success: partialview => {
                     loadDetalhes.hidden = true
-                    $("#detalhes").html(PartialView)
+                    $("#detalhes").html(partialview)
                 },
-                error: function (code) {
+                error: code => {
                     loadDetalhes.hidden = true
                     $("#detalhes").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
                 }
@@ -347,11 +240,11 @@
                 type: "GET",
                 url: `/Orcamentos/Index?pacienteId=${@Model.PacienteId}`,
                 contentType: 'application/json',
-                success: function (PartialView) {
+                success: partialview => {
                     loadOrcamento.hidden = true
-                    $("#orcamentos").html(PartialView)
+                    $("#orcamentos").html(partialview)
                 },
-                error: function (code) {
+                error: code => {
                     loadOrcamento.hidden = true
                     $("#orcamentos").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
                 }
@@ -363,35 +256,43 @@
                 type: "GET",
                 data: {id:@Model.PacienteId, busca:search},
                 url: '/Pacientes/AnamnesesInPaciente/',
-                success: function (PartialView) {
-                loadAnamnese.hidden = true
-                $("#anamneses").html(PartialView)
+                success: partialview => {
+                    loadAnamnese.hidden = true
+                    $("#anamneses").html(partialview)
                 },
-                error: function (code) {
+                error: code => {
                 loadAnamnese.hidden = true
                 $("#anamneses").html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
                 }
             })
         }
-        function Agenda(inicio = null, fim = null) {
-            loadAgenda.hidden = false;
-            $('#agendas').load(`/Pacientes/AgendasPaciente?id=${@Model.PacienteId}&inicio=${inicio}&fim=${fim}`, function () {
-                loadAgenda.hidden = true;
+        function Agenda(search=null, numberpag=null, recordperpage=null,inicio = null, fim = null) {
+            loadAgenda.hidden = false
+            let appview = {
+                search:search,
+                numberpag:numberpag,
+                recordperPage:recordperpage,
+                start:inicio,
+                end:fim
+            }
+            $.ajax({
+                type: "GET",
+                data: {pacienteid:@Model.PacienteId, appview:appview},
+                url: '/Pacientes/PacienteAgendas/',
+                success: partialview => {
+                    loadAgenda.hidden = true
+                    $('#agendas').html(partialview)
+                },
+                error: code => {
+                loadAnamnese.hidden = true
+                $('#agendas').html(`<h2 class="text-danger">Algo deu errado, tente novamente! Error ${code.status}<h2>`)
+                }
             })
         }
         function Tratamento() {
             $('#tratamentos').load(`/Pacientes/PacienteTratamento?id=${@Model.PacienteId}`)
         }
         document.querySelector('input[name="buscaAnamnese"]').addEventListener('input', function () { Anamnese(this.value) })
-
-        /*---------MODAL_EDIT------------*/
-        $(".editPaciente").click(function () {
-            let idEditPaciente = $(this).attr("data-id");
-            $("#modal").load("/Pacientes/Edit/" + idEditPaciente, function () {
-                $("#Tmodal").modal();
-            })
-        })
-        /*------------------------------*/
     </script>
     @*Carrega em caso de erro no modelstate*@
     @if (TempData["Edit"] != null)

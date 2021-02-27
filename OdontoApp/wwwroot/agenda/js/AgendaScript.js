@@ -1,10 +1,27 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     let calendar
-    let eventos = []
     const urlGet = '/Agendas/GetEvents'
     let agendaEl = document.querySelector('div#agenda')
+    let formHTML = document.querySelector('form#formAgenda')
+    let formObject = {
+        title: formHTML.querySelector('input[id="titulo"]'),
+        modal_Title: formHTML.parentNode.parentNode.querySelector('h4#TitleModal'),
+        deleteButton: formHTML.parentNode.parentNode.querySelector('button.deleteEvent'),
+        agendaId: formHTML.querySelector('input[id="agendaId"]'),
+        horaInicio: formHTML.querySelector('input[id="inicio"]'),
+        horaFim: formHTML.querySelector('input[id="fim"]'),
+        dia: formHTML.querySelector('input[id="dia"]'),
+        situacao:  formHTML.querySelector('select[id="situacao"]'),
+        pacienteId: formHTML.querySelector('input[id="pacienteId"]'),
+        medicoId: formHTML.querySelector('input[id="medicoId"]'),
+        nomePaciente: formHTML.querySelector('input[id="Paciente_NomePaciente"]'),
+        nomeMedico: formHTML.querySelector('input[id="Medico_NomeMedico"]'),
+        usuarioId: formHTML.querySelector('input[id="usuarioId"]'),
+        descricao: formHTML.querySelector('textarea[id="descricao"]'),
+        span: formHTML.querySelector('span.circle')
+    }
 
-    $('.date-time').mask('00/00/0000 00:00:00')
+    $('.date-time').mask('00:00')
 
     /* Inicia o calendário e Tema
     -----------------------------------------------------------------*/
@@ -30,7 +47,7 @@
             prevYear: 'fa-angle-double-left',
             nextYear: 'fa-angle-double-right'
         },
-        defaultView: '',
+        defaultView: 'timeGridWeek',
         eventColor: '#0275d8',
         locale: 'pt',
         weekNumbers: false,
@@ -42,60 +59,42 @@
         eventDrop: function (element) {
             let start = moment(element.event.start).format("DD/MM/YYYY HH:mm:ss")
             let end = moment(element.event.end).format("DD/MM/YYYY HH:mm:ss")
-            //let eventoreal = eventos.find(dados => dados.id == element.event.id) //busca somente o element necessário
-            console.log(element.event)
+    
             let updateAgenda = {
-                Id: Number(element.event.id),
+                AgendaId: Number(element.event.id),
                 Titulo: element.event.title,
                 Inicio: start,
                 Fim: end,
                 Descricao: element.event.extendedProps.description,
                 Situacao: element.event.backgroundColor,
-                DiaTodo: element.event.allDay,
-                ClienteId: element.event.extendedProps.clienteid,
-                PacienteId: element.event.extendedProps.pacienteid
+                UsuarioId: element.event.extendedProps.usuarioId,
+                PacienteId: element.event.extendedProps.pacienteId,
+                MedicoId: element.event.extendedProps.medicoId,
+                Realizado: element.event.extendedProps.realizado,
             }
             UpdateAgendaObject(updateAgenda)
         },
         eventClick: function (element) {
-            console.log(element)
             /*Limpa o form */
-            document.querySelector('#modalAgenda #formAgenda').reset()
+            formHTML.reset()
             /*-------------*/
             $('#modalAgenda').modal('show')
-            document.querySelector('h4#TitleModal').textContent = 'Alterar Consulta'
-            document.querySelector('#modalAgenda button.deleteEvent').style.display = 'flex'
+            formObject.modal_Title.textContent = 'Alterar Consulta'
+            formObject.deleteButton.style.display = 'flex'
             /*----------------------------Recupera valores dos campos------------------------------*/
-            let id = element.event.id
-            document.querySelector('#modalAgenda input[id="agendaId"]').value = id
-
-            let clienteid = element.event.extendedProps.clienteid
-            document.querySelector('#modalAgenda input[id="clienteId"]').value = clienteid
-
-            let pacienteid = element.event.extendedProps.pacienteid
-            document.querySelector('#modalAgenda select[id="NomePaciente"]').value = pacienteid
-
-            let titulo = element.event.title
-            document.querySelector('#modalAgenda input[id="titulo"]').value = titulo
-
-            let inicio = moment(element.event.start).format("DD/MM/YYYY HH:mm:ss")
-            document.querySelector('#modalAgenda input[id="inicio"]').value = inicio
-
-            let fim = moment(element.event.end).format("DD/MM/YYYY HH:mm:ss")
-            document.querySelector('#modalAgenda input[id="fim"]').value = fim
-
-            let diatodo = element.event.allDay
-            if (diatodo) {
-                $('#divfim').hide()
-            } else {
-                $('#divfim').show()
-            }
-
-            document.querySelector('#modalAgenda input[id="diatodo"]').checked = diatodo
-            let situacao = element.event.backgroundColor
-            document.querySelector('#modalAgenda select[id="situacao"]').value = situacao
-            let descricao = element.event.extendedProps.description
-            document.querySelector('#modalAgenda textarea[id="descricao"]').value = descricao
+            formObject.agendaId.value = element.event.extendedProps.agendaId
+            formObject.usuarioId.value = element.event.extendedProps.usuarioId
+            formObject.pacienteId.value = element.event.extendedProps.pacienteId
+            formObject.medicoId.value = element.event.extendedProps.medicoId
+            formObject.nomePaciente.value = element.event.extendedProps.nomePaciente
+            formObject.nomeMedico.value = element.event.extendedProps.nomeMedico
+            formObject.title.value = element.event.title
+            formObject.dia.value = moment(element.event.start).format("YYYY-MM-DD")
+            formObject.horaInicio.value = moment(element.event.start).format("HH:mm");
+            formObject.horaFim.value = moment(element.event.end).format("HH:mm")
+            formObject.situacao.value = element.event.backgroundColor
+            formObject.span.style.backgroundColor = element.event.backgroundColor
+            formObject.descricao.value = element.event.extendedProps.description
             /*-------------------------------------------------------------------------------------*/
 
         },
@@ -104,34 +103,38 @@
             let fim = moment(element.event.end).format("DD/MM/YYYY HH:mm:ss")
             //let eventoreal = eventos.find(dados => dados.id == element.event.id) //busca somente o element necessário
             let updateAgenda = {
-                Id: Number(element.event.id),
+                AgendaId: Number(element.event.id),
                 Titulo: element.event.title,
                 Inicio: inicio,
                 Fim: fim,
                 Descricao: element.event.extendedProps.description,
                 Situacao: element.event.backgroundColor,
-                DiaTodo: element.event.allDay,
-                ClienteId: element.event.extendedProps.clienteid,
-                PacienteId: element.event.extendedProps.pacienteid
+                UsuarioId: element.event.extendedProps.usuarioId,
+                PacienteId: element.event.extendedProps.pacienteId,
+                MedicoId: element.event.extendedProps.medicoId,
+                Realizado: element.event.extendedProps.realizado,
             }
             UpdateAgendaObject(updateAgenda)
         },
         select: function (element) {
             /*Limpa o form */
-            document.querySelector('#modalAgenda #formAgenda').reset()
+            formHTML.reset()
             /*-------------*/
             /*Exibe e edita o modal*/
             $('#modalAgenda').modal('show')
-            $('#divfim').show()
-            document.querySelector('h4#TitleModal').textContent = 'Adicionar Consulta'
-            document.querySelector('#modalAgenda button.deleteEvent').style.display = 'none'
+       
+            formObject.modal_Title.textContent = 'Adicionar Consulta'
+            formObject.deleteButton.style.display = 'none'
             /*-------------*/
-            document.querySelector('#modalAgenda input[id="agendaId"]').value = ""
-            let inicio = moment(element.start).format("DD/MM/YYYY HH:mm:ss")
-            document.querySelector('#modalAgenda input[id="inicio"]').value = inicio
-            let fim = moment(element.end).format("DD/MM/YYYY HH:mm:ss")
-            document.querySelector('#modalAgenda input[id="fim"]').value = fim
-            document.querySelector('#modalAgenda select[id="situacao"]').value = '#f0ad4e'
+            formObject.agendaId.value = ""
+
+            formObject.dia.value = moment(element.start).format("YYYY-MM-DD")
+            formObject.horaInicio.value = moment(element.start).format("HH:mm");
+            formObject.horaFim.value = moment(element.end).format("HH:mm")
+
+            formObject.situacao.value = '#f0ad4e'
+            formObject.span.style.backgroundColor = '#f0ad4e'
+
             calendar.unselect()
         },
         events: function (info, solution, failure) {
@@ -139,19 +142,22 @@
             /*solution---eventos-resultantes-da-operacao-asyncrona*/
             /*failure---retorna-a-falha-referentes-ao-da-operacao*/
             /*remove classe indesejada*/
-            eventos = []
             fetch(urlGet + `?inicio=${info.startStr}&fim=${info.endStr}`)
                 .then(response => response.json())
                 .then(dados => eventos = dados.map(dados => ({
-                    id: dados.Id,
+                    id:dados.AgendaId,
+                    agendaId: dados.AgendaId,
                     title: dados.Titulo,
                     description: dados.Descricao,
                     start: moment(dados.Inicio).format(),
-                    end: moment(dados.Fim).format() != null ? moment(dados.Fim).format() : null,
+                    end: moment(dados.Fim).format(),
                     color: dados.Situacao,
-                    allDay: dados.DiaTodo,
-                    clienteid: dados.ClienteId,
-                    pacienteid: dados.PacienteId
+                    realizado: dados.Realizado,
+                    usuarioId: dados.UsuarioId,
+                    pacienteId: dados.PacienteId,
+                    medicoId: dados.MedicoId,
+                    nomeMedico: dados.Medico != null ? dados.Medico.NomeMedico : "",
+                    nomePaciente: dados.Paciente != null ? dados.Paciente.NomePaciente : "",
                 })))
                 .then(eventos => solution(eventos))
                 .catch(error => console.error('Unable to add item.', error))

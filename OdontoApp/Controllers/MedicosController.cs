@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OdontoApp.Libraries.Filtro;
 using OdontoApp.Models;
@@ -18,6 +19,20 @@ namespace OdontoApp.Controllers
             this.medicoSvc = medicoSvc;
         }
 
+        [HttpGet("[controller]/[action]")]
+        public async Task<IActionResult> AutoComplete(string query)
+        {
+            try
+            {
+                var medicos = medicoSvc.GetAllAsync(new AppView{Search = query}).Result.Select(x => new { x.NomeMedico, x.MedicoId});
+
+                return Ok(medicos);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
         [HttpGet]
         public IActionResult Index() => View();
 

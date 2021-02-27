@@ -1,0 +1,107 @@
+<style>
+    .card {
+        border-radius: 10px;
+    }
+
+    .border {
+        border-radius: 10px;
+    }
+
+    .span1 {
+        color: #9C9C9C;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .span2 {
+        color: #363636;
+    }
+
+    .confirmed {
+        color: #00CD00;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    select {
+        font-size: 50px;
+    }
+
+    .ic {
+        text-align: right;
+    }
+</style>
+@model PaginationList<Agenda>
+<div class="card col-md-11 mx-auto">
+    <div class="card-body">
+        <div class="d-flex  d-md-block row ml-2">
+            <span class="span1 h3">
+                Horário:
+                <span class="span2 ml-4">
+                    <strong style="margin-left:12px;">09:00</strong>
+                </span>
+            </span>
+            <div class="w-100"></div>
+            <span class="span1 h3">
+                Situação:
+
+            </span>
+            <span class="confirmed h4 ml-4">
+                <strong>Confirmado</strong>
+                <i class="h4 fa fa-check text-success ml-2"></i>
+            </span>
+            <!-- <span class="h4 ml-4 text-warning" style=" font-family: 'Roboto', sans-serif; ">
+                <strong>Pendente</strong>
+                    <i class="h4 fa fa-minus text-warning ml-2"></i>
+            </span>
+                <span class="h4 ml-4 text-danger" style=" font-family: 'Roboto', sans-serif; ">
+                <strong>Cancelado</strong>
+                        <i class="h4 fa fa-times text-danger ml-2"></i>
+            </span>              -->
+
+            <div class="w-100"></div>
+            <span class="span1 h3">
+                Descrição:
+                <span class="span2 ml-1 h4">
+                    <strong style="margin-left:12px;">Revisão e realização de restauração dentaria e extração dos dentes
+                        molares</strong>
+                </span>
+            </span>
+        </div>
+    </div>
+</div>
+<div class="form-group col-md-5 ml-md-5">
+    <select class="form-control form-control-md input-pill bg-primary text-white font-weight-bold">
+        <option>Consultas Realizadas</option>
+        <option>Consultas Pendentes</option>
+        <option>Consultas Canceladas</option>
+    </select>
+</div>
+<div class="card col-md-11 mx-auto p-0 m-1">
+    <div class="card-body py-2 px-4">
+        <span class="h3 span2">
+            <strong>15/05/1999</strong>
+            <i class="h2 fa fa-minus text-black-50 ml-3 "></i>
+            <span class="h3 span2 ml-3"><strong>09:00</strong></span>
+        </span>
+        <i class="h2 fa fa-minus text-warning"></i>
+    </div>
+</div>
+<div class="card col-md-11 mx-auto p-0  m-1">
+    <div class="card-body py-2 px-4">
+        <span class="h3 span2">
+            <strong>15/05/1999</strong>
+            <i class="h2 fa fa-minus text-black-50 ml-3 "></i>
+            <span class="h3 span2 ml-3"><strong>09:00</strong></span>
+        </span>
+        <i class="h2 fa fa-check text-success"></i>
+    </div>
+</div>
+<div class="card col-md-11 mx-auto p-0  m-1">
+    <div class="card-body py-2 px-4">
+        <span class="h3 span2">
+            <strong>15/05/1999</strong>
+            <i class="h2 fa fa-minus text-black-50 ml-3 "></i>
+            <span class="h3 span2 ml-3"><strong>09:00</strong></span>
+        </span>
+        <i class="h2 fa fa-times text-danger "></i>
+    </div>
+</div>

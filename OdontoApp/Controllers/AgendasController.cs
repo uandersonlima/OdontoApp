@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using OdontoApp.Libraries.Filtro;
 using OdontoApp.Models;
 using OdontoApp.Models.Helpers;
+using OdontoApp.Models.ViewModel;
 using OdontoApp.Services.Interfaces;
 using System.Threading.Tasks;
 
@@ -15,25 +16,32 @@ namespace OdontoApp.Controllers
     {
         private readonly IAgendaService agendaSvc;
         private readonly IPacienteService pacienteSvc;
+        private readonly IMedicoService medicoSvc;
 
-        public AgendasController(IAgendaService agendaSvc, IPacienteService pacienteSvc)
+        public AgendasController(IAgendaService agendaSvc, IPacienteService pacienteSvc, IMedicoService medicoSvc)
         {
             this.agendaSvc = agendaSvc;
             this.pacienteSvc = pacienteSvc;
+            this.medicoSvc = medicoSvc;
         }
+
         public async Task<IActionResult> Index()
         {
-            ViewData["PacienteId"] = new SelectList(await pacienteSvc.GetAllAsync(), "PacienteId", "NomePaciente");
-            return View();
+            var pacientesMedicos = new PacientesMedicos
+            {
+                Medicos = new SelectList(await medicoSvc.GetAllAsync(), "MedicoId", "NomeMedico"),
+                Pacientes = new SelectList(await pacienteSvc.GetAllAsync(),"PacienteId","NomePaciente")
+            };
+            return View(pacientesMedicos);
         }
 
         public async Task<IActionResult> GetEvents(AppView appQuery)
         {
-            return Json(await agendaSvc.GetAllAsync(appQuery), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include, Formatting = Formatting.None });
-        }
+            return Json(await agendaSvc.GetAllAsync(appQuery), new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include, Formatting = Formatting.None, ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+        }      
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEvent([FromForm]Agenda agenda)
+        public async Task<IActionResult> UpdateEvent([FromForm] Agenda agenda)
         {
             var status = false;
             if (!(agenda.AgendaId is 0))
@@ -44,8 +52,10 @@ namespace OdontoApp.Controllers
 
             return Json(new { status }, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include, Formatting = Formatting.None });
         }
+
+
         [HttpPost]
-        public async Task<IActionResult> AddEvent([FromForm]Agenda agenda)
+        public async Task<IActionResult> AddEvent([FromForm] Agenda agenda)
         {
             bool status = false;
             if (!(agenda is null))

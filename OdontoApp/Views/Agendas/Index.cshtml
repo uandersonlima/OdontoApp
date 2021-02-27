@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout_1.cshtml";
 }
 
-@model Paciente
+@model PacientesMedicos
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
 @functions{
     public string GetAntiXsrfRequestToken()
@@ -15,11 +15,11 @@
 <input type="hidden" id="RequestVerificationToken"
        name="RequestVerificationToken" value="@GetAntiXsrfRequestToken()">
 <!---Matenha esses links aqui-->
-<link href='~/agenda/packages/core/main.css' rel='stylesheet' />
-<link href='~/agenda/packages/daygrid/main.css' rel='stylesheet' />
-<link href='~/agenda/packages/timegrid/main.css' rel='stylesheet' />
-<link href='~/agenda/packages/list/main.css' rel='stylesheet' />
-<link href='~/agenda/packages/bootstrap/main.css' rel='stylesheet' />
+<link href='~/agenda/resources/core/main.css' rel='stylesheet' />
+<link href='~/agenda/resources/daygrid/main.css' rel='stylesheet' />
+<link href='~/agenda/resources/timegrid/main.css' rel='stylesheet' />
+<link href='~/agenda/resources/list/main.css' rel='stylesheet' />
+@*<link href='~/agenda/resources/bootstrap/main.css' rel='stylesheet' />*@
 
 <!--Corpo principal do calendário-->
 <div class="content p-3">
@@ -42,78 +42,84 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content shadow">
             <!--Titulo do modal-->
-            <div class="modal-header">
-                <h4 class="modal-title font-weight-bold text-muted" id="TitleModal">Título do modal</h4>
+            <div class="modal-header bg-primary">
+                <h4 class="text-center modal-title font-weight-bold text-muted ml-2" id="TitleModal">Título do modal</h4>
+                <i class="fas fa-times fa-2x text-white exit mr-2" data-dismiss="modal"></i>
             </div>
             <!--Conteudo do modal-->
             <div class="modal-body">
-                <form id="formAgenda">
+                <form id="formAgenda">  
                     <div class="form-group row">
-                        <div class="col-sm-8">
-                            <label asp-for="NomePaciente" class="col-sm-4 col-form-label"></label>
-                            <select asp-for="NomePaciente" class="form-control" asp-items="ViewBag.PacienteId">
-                                <option value="" class="text-muted">Escolha um paciente...</option>
-                            </select>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <label for="titulo" class="col-sm-4 col-form-label">Título</label>
-                            <input type="text" class="form-control" id="titulo">
-                            <input type="hidden" id="agendaId">
-                            <input type="hidden" id="clienteId">
+                        <div class="col-1 d-flex align-items-end justify-content-center pb-2"><i class="text-muted fas fa-font fa-2x"></i></div>              
+                        <div class="col-11 form-row">                           
+                                <label for="titulo" class="col-4 col-form-label font-weight-bold text-muted">Título</label>
+                                <input type="text" class="form-control" id="titulo">
+                                <input type="hidden" id="agendaId">
+                                <input type="hidden" id="usuarioId">
                         </div>
                     </div>
-
-
                     <div class="form-group row">
-
-                        <div class="col-sm-2 ">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="form-control custom-control-input" id="diatodo">
-                                <label for="diatodo" class="custom-control-label text-muted d-flex justify-content-center">24 horas</label>
+                        <div class="col-1 d-flex align-items-end justify-content-center pb-2"><i class="text-muted far fa-user fa-2x"></i></div>  
+                        <div class="col-11 has-feedback form-row">
+                            <label asp-for="Paciente.NomePaciente" class="col-4 col-form-label font-weight-bold text-muted">Paciente</label>
+                            <input asp-for="Paciente.NomePaciente" type="text" class="form-control text-muted" autocomplete="off" placeholder="Informe nome, email ou cpf do paciente">
+                            <div id="loadPaciente" class="autocomplete-feedback form-control-feedback" style="display: none;"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
+                            <input type="hidden" id="pacienteId">
+                        </div>                        
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-1 d-flex align-items-end justify-content-center pb-2"><i class="text-muted far fa-user-nurse fa-2x"></i></div>  
+                        <div class="col-11 has-feedback form-row">
+                            <label asp-for="Medico.NomeMedico" class="col-4 col-form-label font-weight-bold text-muted">Médico</label>
+                            <input asp-for="Medico.NomeMedico" type="text" class="form-control text-muted" autocomplete="off" placeholder="Informe nome ou CRO">
+                            <div id="loadMedico" class="autocomplete-feedback form-control-feedback" style="display: none;"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
+                            <input type="hidden" id="medicoId">
+                        </div>   
+                    </div>                    
+                    <div class="form-group row">
+                        <div class="col-1 d-flex align-items-end justify-content-center pb-2"><i class="text-muted far fa-clock fa-2x"></i></div> 
+                        <div class="col-11 form-row">  
+                            <div class="col-6">
+                                <label for="dia" class="col-form-label font-weight-bold text-muted">Dia</label>
+                                <input type="date" class="form-control" id="dia"/>
                             </div>
-
-                        </div>
-                        <div class="col-sm-5 ">
-                            <label for="inicio" class="col-sm-4 col-form-label">Horário Inicial</label>
-                            <div class="col-12">
-                                <input type="text" class="form-control date-time" id="inicio">
+                            <div class="col-3">
+                                <label for="inicio" class="col-form-label font-weight-bold text-muted">Início</label>
+                                <input type="text" class="form-control date-time" id="inicio">  
                             </div>
-                        </div>
-                        <div class="col-sm-5 " id="divfim">
-                            <label for="fim" class="col-sm-4 col-form-label">Horário Final</label>
-                            <div class="col-12">
+                            <div class="col-3">
+                                <label for="fim" class="col-form-label font-weight-bold text-muted">Fim</label>
                                 <input type="text" class="form-control date-time" id="fim">
                             </div>
-                        </div>
-
+                        </div>  
                     </div>
-
-
                     <div class="form-group row">
-                        <div class="col-sm-4">
-                            <label for="situacao" class="col-sm-4 col-form-label">Situação</label>
-                            <select id="situacao" class="form-control">
-                                <option value="#5cb85c">Confirmado</option>
+                        <div class="col-1 d-flex align-items-end justify-content-center pb-2"><i class="text-muted far fa-calendar-check fa-2x"></i></div> 
+                        <div class="col-5">
+                            <label for="situacao" class="col-sm-4 col-form-label font-weight-bold text-muted">Situação</label>
+                            <select id="situacao" class="form-control" onchange="this.parentNode.parentNode.querySelector('span').style.backgroundColor = this.value">
+                                <option value="#5cb85c">Confirmado <i class="fa fa-angle-down"></i></option>
                                 <option value="#f0ad4e">Pendente</option>
                                 <option value="#d9534f">Cancelado</option>
                             </select>
                         </div>
-                        <div class="col-sm-8">
-                            <label for="descricao" class="col-sm-4 col-form-label">Descricao</label>
-                            <textarea type="text" class="form-control" id="descricao" cols="40" rows="4"></textarea>
-                        </div>
+                        <div class="col-1 d-flex align-items-end justify-content-center pb-2"><span class="circle"></span></div> 
                     </div>
-
+                    <div class="form-group row">
+                         <div class="col-1 d-flex align-items-center justify-content-center pb-2"><i class="text-muted fas fa-align-left fa-2x"></i></div> 
+                         <div class="col-11 form-row">   
+                            <label for="descricao" class="col-sm-4 col-form-label font-weight-bold text-muted">Descricao</label>
+                            <textarea type="text" class="form-control" id="descricao" cols="40" rows="4"></textarea>
+                         </div>
+                    </div>
                 </form>
             </div>
             <!--rodapé do modal-->
             <div class="modal-footer text-right">
-                <button type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal">FECHAR</button>
                 <button type="button" class="ml-1 btn btn-danger  btn-sm deleteEvent">EXCLUIR</button>
-                <button type="button" class="ml-1 btn btn-success  btn-sm saveEvent">SALVAR</button>
+                <button type="button" class="ml-1 btn btn-sm btn-primary font-weight-bold saveEvent">SALVAR</button>
             </div>
-        </div>
+        </div> 
     </div>
 </div>
 @section Scripts{
@@ -122,13 +128,13 @@
         let objCalendar
         let token = $('input[name="RequestVerificationToken"]').val();
     </script>
-    <script src='~/agenda/packages/core/main.js'></script>
-    <script src='~/agenda/packages/interaction/main.js'></script>
-    <script src='~/agenda/packages/daygrid/main.js'></script>
-    <script src='~/agenda/packages/timegrid/main.js'></script>
-    <script src='~/agenda/packages/list/main.js'></script>
-    <script src='~/agenda/packages/core/locales-all.js'></script>
-    <script src='~/agenda/packages/bootstrap/main.js'></script>
+    <script src='~/agenda/resources/core/main.js'></script>
+    <script src='~/agenda/resources/interaction/main.js'></script>
+    <script src='~/agenda/resources/daygrid/main.js'></script>
+    <script src='~/agenda/resources/timegrid/main.js'></script>
+    <script src='~/agenda/resources/list/main.js'></script>
+    <script src='~/agenda/resources/core/locales-all.js'></script>
+    <script src='~/agenda/resources/bootstrap/main.js'></script>
     <script src='~/agenda/js/moment.min.js'></script>
     <script src='~/agenda/js/theme-chooser.js'></script>
     <script src='~/agenda/js/botoesAgendaScript.js'></script>
