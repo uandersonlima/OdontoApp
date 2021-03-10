@@ -1,0 +1,84 @@
+@model Paciente
+        <div class="container">
+            <h2>RELACIONAR ANAMNESE</h2>
+            <hr />
+            <div class="row">
+                <div class="ml-auto mr-auto col-md-12">
+                    <div class="form-group row">                   
+                        <div class="col-6 form-row">
+                            <label asp-for="NomePaciente" class="col-4 col-form-label"></label>
+                            <input type="text" value="@Model.NomePaciente" class="form-control text-muted" readonly/>
+                            <input type="hidden" id="pacienteId" name="" value="@Model.PacienteId" />
+                        </div>
+                        <div class="col-6 has-feedback form-row">
+                            <label asp-for="Anamneses[0].DescricaoAnamnese" class="col-4 col-form-label font-weight-bold text-muted"></label>
+                            <input asp-for="Anamneses[0].DescricaoAnamnese" type="text" class="form-control text-muted" autocomplete="off" placeholder="Informe o nome do modelo">
+                            <div id="loadAnamnese" class="autocomplete-feedback form-control-feedback" style="display: none;"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
+                            <input type="hidden" id="anamneseId">
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+    <div class="mt-5" id="carregar"></div>
+    <div class="form-group text-right pt-3" id="close">
+        <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+    </div>
+
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+    
+    let pacienteIdHTML = document.querySelector('input[id="pacienteId"]')
+    let anamneseIdHTML = document.querySelector('input[id="anamneseId"]')
+    let action = () => 
+    {   
+        $("#carregar").load("/anamneses/AddAnamneseToPaciente?pacienteId=" + pacienteIdHTML.value + "&anamneseId=" + anamneseIdHTML.value)
+        document.querySelector('div#close').hidden = true;
+    }
+
+    let inputAnamnese = $('input#Anamneses_0__DescricaoAnamnese')
+    let inputAnamneseId = $('input#anamneseId')
+    let loadingAnamnese = document.querySelector('div#loadAnamnese.autocomplete-feedback')
+    inputAnamnese.autocomplete({
+            autoFocus: false,
+            source: (request, response) => {                   
+                fetch('/anamneses/autocomplete?query=' + request.term)
+                .then(resp => resp.json())
+                .then(dados => {   
+                        console.log(dados)                    
+                        if(!dados.length){
+                            var result = [
+                                {
+                                    label: 'Nenhum resultado encontrado', 
+                                    value: ''
+                                }
+                            ];
+                            response(result);
+                        }
+                        else{
+                            // normal response
+                            response($.map(dados, item => {
+                                return {
+                                    label: item.descricaoAnamnese,
+                                    descricaoAnamnese: item.descricaoAnamnese,
+                                    anamneseId: item.anamneseId,
+                                }
+                            }));
+                        }
+                })                  
+            },
+            search: () => {
+                loadingAnamnese.style.display = 'flex';
+            },
+            response: () => {
+                loadingAnamnese.style.display = 'none';                      
+            },
+            select: (event, ui) => {
+                inputAnamnese.val(ui.item.descricaoAnamnese);
+                inputAnamneseId.val(ui.item.anamneseId);
+                action();
+                event.preventDefault();
+            }
+    })
+</script>

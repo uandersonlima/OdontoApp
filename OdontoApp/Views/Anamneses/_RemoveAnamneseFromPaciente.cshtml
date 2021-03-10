@@ -1,0 +1,23 @@
+@model Anamnese
+<div class="container">
+    <h2 class="font-weight-bold text-muted">
+        DELETAR MODELO ANAMNESE
+    </h2>
+    <hr />
+    <div class="text-center p-4">
+        <h1 class="fa fa-trash-alt text-danger display-1"></h1>
+    </div>
+    <div class="rounded col-10 ml-auto mr-auto text-dark" role="alert">
+        <h2 class="text-muted">Você nunca mais verá informações de  <strong>@Model.DescricaoAnamnese</strong> relacionadas a <strong>@Model.Paciente.NomePaciente</strong>. Deseja mesmo continuar?</h2>
+    </div>
+    <div class="form group">
+
+
+        <form asp-action="RemoveAnamneseFromPaciente" class="mt-5 text-right">
+            <input type="hidden" asp-for="AnamneseId" name="AnamneseId" />
+            <input type="hidden" asp-for="PacienteId" name="PacienteId" />
+            <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+            <input type="submit" value="EXCLUIR" class="ml-1 btn btn-danger btn-sm" />
+        </form>
+    </div>
+</div>

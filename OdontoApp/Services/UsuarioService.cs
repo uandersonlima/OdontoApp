@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using OdontoApp.Models;
-using OdontoApp.Models.AccessCode;
+using OdontoApp.Models.Access;
 using OdontoApp.Models.Const;
 using OdontoApp.Models.DTO;
 using OdontoApp.Models.Helpers;
@@ -14,25 +15,24 @@ namespace OdontoApp.Services
 {
     public class UsuarioService : IUsuarioService
     {
-        private readonly ICodigoService codigoSvc;
+        private readonly IKeyService codigoSvc;
         private readonly AppSettings appsettings;
         private readonly IUsuarioRepository usuarioRepos;
 
-        public UsuarioService(ICodigoService codigoSvc, IOptions<AppSettings> appsettings, IUsuarioRepository usuarioRepos)
+        public UsuarioService(IKeyService codigoSvc, IOptions<AppSettings> appsettings, IUsuarioRepository usuarioRepos)
         {
             this.codigoSvc = codigoSvc;
             this.appsettings = appsettings.Value;
             this.usuarioRepos = usuarioRepos;
         }
 
-        public async Task<bool> ActiveAccountAsync(ApplicationUser entity, AccessCode accessCode)
+        public async Task<bool> ActiveAccountAsync(ApplicationUser entity, AccessKey accessKey)
         {
-            var receivedCode = await codigoSvc.SearchAndValidateCodeAsync(accessCode);
-            if (!(receivedCode is null))
+            if (accessKey.KeyType == KeyType.Verification)
             {
                 await EnableOrDisableAsync(entity);
                 await UpdateAsync(entity);
-                await codigoSvc.DeleteAsync(receivedCode);
+                await codigoSvc.DeleteAsync(accessKey);
                 return true;
             }
             return false;
@@ -51,23 +51,9 @@ namespace OdontoApp.Services
             await usuarioRepos.AddAsync(entity);
         }
 
-        public async Task ChangePasswordAsync(ApplicationUser entity)
+        public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser appUser, string currentPassword, string newPassword)
         {
-            await usuarioRepos.ChangePasswordAsync(entity);
-        }
-
-        public async Task<bool> ChangePasswordByCodeAsync(ApplicationUser entity, AccessCode accessCode)
-        {
-            var receivedCode = await codigoSvc.SearchAndValidateCodeAsync(accessCode);
-            if (!(receivedCode is null))
-            {
-                if (!await CheckEntityAsync(entity))
-                    throw new NotFoundException("Usuario não existe");
-                await ChangePasswordAsync(entity);
-                await codigoSvc.DeleteAsync(accessCode);
-                return true;
-            }
-            return false;
+            return await usuarioRepos.ChangePasswordAsync(appUser, currentPassword, newPassword);
         }
 
         public async Task<bool> CheckEntityAsync(ApplicationUser entity)
@@ -147,6 +133,16 @@ namespace OdontoApp.Services
             if (!await CheckEntityAsync(entity))
                 throw new NotFoundException("Usuario não existe");
             await usuarioRepos.UpdateProfileAsync(entity);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(ApplicationUser appUser, string token, string newPassword)
+        {
+            return await usuarioRepos.ResetPasswordAsync(appUser, token, newPassword);
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(ApplicationUser appUser)
+        {
+            return await usuarioRepos.GeneratePasswordResetTokenAsync(appUser);
         }
     }
 }

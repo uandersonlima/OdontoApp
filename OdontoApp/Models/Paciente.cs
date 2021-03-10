@@ -35,7 +35,6 @@ namespace OdontoApp.Models
         public string RgPaciente { get; set; }
 
         [Display(Name = "Observação")]
-        [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         [DataType(DataType.Text)]
         public string ObsPaciente { get; set; }
 

@@ -7,8 +7,7 @@ namespace OdontoApp.Models
     public class Message
     {
         [Key]
-        public Guid Messagecode { get; set; }
-
+        public string Messagecode { get; set; }
         
         [InverseProperty("SenderUser")]
         public string SenderUserId { get; set; }

@@ -118,16 +118,16 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-11 ml-auto mr-auto">
-                        <div class="form-group col-md-4 float-right">
-                            <div class="input-icon">
-                                <span class="input-icon-addon text-primary">
-                                    <i class="fa fa-search search-icon"></i>
-                                </span>
-                                <input type="text" class="form-control input-pill text-dark font-weight-bold" id="buscarMedico" placeholder="Buscar Anamneses">
-                            </div>
-                        </div>
                         <div class="card shadow-sm col-12" style="border-radius:10px">
                             <div class="card-body">
+                                <div class="col-sm-6 float-right">
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon text-primary">
+                                            <i class="fa fa-search search-icon"></i>
+                                        </span>
+                                        <input type="text" class="form-control input-pill text-dark font-weight-bold" id="buscarAnamnese" placeholder="Buscar Anamneses">
+                                    </div>
+                                </div>
                                 <div class="spinner1" id="loadAnamnese">
                                     <div class="bounce1"></div>
                                     <div class="bounce2"></div>
@@ -144,7 +144,7 @@
 </div>
 <!-----Carrega Modal-->
 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="Tmodal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-body modal-dialog-scrollable">
                 <div id="modal" class="container-fluid"></div>
@@ -250,12 +250,20 @@
                 }
             })
         }
-        function Anamnese(search = null) {
+        function Anamnese(search=buscaAnamnese.value, numberpag=null, recordperpage=null,inicio = null, fim = null) {
+
             loadAnamnese.hidden = false
+            let appview = {
+                search:search,
+                numberpag:numberpag,
+                recordperpage:recordperpage,
+                start:inicio,
+                end:fim
+            }
             $.ajax({
                 type: "GET",
-                data: {id:@Model.PacienteId, busca:search},
-                url: '/Pacientes/AnamnesesInPaciente/',
+                data: {pacienteId:@Model.PacienteId, appview:appview},
+                url: '/Anamneses/PacienteAnamneses/',
                 success: partialview => {
                     loadAnamnese.hidden = true
                     $("#anamneses").html(partialview)
@@ -278,7 +286,7 @@
             $.ajax({
                 type: "GET",
                 data: {pacienteid:@Model.PacienteId, appview:appview},
-                url: '/Pacientes/PacienteAgendas/',
+                url: '/Agendas/PacienteAgendas/',
                 success: partialview => {
                     loadAgenda.hidden = true
                     $('#agendas').html(partialview)
@@ -292,7 +300,15 @@
         function Tratamento() {
             $('#tratamentos').load(`/Pacientes/PacienteTratamento?id=${@Model.PacienteId}`)
         }
-        document.querySelector('input[name="buscaAnamnese"]').addEventListener('input', function () { Anamnese(this.value) })
+        function debounce(func, wait) {
+            let timer = null;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(func, wait);
+            }
+        }
+        let buscaAnamnese = document.querySelector('input[id="buscarAnamnese"]')
+        buscaAnamnese.addEventListener('input', debounce(Anamnese, 500))
     </script>
     @*Carrega em caso de erro no modelstate*@
     @if (TempData["Edit"] != null)

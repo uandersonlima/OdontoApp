@@ -1,4 +1,4 @@
-﻿@model ApplicationUser
+﻿@model SignInUser
 @{
     ViewData["Title"] = "Recuperação de conta";
     Layout = "~/Views/Shared/_Layout_3.cshtml";
@@ -18,9 +18,10 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="md-form text-left">
-                                        <i class="fas fa-envelope prefix grey-text"></i>
-                                        <input asp-for="Email" id="email" class="form-control" type="email">
-                                        <label for="email" class="font-weight-light">Seu email</label>
+                                        <i class="fa fa-user prefix grey-text"></i>
+                                        <input asp-for="Username" id="Username" class="form-control" type="email">
+                                        <label for="Username" class="font-weight-light">Seu email</label>
+                                        <span asp-validation-for="Username" class="ml-5 d-flex text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -28,7 +29,7 @@
                     </div>
                     <div class="form-row mt-5">
                         <div class="col-md-6 mt-4 mt-md-0 col-12 order-1 order-md-0 ml-auto align-self-center">
-                            <a asp-action="Login" asp-controller="Usuarios" class="font-weight-bold">Anterior</a>
+                            <a asp-action="signin" asp-controller="auth" class="font-weight-bold">Anterior</a>
                         </div>
                         <div class="col-md-6 col-12 ml-auto">
                             <button type="submit" class="btn btn-lg btn-primary btn-block text-capitalize"> Próximo </button>

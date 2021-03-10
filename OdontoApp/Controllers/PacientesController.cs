@@ -16,15 +16,13 @@ namespace OdontoApp.Controllers
     {
         private readonly IAuthService authService;
         private readonly IPacienteService pacienteSvc;
-        private readonly IAgendaService agendaSvc;
         private readonly IPlanoService planoSvc;
         private readonly OdontoAppContext context;
 
-        public PacientesController(IAuthService authService, IPacienteService pacienteSvc, IAgendaService agendaSvc, IPlanoService planoSvc, OdontoAppContext context)
+        public PacientesController(IAuthService authService, IPacienteService pacienteSvc, IPlanoService planoSvc, OdontoAppContext context)
         {
             this.authService = authService;
             this.pacienteSvc = pacienteSvc;
-            this.agendaSvc = agendaSvc;
             this.planoSvc = planoSvc;
             this.context = context;
         }
@@ -220,13 +218,6 @@ namespace OdontoApp.Controllers
         public async Task<IActionResult> Sobre(int pacienteId)
         {
             return PartialView("_sobre", await pacienteSvc.GetByIdAsync(pacienteId));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> PacienteAgendas(int pacienteId, AppView appview)
-        {
-            var response = await agendaSvc.GetByPatientAsync(appview, pacienteId);
-            return PartialView("_pacienteAgendas", response);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace OdontoApp.Repositories
             }
         }
 
-        public async Task<PaginationList<Agenda>> GetByPatientAsync(AppView appQuery,int pacienteId, string userId)
+        public async Task<PaginationList<Agenda>> GetByPatientIdAsync(AppView appQuery,int pacienteId, string userId)
         {
             var pagList = new PaginationList<Agenda>();
             var agendas = context.Agenda.Where(agd => agd.UsuarioId == userId && agd.PacienteId == pacienteId).AsNoTracking().AsQueryable();

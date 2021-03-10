@@ -6,6 +6,6 @@ namespace OdontoApp.Repositories.Interfaces
 {
     public interface IAgendaRepository : IRepositoryBase<Agenda>
     {
-        Task<PaginationList<Agenda>> GetByPatientAsync(AppView appQuery, int pacienteId, string userId);
+        Task<PaginationList<Agenda>> GetByPatientIdAsync(AppView appQuery, int pacienteId, string userId);
     }
 }

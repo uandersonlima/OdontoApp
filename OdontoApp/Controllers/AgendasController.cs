@@ -79,5 +79,14 @@ namespace OdontoApp.Controllers
 
             return Json(new { status }, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Include, Formatting = Formatting.None });
         }
+
+        #region Interações com os Pacientes
+        [HttpGet]
+        public async Task<IActionResult> PacienteAgendas(int pacienteId, AppView appview)
+        {
+            var response = await agendaSvc.GetByPatientIdAsync(appview, pacienteId);
+            return PartialView("_pacienteAgendas", response);
+        }
+         #endregion
     }
 }

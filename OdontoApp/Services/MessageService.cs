@@ -27,12 +27,12 @@ namespace OdontoApp.Services
             await messageRepos.DeleteMessageAsync(msg);
         }
 
-        public async Task DeleteMessageAsync(Guid messagecode)
+        public async Task DeleteMessageAsync(string messagecode)
         {
             await DeleteMessageAsync(await GetMessageAsync(messagecode));
         }
 
-        public async Task<Message> GetMessageAsync(Guid messagecode)
+        public async Task<Message> GetMessageAsync(string messagecode)
         {
             return await messageRepos.GetMessageAsync(messagecode, authService.GetLoggedUserAsync().Result.Id);
         }
@@ -49,6 +49,7 @@ namespace OdontoApp.Services
         }
         public async Task SendMessageAsync(Message msg)
         {
+            msg.Messagecode = Guid.NewGuid().ToString("N");
             await messageRepos.SendMessageAsync(msg);
         }
 

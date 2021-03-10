@@ -32,10 +32,11 @@ namespace OdontoApp.Repositories
 
         public async Task DeleteAllAsync(Anamnese entity)
         {
-            context.RemoveRange(entity.AnamnesesPerguntas.Select(AoP => AoP.PerguntaAnamnese.Resposta));
-            context.RemoveRange(entity.AnamnesesPerguntas.Select(AoP => AoP.PerguntaAnamnese));
-            context.RemoveRange(entity.AnamnesesPerguntas);
-            context.Remove(entity);
+            context.AnamnesesPerguntas.RemoveRange(entity.AnamnesesPerguntas);
+            context.Anamnese.Remove(entity);
+            context.PerguntaAnamnese.RemoveRange(entity.AnamnesesPerguntas.Select(AoP => AoP.PerguntaAnamnese));
+            context.Pergunta.RemoveRange(entity.AnamnesesPerguntas.Select(AoP => AoP.PerguntaAnamnese.Pergunta));
+            context.Resposta.RemoveRange(entity.AnamnesesPerguntas.Select(AoP => AoP.PerguntaAnamnese.Resposta));
             await context.SaveChangesAsync();
         }
 
@@ -46,25 +47,25 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<PaginationList<Anamnese>> GetAllAsync(AppView appQuery, string idUser)
+        public async Task<PaginationList<Anamnese>> GetAllAsync(AppView appview, string idUser)
         {
             var pagList = new PaginationList<Anamnese>();
             var anamneses = context.Anamnese.Where(anm => anm.UsuarioId == idUser && !anm.PacienteId.HasValue).AsNoTracking().AsQueryable();
-            if (appQuery.CheckSearch())
+            if (appview.CheckSearch())
             {
-                anamneses = anamneses.Where(anm => anm.DescricaoAnamnese.Contains(appQuery.Search));
+                anamneses = anamneses.Where(anm => anm.DescricaoAnamnese.Contains(appview.Search));
             }
-            if (appQuery.CheckPagination())
+            if (appview.CheckPagination())
             {
                 var quantidadeTotalRegistros = await anamneses.CountAsync();
-                anamneses = anamneses.Skip((appQuery.NumberPag.Value - 1) * appQuery.RecordPerPage.Value).Take(appQuery.RecordPerPage.Value);
+                anamneses = anamneses.Skip((appview.NumberPag.Value - 1) * appview.RecordPerPage.Value).Take(appview.RecordPerPage.Value);
 
                 var paginacao = new Pagination
                 {
-                    NumberPag = appQuery.NumberPag.Value,
-                    RecordPerPage = appQuery.RecordPerPage.Value,
+                    NumberPag = appview.NumberPag.Value,
+                    RecordPerPage = appview.RecordPerPage.Value,
                     TotalRecords = quantidadeTotalRegistros,
-                    TotalPages = (int)Math.Ceiling((double)quantidadeTotalRegistros / appQuery.RecordPerPage.Value)
+                    TotalPages = (int)Math.Ceiling((double)quantidadeTotalRegistros / appview.RecordPerPage.Value)
                 };
 
                 pagList.Pagination = paginacao;
@@ -77,13 +78,45 @@ namespace OdontoApp.Repositories
         {
             return await context.Anamnese.
                         Include(anm => anm.Usuario).
+                        Include(anm => anm.Paciente).
                         Include(anm => anm.AnamnesesPerguntas).
                             ThenInclude(anamnesesPerguntas => anamnesesPerguntas.PerguntaAnamnese).
                                 ThenInclude(perguntAnammnese => perguntAnammnese.TipoPergunta).
                         Include(anm => anm.AnamnesesPerguntas).
                             ThenInclude(anamnesesPerguntas => anamnesesPerguntas.PerguntaAnamnese).
                                 ThenInclude(perguntaAnamneses => perguntaAnamneses.Pergunta).
-                        Where(anm => anm.UsuarioId == idUser && !(anm.PacienteId.HasValue) && anm.AnamneseId == id).FirstOrDefaultAsync();
+                        Include(anm => anm.AnamnesesPerguntas).
+                            ThenInclude(anamnesesPerguntas => anamnesesPerguntas.PerguntaAnamnese).
+                                ThenInclude(perguntaAnamneses => perguntaAnamneses.Resposta).
+                        Where(anm => anm.UsuarioId == idUser && anm.AnamneseId == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<PaginationList<Anamnese>> GetByPatientIdAsync(AppView appview, int pacienteId, string userId)
+        {
+            var pagList = new PaginationList<Anamnese>();
+            var anamneses = context.Anamnese.Include(anm => anm.Paciente).Where(anm => anm.UsuarioId == userId && anm.PacienteId == pacienteId).AsNoTracking().AsQueryable();
+            if (appview.CheckSearch())
+            {
+                anamneses = anamneses.Where(anm => anm.DescricaoAnamnese.ToLower().Contains(appview.Search.Trim().ToLower()));
+            }
+            if (appview.CheckPagination())
+            {
+                var quantidadeTotalRegistros = await anamneses.CountAsync();
+                anamneses = anamneses.Skip((appview.NumberPag.Value - 1) * appview.RecordPerPage.Value).Take(appview.RecordPerPage.Value);
+
+                var paginacao = new Pagination
+                {
+                    NumberPag = appview.NumberPag.Value,
+                    RecordPerPage = appview.RecordPerPage.Value,
+                    TotalRecords = quantidadeTotalRegistros,
+                    TotalPages = (int)Math.Ceiling((double)quantidadeTotalRegistros / appview.RecordPerPage.Value)
+                };
+
+                pagList.Pagination = paginacao;
+            }
+            pagList.AddRange(await anamneses.ToListAsync());
+
+            return pagList;
         }
 
         public async Task UpdateAsync(Anamnese entity)

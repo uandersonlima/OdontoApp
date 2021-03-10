@@ -34,7 +34,7 @@ namespace OdontoApp.Services
             await anamneseRepos.AddAsync(entity);
         }
 
-        public async Task AddPacienteToAnamneseAsync(Anamnese entity, int pacienteId)
+        public async Task AddAnamneseToPacienteAsync(Anamnese entity, int pacienteId)
         {
             entity.PacienteId = pacienteId;
             entity.AnamneseId = 0; //cancela ID para adicionar um novo Modelo
@@ -58,7 +58,7 @@ namespace OdontoApp.Services
                 await anamneseRepos.DeleteAsync(entity);
         }
 
-        public async Task ExcludePacienteAnamnese(int pacienteId, int anamneseId)
+        public async Task ExcludePacienteAnamneseAsync(int pacienteId, int anamneseId)
         {
             var entity = await GetByIdAsync(anamneseId);
             if (entity.PacienteId == pacienteId)
@@ -73,6 +73,13 @@ namespace OdontoApp.Services
         }
 
         public async Task<Anamnese> GetByIdAsync(int id) => await anamneseRepos.GetByIdAsync(id, authService.GetLoggedUserAsync().Result.Id);
+
+        public async Task<PaginationList<Anamnese>> GetByPatientIdAsync(int pacienteId, AppView appview)
+        {
+            appview.RecordPerPage ??= NumElement.NumElements;
+            appview.NumberPag ??= 1;
+            return await anamneseRepos.GetByPatientIdAsync(appview, pacienteId, authService.GetLoggedUserAsync().Result.Id);
+        }
 
         public async Task UpdateAsync(Anamnese entity)
         {

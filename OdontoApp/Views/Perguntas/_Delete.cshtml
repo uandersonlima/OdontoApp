@@ -6,7 +6,7 @@
     <h1 class="fa fa-trash-alt text-danger display-1"></h1>
 </div>
 <div class="rounded col-10 ml-auto mr-auto text-dark" role="alert">
-    <h2 class="text-muted text-justify">Você nunca mais verá informações de <strong>@Model.Pergunta.DescricaoPergunta</strong>. Deseja excluir este paciente mesmo assim?</h2>
+    <h2 class="text-muted text-justify">Apagar essa pergunta neste modelo de anamnese refletirá em todos os Modelos que utilizam essa pergunta. Deseja excluir <strong>@Model.Pergunta.DescricaoPergunta</strong> mesmo assim? </h2>
 </div>
 <form asp-action="Delete" class="mt-5 text-right">
     <input type="hidden" asp-for="PerguntaAnamneseId" />

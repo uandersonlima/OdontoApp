@@ -150,29 +150,25 @@ namespace OdontoApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("OdontoApp.Models.AccessCode.AccessCode", b =>
+            modelBuilder.Entity("OdontoApp.Models.Access.AccessKey", b =>
                 {
-                    b.Property<int>("Codigo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CodeType")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("DataGerada")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("KeyType")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Codigo");
+                    b.HasKey("Key");
 
-                    b.ToTable("AccessCodes");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AccessKey");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Agenda", b =>
@@ -923,9 +919,8 @@ namespace OdontoApp.Migrations
 
             modelBuilder.Entity("OdontoApp.Models.Message", b =>
                 {
-                    b.Property<Guid>("Messagecode")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Messagecode")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1476,6 +1471,13 @@ namespace OdontoApp.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OdontoApp.Models.Access.AccessKey", b =>
+                {
+                    b.HasOne("OdontoApp.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("OdontoApp.Models.Agenda", b =>

@@ -9,11 +9,11 @@ namespace OdontoApp.Services.Interfaces
 {
     public interface IMessageService
     {
-        Task<Message> GetMessageAsync(Guid messagecode);
+        Task<Message> GetMessageAsync(string messagecode);
         Task<List<Message>> GetMessagesAsync(AppView appview);
         Task<List<Message>> GetUnreadMessagesAsync();
         Task DeleteMessageAsync(Message msg);
-        Task DeleteMessageAsync(Guid messagecode);
+        Task DeleteMessageAsync(string messagecode);
         Task SendMessageAsync(Message msg);
         Task UpdateMessageAsync(Message msg);
         Task<List<string>> UserListAsync();

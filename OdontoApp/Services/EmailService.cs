@@ -1,8 +1,11 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
+using OdontoApp.Libraries.Templates;
+using OdontoApp.Libraries.Texto;
 using OdontoApp.Models;
 using OdontoApp.Models.Helpers;
 using OdontoApp.Services.Interfaces;
@@ -13,20 +16,26 @@ namespace OdontoApp.Services
     public class EmailService : IEmailService
     {
         private readonly AppSettings appsettings;
+        private readonly IHttpContextAccessor acessor;
 
-        public EmailService(IOptions<AppSettings> appsettings)
+        public EmailService(IOptions<AppSettings> appsettings, IHttpContextAccessor acessor)
         {
             this.appsettings = appsettings.Value;
+            this.acessor = acessor;
         }
 
         public async Task SendEmailRecoveryAsync(ApplicationUser usuario, string code_encrypted)
         {
-            var Html = string.Format("<h1>DEV4 - OrtoApp</h1>" +
-                               "Seu código de Recuperação é:" + $"<h2>{code_encrypted}</h2>");
+            string nome = Mask.PrimeiroNome(usuario.Nome);    
+            string recoveryLink =  $"https://{acessor.HttpContext.Request.Host}/token/{code_encrypted}";    
+            string head = HtmlEmailTemplate.EmailHead();
+            string body = HtmlEmailTemplate.EmailRecoveryBody(nome, recoveryLink, "https://google.com.br", "https://google.com.br");
+            string Html = HtmlEmailTemplate.EmailHtml(head, body);         
+            
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(appsettings.SmtpUser));
             email.To.Add(MailboxAddress.Parse(usuario.Email));
-            email.Subject = "DEV4 - OrtoApp - Codigo de Recuperação - " + usuario.Nome;
+            email.Subject = "Ascore - OdontoControl - Email de Recuperação - " + usuario.Nome;
             email.Body = new TextPart(TextFormat.Html) { Text = Html };
 
             // Send email
@@ -38,12 +47,16 @@ namespace OdontoApp.Services
         }
         public async Task SendEmailVerificationAsync(ApplicationUser usuario, string code_encrypted)
         {
-            var Html = string.Format("<h1>DEV4 - OrtoApp</h1>" +
-                                            "Seu código de Ativação é: " + $"<h2>{code_encrypted}</h2>");
+            string nome = Mask.PrimeiroNome(usuario.Nome);    
+            string confirmationLink =  $"https://{acessor.HttpContext.Request.Host}/token/{code_encrypted}";    
+            string head = HtmlEmailTemplate.EmailHead();
+            string body = HtmlEmailTemplate.EmailVerificationBody(nome, confirmationLink, "https://google.com.br", "https://google.com.br");
+            string Html = HtmlEmailTemplate.EmailHtml(head, body);
+            
             var email = new MimeMessage();
             email.From.Add(MailboxAddress.Parse(appsettings.SmtpUser));
             email.To.Add(MailboxAddress.Parse(usuario.Email));
-            email.Subject = "DEV4 - OrtoApp - Código de Ativação - " + usuario.Nome;
+            email.Subject = "Ascore - OdontoControl - Email de verificação - " + nome;
             email.Body = new TextPart(TextFormat.Html) { Text = Html };
 
             // Send email

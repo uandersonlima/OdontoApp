@@ -24,7 +24,7 @@ namespace OdontoApp.Libraries.Filtro
             }
             else if (!user.EmailConfirmed)
             {
-                context.Result = new RedirectToActionResult("AtivarConta", "Usuarios", null);
+                context.Result = new RedirectToActionResult("confirmaremail", "Usuarios", null);
             }
         }
     }

@@ -42,27 +42,30 @@ namespace OdontoApp.Controllers
         }
 
         [HttpGet("{messagecode}"), UserAuthorization]
-        public async Task<IActionResult> Get(Guid messagecode)
+        public async Task<IActionResult> Get(string messagecode)
         {
             var msg = await msgSvc.GetMessageAsync(messagecode);
             return Ok(msg);
         }
 
         [HttpPut(""), UserAuthorization]
-        public async Task<IActionResult> Update([FromBody] Message msg)
+        public async Task<IActionResult> Update([FromBody] Message clientMsg)
         {
-            if (msg.Messagecode == Guid.Empty)
-                return UnprocessableEntity($"Identificador inválido {msg.Messagecode}");
+            var serverMsg = await msgSvc.GetMessageAsync(clientMsg.Messagecode);
+            
+            if (serverMsg == null)
+                return UnprocessableEntity($"Identificador inválido {clientMsg.Messagecode} ou não existe");
 
-            await msgSvc.UpdateMessageAsync(msg);
+            await msgSvc.UpdateMessageAsync(clientMsg);
 
-            return Ok(msg);
+            return Ok(clientMsg);
         }
 
         [HttpPost(""), UserAuthorization]
         public async Task<IActionResult> SendMessage([FromBody] Message msg)
         {
             msg.TimeSent = DateTime.Now;
+            msg.SenderUserId = authService.GetLoggedUserAsync().Result.Id;
             await messageHub.Clients.User(msg.ReceiverUserId).ReportNewMessagesAsync("nova mensagem", msg);
             await msgSvc.SendMessageAsync(msg);
             return Ok(msg);
@@ -77,20 +80,16 @@ namespace OdontoApp.Controllers
             return Ok(msg);
         }
         [HttpDelete("{messagecode}"), UserAuthorization]
-        public async Task<IActionResult> Delete(Guid messagecode)
+        public async Task<IActionResult> Delete(string messagecode)
         {
-            if (messagecode == Guid.Empty)
-                return UnprocessableEntity($"Identificador inválido {messagecode}");
+            var serverMsg = await msgSvc.GetMessageAsync(messagecode);
+            
+            if (serverMsg == null)
+                return UnprocessableEntity($"Identificador inválido {messagecode} ou não existe");
 
             await msgSvc.DeleteMessageAsync(messagecode);
 
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet("GetUniqueIdentifier"), UserAuthorization]
-        public async Task<IActionResult> GetUniqueIdentifier()
-        {       
-            return Ok(await Task.Run(() => Guid.NewGuid()));
+            return Ok();
         }
     }
 }

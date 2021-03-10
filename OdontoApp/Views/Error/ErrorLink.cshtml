@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Error404";
+    Layout = "_Layout_3";
+}
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center vh-100">
+        <div class="col-md-4">
+            <h1 class="text-danger font-weight-bold mb-3 display-4">Ops...</h1>
+            <h5 class="text-white font-weight-bold text-justify">Pedimos desculpas, mas nós não encontramos o link que você estava buscando ou ele está expirado.</h5>
+             <h5 class="text-white font-weight-bold text-justify mt-4">Verifique se o endereço desejado está correto e tente novamente</h5>
+            <img src="~/img/error.png" class="ml-3 img-fluid" />
+            <div class="mt-5 text-center">
+                <a class="btn btn-lg blue-gradient font-weight-bold" asp-controller="Usuarios" asp-action="Index">Início</a>
+            </div>
+        </div>
+    </div>
+</div>

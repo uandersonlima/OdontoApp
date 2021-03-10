@@ -1,0 +1,114 @@
+@model Anamnese
+<div class="container">
+    <div class="row print">
+        <div class="col-md-12 ml-auto mr-auto">
+            <p class="text-center">
+
+                <img class="logo" width="150" src="~/img/Logoprimary.png" />
+            </p>
+            <div class="text-center">
+                <h4 class="font-weight-bold text-muted text-uppercase">
+                    Anamnese
+                </h4>
+                <h4 class="font-weight-bold text-muted text-uppercase">
+                    @Html.DisplayFor(model => Model.Paciente.NomePaciente) - @Html.DisplayFor(model => Model.DescricaoAnamnese)
+                </h4>
+            </div>
+            <h4 class=" text-muted font-weight-bold text-uppercase"></h4>
+            <input type="hidden" asp-for="PacienteId" name="PacienteId"/>
+            <input type="hidden" asp-for="DescricaoAnamnese" />
+            @{int i = 0;}
+            @foreach (var PA in Model.AnamnesesPerguntas)
+            {
+                <div class="form-group mr-auto ml-auto">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span asp-validation-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="text-danger text-lowercase"></span>
+                            <p class="font-weight-bold">@Html.DisplayFor(model => PA.PerguntaAnamnese.Pergunta.DescricaoPergunta)</p>
+                            <input type="hidden" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.PerguntaId" />
+                        </div>
+                        <div class="col-md-8">
+                            @if (string.Compare(PA.PerguntaAnamnese.TipoPergunta.DescricaoTipoPergunta, "Sim/Não/Não sei") == 0)
+                            {
+                                <input type="hidden" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.TipoPerguntaId" />
+                                <div class="custom-control custom-radio col-sm-2">
+                                    <input type="radio" id="A[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Sim" disabled />
+                                    <label class="text-muted custom-control-label" for="A[@i]">Sim</label>
+                                </div>
+                                <div class="custom-control custom-radio col-sm-2">
+                                    <input type="radio" id="B[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Não" disabled />
+                                    <label class="text-muted custom-control-label" for="B[@i]">Não</label>
+                                </div>
+                                <div class="custom-control custom-radio ">
+                                    <input type="radio" id="C[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Não sei" disabled />
+                                    <label class="text-muted custom-control-label" for="C[@i]">Não sei</label>
+                                </div>
+                            }
+                            @if (string.Compare(PA.PerguntaAnamnese.TipoPergunta.DescricaoTipoPergunta, "Sim/Não/Não sei e Texto") == 0)
+                            {
+                                <input type="hidden" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.TipoPerguntaId" />
+                                <div class="custom-control custom-radio col-sm-2">
+                                    <input type="radio" id="A[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Sim" disabled />
+                                    <label class="text-muted custom-control-label" for="A[@i]">Sim</label>
+                                </div>
+                                <div class="custom-control custom-radio col-sm-2">
+                                    <input type="radio" id="B[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Não" disabled />
+                                    <label class="text-muted custom-control-label" for="B[@i]">Não</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="C[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Não sei" disabled />
+                                    <label class="text-muted custom-control-label" for="C[@i]">Não sei</label>
+                                </div>
+                                <div>
+                                    <input class="form-control  shadow-sm" type="text" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao2" disabled />
+                                </div>
+                            }
+                            @if (string.Compare(PA.PerguntaAnamnese.TipoPergunta.DescricaoTipoPergunta, "Somente Texto") == 0)
+                            {
+                                <input type="hidden" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.TipoPerguntaId" />
+                                <div>
+                                    <input class="form-control shadow-sm" type="text" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" disabled />
+                                </div>
+
+                            }
+                            @if (string.Compare(PA.PerguntaAnamnese.TipoPergunta.DescricaoTipoPergunta, "Esquerda/Direita/Não sei") == 0)
+                            {
+                                <input type="hidden" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.TipoPerguntaId" />
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="A[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Esquerda" disabled />
+                                    <label class="text-muted custom-control-label" for="A[@i]">Esquerda</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="B[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Direita" disabled />
+                                    <label class="text-muted custom-control-label" for="B[@i]">Direita</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="C[@i]" asp-for="AnamnesesPerguntas[i].PerguntaAnamnese.Resposta.Descricao1" class="custom-control-input" value="Não sei" disabled />
+                                    <label class="text-muted custom-control-label" for="C[@i]">Não sei</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                i++;            
+            }
+        </div>
+    </div>
+    <div class="form-group text-right pt-3">
+        <input type="button" class="btn btn-sm btn-outline-light text-muted font-weight-bold border-0" data-dismiss="modal" value="FECHAR" />
+        <input id="IMPRIMIR" type="submit" class="ml-1 btn btn-sm btn-primary text-white font-weight-bold border-0" value="IMPRIMIR" />
+    </div>
+</div>
+
+<script type="text/javascript" src="~/PrintThis/printThis.js"></script>
+<script>
+    var options = {
+        importCSS: true
+ 
+    }
+
+    $('#IMPRIMIR').on("click", function () {
+
+        $('.print').printThis(options);
+    });
+</script>

@@ -8,22 +8,6 @@ namespace OdontoApp.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AccessCodes",
-                columns: table => new
-                {
-                    Codigo = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(nullable: true),
-                    Key = table.Column<string>(nullable: false),
-                    CodeType = table.Column<string>(nullable: true),
-                    DataGerada = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AccessCodes", x => x.Codigo);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -242,6 +226,20 @@ namespace OdontoApp.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccessKey",
+                columns: table => new
+                {
+                    Key = table.Column<string>(nullable: false),
+                    KeyType = table.Column<string>(nullable: true),
+                    DataGerada = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccessKey", x => x.Key);
                 });
 
             migrationBuilder.CreateTable(
@@ -590,7 +588,7 @@ namespace OdontoApp.Migrations
                 name: "Message",
                 columns: table => new
                 {
-                    Messagecode = table.Column<Guid>(nullable: false),
+                    Messagecode = table.Column<string>(nullable: false),
                     SenderUserId = table.Column<string>(nullable: true),
                     ReceiverUserId = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
@@ -1157,6 +1155,11 @@ namespace OdontoApp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AccessKey_UserId",
+                table: "AccessKey",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Agenda_MedicoId",
                 table: "Agenda",
                 column: "MedicoId");
@@ -1600,6 +1603,22 @@ namespace OdontoApp.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_AccessKey_AspNetUsers_UserId",
+                table: "AccessKey",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Agenda_AspNetUsers_UsuarioId",
+                table: "Agenda",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Agenda_Medico_MedicoId",
                 table: "Agenda",
                 column: "MedicoId",
@@ -1616,8 +1635,8 @@ namespace OdontoApp.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Agenda_AspNetUsers_UsuarioId",
-                table: "Agenda",
+                name: "FK_Anamnese_AspNetUsers_UsuarioId",
+                table: "Anamnese",
                 column: "UsuarioId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
@@ -1637,14 +1656,6 @@ namespace OdontoApp.Migrations
                 column: "PacienteId",
                 principalTable: "Paciente",
                 principalColumn: "PacienteId",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Anamnese_AspNetUsers_UsuarioId",
-                table: "Anamnese",
-                column: "UsuarioId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
@@ -1672,6 +1683,14 @@ namespace OdontoApp.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Atestado_AspNetUsers_UsuarioId",
+                table: "Atestado",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Atestado_Medico_MedicoId",
                 table: "Atestado",
                 column: "MedicoId",
@@ -1685,14 +1704,6 @@ namespace OdontoApp.Migrations
                 column: "PacienteId",
                 principalTable: "Paciente",
                 principalColumn: "PacienteId",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Atestado_AspNetUsers_UsuarioId",
-                table: "Atestado",
-                column: "UsuarioId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
@@ -1752,6 +1763,14 @@ namespace OdontoApp.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Imagem_AspNetUsers_UsuarioId",
+                table: "Imagem",
+                column: "UsuarioId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Imagem_Medico_MedicoId",
                 table: "Imagem",
                 column: "MedicoId",
@@ -1765,14 +1784,6 @@ namespace OdontoApp.Migrations
                 column: "PacienteId",
                 principalTable: "Paciente",
                 principalColumn: "PacienteId",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Imagem_AspNetUsers_UsuarioId",
-                table: "Imagem",
-                column: "UsuarioId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
@@ -1811,11 +1822,11 @@ namespace OdontoApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Endereco_Medico_MedicoId",
-                table: "Endereco");
+                name: "FK_Medico_AspNetUsers_UsuarioId",
+                table: "Medico");
 
             migrationBuilder.DropTable(
-                name: "AccessCodes");
+                name: "AccessKey");
 
             migrationBuilder.DropTable(
                 name: "Agenda");
@@ -1944,9 +1955,6 @@ namespace OdontoApp.Migrations
                 name: "Plano");
 
             migrationBuilder.DropTable(
-                name: "Medico");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
@@ -1963,6 +1971,9 @@ namespace OdontoApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Estado");
+
+            migrationBuilder.DropTable(
+                name: "Medico");
 
             migrationBuilder.DropTable(
                 name: "Rua");

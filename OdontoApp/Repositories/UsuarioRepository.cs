@@ -22,6 +22,7 @@ namespace OdontoApp.Repositories
         public UsuarioRepository(OdontoAppContext context, UserManager<ApplicationUser> userManager)
         {
             this.context = context;
+            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             this.userManager = userManager;
         }
 
@@ -31,35 +32,14 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task ChangePasswordAsync(ApplicationUser entity)
+        public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser appUser, string currentPassword, string newPassword)
         {
-            try
-            {
-                context.Update(entity);
-                context.Entry(entity).Property(a => a.Nome).IsModified = false;
-                context.Entry(entity).Property(a => a.Email).IsModified = false;
-                context.Entry(entity).Property(a => a.AccessType).IsModified = false;
-                context.Entry(entity).Property(a => a.Nascimento).IsModified = false;
-                context.Entry(entity).Property(a => a.Sexo).IsModified = false;
-                context.Entry(entity).Property(a => a.CPF).IsModified = false;
-                context.Entry(entity).Property(a => a.PaymentStatus).IsModified = false;
-                context.Entry(entity).Property(a => a.PlanNumber).IsModified = false;
-                context.Entry(entity).Property(a => a.EnderecoId).IsModified = false;
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException e)
-            {
-                throw new DbConcurrencyException(e.Message);
-            }
-        }
-        public async Task ChangePasswordAsync(ApplicationUser appUser, string currentPassword, string newPassword)
-        {
-            await userManager.ChangePasswordAsync(appUser, currentPassword, newPassword);
+           return await userManager.ChangePasswordAsync(appUser, currentPassword, newPassword);
         }
 
-        public async Task ResetPasswordAsync(ApplicationUser appUser, string token, string newPassword)
+        public async Task<IdentityResult> ResetPasswordAsync(ApplicationUser appUser, string token, string newPassword)
         {
-            await userManager.ResetPasswordAsync(appUser, token, newPassword);
+            return await userManager.ResetPasswordAsync(appUser, token, newPassword);
         }
         public async Task<bool> CheckEntityAsync(ApplicationUser entity)
         {
@@ -127,15 +107,14 @@ namespace OdontoApp.Repositories
         }
         public async Task<ApplicationUser> GetByIdAsync(string id)
         {
-            return await context.User.AsNoTracking()
+            return await context.User
                 .Include(obj => obj.Endereco)
                 .Include(obj => obj.Endereco.Rua)
                 .Include(obj => obj.Endereco.Bairro)
                 .Include(obj => obj.Endereco.Cidade)
                 .Include(obj => obj.Endereco.Estado)
                 .Include(obj => obj.Endereco.Cep)
-                .Where(user => user.Id == id)
-                .FirstOrDefaultAsync();
+                .Where(user => user.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<bool> ValidateEmailAsync(string email)
@@ -170,11 +149,10 @@ namespace OdontoApp.Repositories
         {
             try
             {
-                context.Update(entity);
-                context.Entry(entity).Property(a => a.PaymentStatus).IsModified = false;
-                context.Entry(entity).Property(a => a.AccessType).IsModified = false;
-                context.Entry(entity).Property(a => a.PlanNumber).IsModified = false;
-                context.Entry(entity).Property(a => a.Email).IsModified = false;
+                context.Attach(entity);
+                context.Entry(entity).Property(a => a.Nome).IsModified = true;
+                context.Entry(entity).Property(a => a.Nascimento).IsModified = true;
+                context.Entry(entity).Property(a => a.Sexo).IsModified = true;
                 await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException e)

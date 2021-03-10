@@ -40,7 +40,7 @@ namespace OdontoApp.Controllers
             {
                 return View();
             }
-            return RedirectToAction("Login", "Usuarios");
+            return RedirectToAction("signin", "auth");
         }
 
         [HttpPost]

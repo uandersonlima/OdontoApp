@@ -1,0 +1,13 @@
+﻿<h4 class="font-weight-bold mt-3">Nova confirmação de email</h4>
+<div class="row">
+    <div class="col-12 mb-0 px-0">
+        <div class="mt-4 rounded col-md-12" role="alert">
+           <span class="h5 font-weight-bold text-muted">Deseja enviar novo link de confirmação?</span>
+        </div>
+        <form asp-action="novaconfirmacaoemail" method="post" class="mt-4 text-right">
+            <input type="hidden" name="codeType" value="@KeyType.Verification" />
+            <a href="javascript:void(0)" class="font-weight-bold mr-5" data-dismiss="modal">Fechar</a>
+            <input type="submit" value="SIM" class="btn btn-primary text-capitalize" style="box-shadow:none"/>
+        </form>
+    </div>
+</div>

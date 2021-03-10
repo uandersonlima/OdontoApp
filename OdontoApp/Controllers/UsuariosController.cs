@@ -1,26 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using OdontoApp.Libraries.Lang;
 using OdontoApp.Models;
-using OdontoApp.Models.AccessCode;
+using OdontoApp.Models.Access;
 using OdontoApp.Models.Const;
+using OdontoApp.Models.DTO;
 using OdontoApp.Models.ViewModel;
 using OdontoApp.Services.Interfaces;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OdontoApp.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly ICodigoService codeSvc;
+        private readonly IKeyService keySvc;
         private readonly IConfiguration conf;
         private readonly IAuthService authService;
         private readonly IUsuarioService userSvc;
 
-        public UsuariosController(ICodigoService codeSvc, IConfiguration conf, IAuthService authService, IUsuarioService userSvc)
+        public UsuariosController(IKeyService keySvc, IConfiguration conf, IAuthService authService, IUsuarioService userSvc)
         {
-            this.codeSvc = codeSvc;
+            this.keySvc = keySvc;
             this.conf = conf;
             this.authService = authService;
             this.userSvc = userSvc;
@@ -54,167 +57,76 @@ namespace OdontoApp.Controllers
             return RedirectToAction("Index", "Agendas");
         }
 
-        [HttpGet]
-        public IActionResult RecuperarSenha()
+        [HttpGet("token/{token}")]
+        public async Task<IActionResult> Token(string token)
         {
-            return View();
-        }
+            var serverKey = await keySvc.SearchKeyAsync(token);
 
-        [HttpPost]
-        public async Task<IActionResult> RecuperarSenha(ApplicationUser usuario)
-        {
-            var user = await userSvc.FindByEmailAsync(usuario.Email);
-            if (user == null)
+            if (serverKey != null)
             {
-                TempData["MSG_E"] = Mensagem.MSG_E014;
-                return View();
+                TempData["serverKey"] = JsonConvert.SerializeObject(serverKey);
+                if (serverKey.KeyType == KeyType.Verification)
+                    return RedirectToAction("EmailConfirmado", "Usuarios");
+                if (serverKey.KeyType == KeyType.Recovery)
+                    return RedirectToAction("RedefinirSenha", "Usuarios");
             }
-            var codigo = new AccessCode { Email = usuario.Email, CodeType = CodeType.Recovery };
-            var elapsedTime = await codeSvc.ElapsedTimeAsync(codigo);
-            var _15min = new TimeSpan(0, 15, 0);
-            TempData["MSG_E"] = string.Format(Mensagem.MSG_E011, _15min.Subtract(elapsedTime).ToString(@"mm\:ss"));
-
-            if (elapsedTime >= _15min)
-            {
-                TempData["MSG_E"] = null;
-                await codeSvc.CreateNewKeyAsync(user, CodeType.Recovery);
-                TempData["MSG_S"] = Mensagem.MSG_S003;
-            }
-            usuario.Id = user.Id;
-            return RedirectToAction("NovaSenha", usuario);
+            return RedirectToAction("ErrorLink", "Error", new { });
         }
 
-        [HttpGet]
-        public IActionResult NovaSenha(ApplicationUser usuario)
-        {
-            UserCode viewModel = new UserCode
-            {
-                Usuario = usuario
-            };
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> NovaSenha(UserCode usercode)
-        {
-            ModelState.Remove("Usuario.Nome");
-            ModelState.Remove("Usuario.TipoAcesso");
-            ModelState.Remove("Usuario.SituacaoConta");
-            ModelState.Remove("Usuario.SituacaoPagamento");
-            ModelState.Remove("Usuario.NumeroPlano");
-            ModelState.Remove("Usuario.Nascimento");
-            ModelState.Remove("Usuario.Sexo");
-            ModelState.Remove("Usuario.CPF");
-            ModelState.Remove("Usuario.DDD");
-            ModelState.Remove("Usuario.EnderecoId");
-            ModelState.Remove("Usuario.Telefone");
-
-
-            if (ModelState.IsValid)
-            {
-                usercode.AcessCode.Email = usercode.Usuario.Email;
-                usercode.AcessCode.CodeType = CodeType.Recovery;
-
-                if (codeSvc.CodeIsValid(usercode.AcessCode.Key))
-                {
-
-                    if (!await userSvc.ChangePasswordByCodeAsync(usercode.Usuario, usercode.AcessCode))
-                    {
-                        TempData["MSG_E"] = Mensagem.MSG_E015;
-                        usercode.AcessCode.Key = string.Empty;
-                        return View(usercode);
-                    }
-
-                    TempData["MSG_S"] = Mensagem.MSG_S005;
-                    return RedirectToAction("Login","Usuarios");
-                }
-            }
-
-            TempData["MSG_E"] = Mensagem.MSG_E013;
-            return View(usercode);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> AtivarConta()
+        [HttpGet("usuario/confirmacaopendente")]
+        public async Task<IActionResult> ConfirmarEmail()
         {
             var loggedUser = await authService.GetLoggedUserAsync();
 
             if (loggedUser is null)
             {
-                return RedirectToAction("Login", "Usuarios");
+                return RedirectToAction("signin", "auth"); ;
             }
 
             if (!loggedUser.EmailConfirmed)
             {
-                UserCode viewModel = new UserCode
-                {
-                    Usuario = loggedUser
-                };
-
-                return View(viewModel);
-
+                return View(loggedUser);
             }
             return RedirectToAction("Index", "Agendas");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AtivarConta(UserCode usercode)
+        [HttpGet("usuario/confirmaremail")]
+        public async Task<IActionResult> EmailConfirmado()
         {
-            var loggedUser = await authService.GetLoggedUserAsync();
+            var serverKey = new AccessKey();
+            if (TempData["serverKey"] != null)
+                serverKey = JsonConvert.DeserializeObject<AccessKey>(TempData["serverKey"].ToString());
 
-            if (!loggedUser.EmailConfirmed)
+            if (serverKey.Key != null && serverKey.KeyType != null && serverKey.UserId != null)
             {
-                ModelState.Remove("Usuario.Nome");
-                ModelState.Remove("Usuario.TipoAcesso");
-                ModelState.Remove("Usuario.SituacaoConta");
-                ModelState.Remove("Usuario.SituacaoPagamento");
-                ModelState.Remove("Usuario.NumeroPlano");
-                ModelState.Remove("Usuario.Nascimento");
-                ModelState.Remove("Usuario.Sexo");
-                ModelState.Remove("Usuario.CPF");
-                ModelState.Remove("Usuario.DDD");
-                ModelState.Remove("Usuario.EnderecoId");
-                ModelState.Remove("Usuario.Telefone");
-                ModelState.Remove("Usuario.Senha");
-                ModelState.Remove("Usuario.ConfirmacaoSenha");
+                var user = await userSvc.GetByIdAsync(serverKey.UserId);
+                var accountEnabled = await userSvc.ActiveAccountAsync(user, serverKey);
 
-                if (ModelState.IsValid)
+                if (!accountEnabled)
                 {
-                    usercode.AcessCode.Email = usercode.Usuario.Email;
-                    usercode.AcessCode.CodeType = CodeType.Verification;
-
-                    if (codeSvc.CodeIsValid(usercode.AcessCode.Key))
-                    {
-                        var accountEnabled = await userSvc.ActiveAccountAsync(loggedUser, usercode.AcessCode);
-
-                        if (!accountEnabled)
-                        {
-                            TempData["MSG_E"] = Mensagem.MSG_E015;
-                            return View(usercode);
-                        }
-
-                        await authService.SignInAsync(await userSvc.GetByIdAsync(loggedUser.Id));
-                        TempData["MSG_S"] = Mensagem.MSG_S008;
-                        return RedirectToAction("Index", "Agendas");
-                    }
+                    ViewData["MSG_E"] = "Email não pode ser verificado, tente novamente em instantes, se o problema persistir entre em contato conosco.";
+                    return View();
                 }
-                TempData["MSG_E"] = Mensagem.MSG_E013;
-                return View(usercode);
+                ViewData["MSG_S"] = "Email verificado com sucesso!";
+                return View();
+
             }
-            return RedirectToAction("Index", "Agendas");
+            ViewData["MSG_E"] = "Essa chamada não pôde ser processada.";
+
+            return View();
         }
 
         [HttpGet]
-        public IActionResult NovoCodigoConfirmacao() => PartialView();
+        public IActionResult NovaConfirmacaoEmail() => PartialView("_NovaConfirmacaoEmail");
 
         [HttpPost]
-        public async Task<IActionResult> NovoCodigoConfirmacao(string codeType)
+        public async Task<IActionResult> NovaConfirmacaoEmail(string codeType)
         {
             var loggedUser = await authService.GetLoggedUserAsync();
             if (!(loggedUser is null))
             {
-                var codigo = new AccessCode { Email = loggedUser.Email, CodeType = codeType };
-                var elapsedTime = await codeSvc.ElapsedTimeAsync(codigo);
+                var codigo = new AccessKey { User = loggedUser, KeyType = codeType };
+                var elapsedTime = await keySvc.ElapsedTimeAsync(codigo);
                 var _15min = new TimeSpan(0, 15, 0);
                 TempData["MSG_E"] = string.Format(Mensagem.MSG_E011, _15min.Subtract(elapsedTime).ToString(@"mm\:ss"));
 
@@ -222,14 +134,96 @@ namespace OdontoApp.Controllers
                 if (elapsedTime >= _15min)
                 {
                     TempData["MSG_E"] = null;
-                    await codeSvc.CreateNewKeyAsync(loggedUser, codeType);
+                    await keySvc.CreateNewKeyAsync(loggedUser, codeType);
                     TempData["MSG_S"] = Mensagem.MSG_S007;
                 }
 
-                return RedirectToAction("AtivarConta", new UserCode { Usuario = loggedUser });
+                return RedirectToAction("ConfirmarEmail");
             }
 
             return RedirectToAction(nameof(Index));
+        }
+        [HttpGet]
+        public IActionResult RecuperarSenha()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RecuperarSenha(SignInUser usuario)
+        {
+            ModelState.Remove("Password");
+
+            if (ModelState.IsValid)
+            {
+                var user = await userSvc.FindByEmailAsync(usuario.Username);
+                if (user == null)
+                {
+                    TempData["MSG_E"] = Mensagem.MSG_E014;
+                    return View();
+                }
+
+                var codigo = new AccessKey { User = new ApplicationUser { Email = usuario.Username }, KeyType = KeyType.Recovery };
+                var elapsedTime = await keySvc.ElapsedTimeAsync(codigo);
+                var _15min = new TimeSpan(0, 15, 0);
+                TempData["MSG_E"] = string.Format(Mensagem.MSG_E011, _15min.Subtract(elapsedTime).ToString(@"mm\:ss"));
+
+                if (elapsedTime >= _15min)
+                {
+                    TempData["MSG_E"] = null;
+                    await keySvc.CreateNewKeyAsync(user, KeyType.Recovery);
+                    TempData["MSG_S"] = Mensagem.MSG_S003;
+                }
+            }
+            return View();
+        }
+
+        [HttpGet/*("usuario/redefinir/{token}")*/]
+        public IActionResult RedefinirSenha(/*string token*/)
+        {
+            var serverKey = new AccessKey();
+            if (TempData["serverKey"] != null)
+            {
+                TempData.Keep("serverKey");
+                return View();
+            }
+            TempData["MSG_E"] = "Link inválido ou expirado, solicite outra redefinição de senha ou entre em contato conosco";
+            return RedirectToAction("RecuperarSenha");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RedefinirSenha([FromForm]UserResetPassword userResetPassword)
+        {
+            var serverKey = new AccessKey();
+
+            if (ModelState.IsValid && TempData["serverKey"] != null)
+            {
+                serverKey = JsonConvert.DeserializeObject<AccessKey>(TempData["serverKey"].ToString());
+                TempData.Remove("serverKey");
+
+                if (serverKey.Key != null && serverKey.KeyType != null && serverKey.UserId != null)
+                {
+                    var user = await userSvc.GetByIdAsync(serverKey.UserId);
+                    if (user != null)
+                    {
+                        var token = await userSvc.GeneratePasswordResetTokenAsync(user);
+                        var response = await userSvc.ResetPasswordAsync(user, token, userResetPassword.Password);
+                        if (response.Succeeded)
+                        {
+                            TempData["MSG_S"] = Mensagem.MSG_S005;
+                            await keySvc.DeleteAsync(serverKey);
+                            return RedirectToAction("ResultResetPassword");
+                        }
+                    }
+
+                }
+            }
+            TempData.Remove("serverKey");
+            return RedirectToAction("ResultResetPassword");
+        }
+        public async Task<IActionResult> ResultResetPassword()
+        {
+            return View();
         }
     }
 }

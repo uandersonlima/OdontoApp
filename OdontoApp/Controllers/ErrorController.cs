@@ -50,5 +50,11 @@ namespace OdontoApp.Controllers
             return View();
         }
 
+        [HttpGet, Route("Error/400")]
+        public IActionResult ErrorLink(string errormessage)
+        {
+            return View();
+        }
+
     }
 }

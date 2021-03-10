@@ -33,7 +33,7 @@ namespace OdontoApp.Repositories
             context.AnamnesesPerguntas.RemoveRange(context.AnamnesesPerguntas.Where(obj => obj.PerguntaAnamneseId == entity.PerguntaAnamneseId));
             context.PerguntaAnamnese.Remove(entity);
             context.Pergunta.Remove(entity.Pergunta);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync();       
         }
         public async Task<PerguntaAnamnese> GetByIdAsync(int id, string userId) => await context.PerguntaAnamnese.Include(x => x.TipoPergunta).Include(x => x.Pergunta).Where(cnc => cnc.PerguntaAnamneseId == id && cnc.UsuarioId == userId).FirstOrDefaultAsync();
         public async Task<PaginationList<PerguntaAnamnese>> GetAllAsync(AppView appQuery, string userId)

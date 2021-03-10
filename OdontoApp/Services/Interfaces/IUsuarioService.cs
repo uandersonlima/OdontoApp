@@ -1,5 +1,6 @@
-﻿using OdontoApp.Models;
-using OdontoApp.Models.AccessCode;
+﻿using Microsoft.AspNetCore.Identity;
+using OdontoApp.Models;
+using OdontoApp.Models.Access;
 using OdontoApp.Models.DTO;
 using OdontoApp.Models.Helpers;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace OdontoApp.Services.Interfaces
 {
     public interface IUsuarioService
-    {    
+    {
         Task AddAsync(ApplicationUser entity);
         Task<bool> CheckEntityAsync(ApplicationUser entity);
         Task DeleteAsync(string userId);
@@ -18,10 +19,11 @@ namespace OdontoApp.Services.Interfaces
         Task<ApplicationUser> GetByIdAsync(string id);
         Task<List<ApplicationUser>> GetAllAsync();
         Task<PaginationList<ApplicationUser>> GetAllAsync(AppView appQuery);
-        Task<bool> ActiveAccountAsync(ApplicationUser entity, AccessCode accessCode);
+        Task<bool> ActiveAccountAsync(ApplicationUser entity, AccessKey accessCode);
         Task<List<string>> CreateAsync(ApplicationUser appUser, string password);
-        Task ChangePasswordAsync(ApplicationUser entity);
-        Task<bool> ChangePasswordByCodeAsync(ApplicationUser entity, AccessCode accessCode);
+        Task<IdentityResult> ChangePasswordAsync(ApplicationUser appUser, string currentPassword, string newPassword);
+        Task<IdentityResult> ResetPasswordAsync(ApplicationUser appUser, string token, string newPassword);
+        Task<string> GeneratePasswordResetTokenAsync(ApplicationUser appUser);
         Task EnableOrDisableAsync(ApplicationUser entity);
         Task<ApplicationUser> FindUserByLoginAsync(SignInUser signInUser);
         Task<bool> ValidateEmailAsync(string email);

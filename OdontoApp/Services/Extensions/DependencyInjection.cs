@@ -61,7 +61,7 @@ namespace OdontoApp.Services.Extensions
             });
             
             svc.AddScoped<EmailService>();
-            svc.AddScoped<ICodigoRepository, CodigoRepository>();
+            svc.AddScoped<IKeyRepository, KeyRepository>();
            
             //Banco de Dados
             svc.AddDbContext<OdontoAppContext>(options =>
@@ -74,7 +74,7 @@ namespace OdontoApp.Services.Extensions
             svc.AddScoped<IAgendaRepository, AgendaRepository>();
             svc.AddScoped<IAnamneseRepository, AnamneseRepository>();
             svc.AddScoped<IClinicaRepository, ClinicaRepository>();
-            svc.AddScoped<ICodigoRepository, CodigoRepository>();
+            svc.AddScoped<IKeyRepository, KeyRepository>();
             svc.AddScoped<ICodigoPromocionalRepository, CodigoPromocionalRepository>();
             svc.AddScoped<IDentesRegiaoRepository, DentesRegiaoRepository>();
             svc.AddScoped<IEnderecoRepository, EnderecoRepository>();
@@ -98,7 +98,7 @@ namespace OdontoApp.Services.Extensions
             svc.AddScoped<IAnamneseService, AnamneseService>();
             svc.AddScoped<IAuthService, AuthService>();
             svc.AddScoped<IClinicaService, ClinicaService>();
-            svc.AddScoped<ICodigoService, CodigoService>();
+            svc.AddScoped<IKeyService, KeyService>();
             svc.AddScoped<ICodigoPromocionalService, CodigoPromocionalService>();
             svc.AddScoped<IDentesRegiaoService, DentesRegiaoService>();
             svc.AddScoped<IEmailService, EmailService>();

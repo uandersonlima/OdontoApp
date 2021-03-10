@@ -17,11 +17,11 @@ namespace OdontoApp.Controllers
     {
         private readonly AppSettings appSettings;
         private readonly IAuthService authService;
-        private readonly ICodigoService codeSvc;
+        private readonly IKeyService codeSvc;
         private readonly IConfiguration conf;
         private readonly IUsuarioService userService;
 
-        public AuthController(IAuthService authService, ICodigoService codeSvc, IConfiguration conf, IOptions<AppSettings> appSettings, IUsuarioService userService)
+        public AuthController(IAuthService authService, IKeyService codeSvc, IConfiguration conf, IOptions<AppSettings> appSettings, IUsuarioService userService)
         {
             this.appSettings = appSettings.Value;
             this.authService = authService;
@@ -48,7 +48,6 @@ namespace OdontoApp.Controllers
                 return View(signInUser);
             }
             var user = await userService.FindUserByLoginAsync(signInUser);
-
             if (user != null)
             {
                 await authService.SignInAsync(user);
@@ -97,7 +96,7 @@ namespace OdontoApp.Controllers
                 TempData["MSG_S"] = Mensagem.MSG_S006;
                 if (!(signUpUser.Email.ToLower() == appSettings.SmtpUser.ToLower()))
                 {
-                    await codeSvc.CreateNewKeyAsync(appUser, CodeType.Verification);
+                    await codeSvc.CreateNewKeyAsync(appUser, KeyType.Verification);
                 }
                 return RedirectToAction(nameof(SignIn));
             }

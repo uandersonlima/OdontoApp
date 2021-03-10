@@ -26,7 +26,7 @@ namespace OdontoApp.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<Message> GetMessageAsync(Guid messagecode, string senderId)
+        public async Task<Message> GetMessageAsync(string messagecode, string senderId)
         {
             return await context.Message.Where(msg => msg.Messagecode == messagecode && senderId == msg.SenderUserId).FirstOrDefaultAsync();
         }

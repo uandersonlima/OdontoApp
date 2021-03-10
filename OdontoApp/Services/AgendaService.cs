@@ -53,11 +53,11 @@ namespace OdontoApp.Services
                 await agendaRepos.UpdateAsync(entity);
         }
 
-        public async Task<PaginationList<Agenda>> GetByPatientAsync(AppView appQuery, int pacienteId)
+        public async Task<PaginationList<Agenda>> GetByPatientIdAsync(AppView appQuery, int pacienteId)
         {
             appQuery.RecordPerPage ??= NumElement.NumElements;
             appQuery.NumberPag ??= 1;
-            return await agendaRepos.GetByPatientAsync(appQuery, pacienteId, authService.GetLoggedUserAsync().Result.Id);
+            return await agendaRepos.GetByPatientIdAsync(appQuery, pacienteId, authService.GetLoggedUserAsync().Result.Id);
         }
     }
 }

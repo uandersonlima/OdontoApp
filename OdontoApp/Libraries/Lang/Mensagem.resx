@@ -145,7 +145,7 @@
     <value>Não foi selecionado o tipo de envio!</value>
   </data>
   <data name="MSG_E011" xml:space="preserve">
-    <value>Código não gerado, aguarde {0} min antes de pedir um novo código!</value>
+    <value>Link não gerado, aguarde {0} min antes de pedir um novo link!</value>
   </data>
   <data name="MSG_E012" xml:space="preserve">
     <value>Os dados do cartão estão incorretos ou esse cartão está inativo, por favor, tente novamente!</value>
@@ -157,7 +157,7 @@
     <value>E-mail não encontrado na base de dados!</value>
   </data>
   <data name="MSG_E015" xml:space="preserve">
-    <value>Código de Verificação Inválido, verifique sua caixa de e-mail e tenha certeza de que este é o código mais recente</value>
+    <value>Link de confirmação inválido, verifique sua caixa de e-mail e tenha certeza de que este é o link mais recente</value>
   </data>
   <data name="MSG_S001" xml:space="preserve">
     <value>Registro salvo com sucesso!</value>
@@ -166,7 +166,7 @@
     <value>Registro excluído com sucesso!</value>
   </data>
   <data name="MSG_S003" xml:space="preserve">
-    <value>Código de recuperação enviado para o email informado com sucesso! O código gerado possui 24horas de validade</value>
+    <value>Link de recuperação enviado para o email informado com sucesso! O código gerado possui 24horas de validade</value>
   </data>
   <data name="MSG_S004" xml:space="preserve">
     <value>E-mail enviado para sua caixa postal!</value>
@@ -178,9 +178,9 @@
     <value>Cadastro realizado com sucesso!</value>
   </data>
   <data name="MSG_S007" xml:space="preserve">
-    <value>Novo código de verificação gerado com sucesso! Verifique sua caixa de e-mail! O código gerado possui 24horas de validade</value>
+    <value>Novo link de confirmação gerado com sucesso! Verifique sua caixa de e-mail! O seu link possui 24horas de validade</value>
   </data>
   <data name="MSG_S008" xml:space="preserve">
-    <value>Conta Ativada com Sucesso</value>
+    <value>Email verificado com Sucesso</value>
   </data>
 </root>

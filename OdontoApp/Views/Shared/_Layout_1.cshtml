@@ -176,7 +176,7 @@
                                                 <a asp-controller="Usuarios" asp-action="MyProfile" style="text-decoration-line:none;">
                                                     <div class="row align-items-center">
                                                         <div class="avatar avatar-lg">
-                                                            <span class="avatar-title rounded-circle border border-white text-white font-weight-bold h1">@Mask.PrimeirasDuasLetrasNome(usuarioNome).ToUpper()</span>
+                                                            <span class="avatar-title rounded-circle border border-white text-white font-weight-bold h1">@Mask.PrimeirasDuasLetrasNome(Mask.PrimeiroNome(usuarioNome)).ToUpper()</span>
                                                         </div>
                                                         <div class="col ml-2">
                                                             <div class="row">

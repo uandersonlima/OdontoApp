@@ -49,6 +49,7 @@ namespace OdontoApp.Repositories
             var pagList = new PaginationList<Paciente>();
             var pacientes = context.Paciente.Where(ent => ent.UsuarioId == userId).OrderBy(pac => pac.NomePaciente).ThenBy(pac => pac.NomePaciente).AsNoTracking().AsQueryable();
 
+    
             if (appQuery.CheckSearch())
             {
                 pacientes = pacientes.Where(paciente => paciente.NomePaciente.Contains(appQuery.Search.Trim()) || paciente.EmailPaciente.Contains(appQuery.Search.Trim()) || paciente.CPF.Contains(appQuery.Search.Trim()));

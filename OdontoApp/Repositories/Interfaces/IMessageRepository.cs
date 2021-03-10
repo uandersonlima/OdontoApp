@@ -9,7 +9,7 @@ namespace OdontoApp.Repositories.Interfaces
 {
     public interface IMessageRepository
     {
-        Task<Message> GetMessageAsync(Guid messagecode, string senderId);
+        Task<Message> GetMessageAsync(string messagecode, string senderId);
         Task<List<Message>> GetMessagesAsync(AppView appview, string senderId);
         Task<List<Message>> GetUnreadMessagesAsync(string senderId);
         Task DeleteMessageAsync(Message msg);
