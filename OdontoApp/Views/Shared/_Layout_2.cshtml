@@ -59,7 +59,7 @@
                             <li class="nav-item dropdown hidden-caret text-center">
                                 <a class="btn btn-round btn-outline-primary mr-1 mr-md-2 mr-lg-3 p-1 font-weight-bold" style="border-width:2px" asp-controller="agendas" asp-action="index">
                                     <div class="avatar avatar-xs">
-                                        <span class="avatar-title rounded-circle text-white font-weight-bold h1 bg-primary">@Mask.PrimeirasDuasLetrasNome(usuarioNome).ToUpper()</span>
+                                        <span class="avatar-title rounded-circle text-white font-weight-bold h1 bg-primary">@Mask.PrimeirasDuasLetrasNome(Mask.PrimeiroNome(usuarioNome)).ToUpper()</span>
                                     </div>
                                     <span>
                                         @Mask.PrimeiroNome(usuarioNome).ToUpper()
