@@ -67,6 +67,7 @@ namespace OdontoApp.Services
             }
             return new TimeSpan(0, 15, 0);
         }
+        
         public async Task<AccessKey> SearchKeyByEmailAndTypeAsync(AccessKey acessKey)
         =>
         await codigoRepos.SearchKeyByEmailAndTypeAsync(acessKey);

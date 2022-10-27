@@ -63,7 +63,11 @@
                         <div class="col-11 has-feedback form-row">
                             <label asp-for="Paciente.NomePaciente" class="col-4 col-form-label font-weight-bold text-muted">Paciente</label>
                             <input asp-for="Paciente.NomePaciente" type="text" class="form-control text-muted" autocomplete="off" placeholder="Informe nome, email ou cpf do paciente">
-                            <div id="loadPaciente" class="autocomplete-feedback form-control-feedback" style="display: none;"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
+                            <div id="loadPaciente" class="autocomplete-feedback form-control-feedback" style="display: none;">
+                                <svg class="_loading_svg" viewBox="0 0 46 46">
+                                    <circle class="_loading_svg_circle" cx="23" cy="23" r="20" fill="none"></circle>
+                                </svg>
+                            </div>
                             <input type="hidden" id="pacienteId">
                         </div>                        
                     </div>
@@ -72,7 +76,11 @@
                         <div class="col-11 has-feedback form-row">
                             <label asp-for="Medico.NomeMedico" class="col-4 col-form-label font-weight-bold text-muted">Médico</label>
                             <input asp-for="Medico.NomeMedico" type="text" class="form-control text-muted" autocomplete="off" placeholder="Informe nome ou CRO">
-                            <div id="loadMedico" class="autocomplete-feedback form-control-feedback" style="display: none;"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>
+                            <div id="loadMedico" class="autocomplete-feedback form-control-feedback" style="display: none;">
+                                <svg class="_loading_svg" viewBox="0 0 46 46">
+                                    <circle class="_loading_svg_circle" cx="23" cy="23" r="20" fill="none"></circle>
+                                </svg>
+                            </div>
                             <input type="hidden" id="medicoId">
                         </div>   
                     </div>                    

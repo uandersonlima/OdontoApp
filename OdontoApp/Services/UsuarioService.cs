@@ -31,7 +31,6 @@ namespace OdontoApp.Services
             if (accessKey.KeyType == KeyType.Verification)
             {
                 await EnableOrDisableAsync(entity);
-                await UpdateAsync(entity);
                 await codigoSvc.DeleteAsync(accessKey);
                 return true;
             }

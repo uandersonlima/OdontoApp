@@ -83,15 +83,5 @@ namespace OdontoApp.Repositories
                 throw new DbConcurrencyException(e.Message);
             }
         }
-
-        public async Task<List<string>> UserListAsync(string userId)
-        {
-            var x = await context.Message.Where(msg => msg.ReceiverUserId == userId || msg.SenderUserId == userId).ToListAsync();
-            var userListId = new List<string>();
-            x.ForEach(msg => userListId.AddRange(new string[]{msg.SenderUserId, msg.ReceiverUserId}));
-            userListId = userListId.Distinct().ToList();
-            userListId.Remove(userId);
-            return userListId;
-        }
     }
 }

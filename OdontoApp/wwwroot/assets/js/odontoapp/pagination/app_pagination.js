@@ -1,4 +1,4 @@
-﻿let conf = {
+﻿const conf = {
     startHTML: null,
     searchHTML: null,
     endHTML: null,
@@ -15,7 +15,7 @@ const ulPage = $('ul.pagination');
 const divLoading = $('div#loading');
 const divElements = $('div#ElementsList');
 
-function AddFunction() {
+const AddFunction = async () => {
     if (conf.searchHTML != null) {
         conf.searchHTML.keydown(debounce(RefreshPage, 500));
     }
@@ -28,32 +28,32 @@ function AddFunction() {
     }
 }
 
-function AppViewModel(appView) {
+const AppViewModel = async appView => {
     $.ajax({
         type: "GET",
         url: conf.urlPag,
         async: true,
         data: appView,
         contentType: 'application/json',
-        success: function (partialView) {
+        success: partialView => {
             divLoading.removeClass('d-flex');
             divLoading.addClass('d-none');
             divElements.show();
             divElements.html(partialView);
             AddLiElementsPage();
         },
-        error: function (code) {
+        error: code => {
             divElements.html(`<h4 class="display-3 mt-5 text-center font-weight-bold">Algo deu errado Erro${code.status}, se o problema persistir entre em contato conosco</h4>`);
         }
     })
 }
 
-function ConstructorPagination(totalPagesArg = null, totalRecordsArg = null) {
+const ConstructorPagination = async (totalPagesArg = null, totalRecordsArg = null) => {
     conf.totalPagesString = totalPagesArg;
     conf.totalRecordsString = totalRecordsArg;
 }
 
-function ConstructorAppView(searchArg = null, recordperpageArg = null, startArg = null, endArg = null) {
+const ConstructorAppView = (searchArg = null, recordperpageArg = null, startArg = null, endArg = null) =>{
     conf.startHTML = startArg;
     conf.searchHTML = searchArg;
     conf.endHTML = endArg;
@@ -62,19 +62,19 @@ function ConstructorAppView(searchArg = null, recordperpageArg = null, startArg 
     RefreshPage();
 }
 
-function ConstructorUrl(url) {
+const ConstructorUrl = url => {
     conf.urlPag = url;
 }
 
-function debounce(func, wait) {
-    return function () {
+const debounce = (func, wait) =>{
+    return () => {
         conf.currentPage = 1;
         clearTimeout(conf.timer);
         conf.timer = setTimeout(func, wait);
     }
 }
 
-function ChangePage(changedPage) {
+const ChangePage = changedPage => {
 
     ulPage.find('li.page-item.active').removeClass('active');
     ulPage.find(`li.page-item#${changedPage}`).addClass('active');
@@ -83,7 +83,7 @@ function ChangePage(changedPage) {
     RefreshPage();
 }
 
-function AddLiElementsPage() {
+const AddLiElementsPage = () => {
     let previousPage = conf.currentPage - conf.visiblePages;
     let nextPage = conf.currentPage + conf.visiblePages;
 
@@ -92,7 +92,7 @@ function AddLiElementsPage() {
     NextPages(nextPage);
 }
 
-function PreviousPages(previousPage) {
+const PreviousPages = previousPage => {
     if (conf.currentPage > 1)
         ulPage.find('li.page-item.active').before(`<li class="page-item" id="1"><a class="page-link text-primary" href="javascript:void(0);" onclick ="ChangePage(1)"><i class="fa fa-angle-double-left"></i></a></li>`);
     for (previousPage; previousPage <= conf.currentPage - 1; previousPage++) {
@@ -102,7 +102,7 @@ function PreviousPages(previousPage) {
     }
 }
 
-function CurrentPage(currentPage) {
+const CurrentPage = currentPage => {
     let totalRecords = Number($(conf.totalRecordsString).val())
     let totalPages = Number($(conf.totalPagesString).val())
     if ( totalRecords > 0 && totalPages > 1)
@@ -111,7 +111,7 @@ function CurrentPage(currentPage) {
     }  
 }
 
-function NextPages(nextPage) {
+const NextPages = nextPage => {
     let totalPages = parseInt($(conf.totalPagesString).val())
     for (nextPage; nextPage >= conf.currentPage + 1; nextPage--) {
         if (nextPage <= totalPages) {
@@ -122,7 +122,7 @@ function NextPages(nextPage) {
         ulPage.append(`<li class="page-item" id="${totalPages}"><a class="page-link text-primary" href="javascript:void(0);" onclick ="ChangePage(${totalPages})"><i class="fa fa-angle-double-right"></i></a></li>`);
 }
 
-function RefreshPage() {
+const RefreshPage = () => {
 
     divElements.hide();
     divLoading.removeClass('d-none');

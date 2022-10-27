@@ -2,181 +2,400 @@
     ViewData["Title"] = "Messages";
     Layout = "~/Views/Shared/_Layout_1.cshtml";
 }
-
-<link href='msg.css' rel='stylesheet' type="text/css" />
-
-<input id="user">
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3 min-vh-100">
-            <div class="col mt-5">
-                <h1 class="msg">Mensagens</h1>
+    <div class="row _height_perfect_chat">
+        <div class="d-md-flex d-none col-md-3 p-0 _height-message-page">
+            <div class="col p-0">
+                <div class="py-4 py-md-5">
+                    <h1 class="mx-4">Mensagens</h1>
+                </div>         
                 <div class="nav nav-tabs nav-line nav-color-default">
                     <a class="todas mr-5 ml-3 nav-item nav-link active" data-toggle="tab" href="#todas">Todas</a>
                     <a class="nav-item nav-link " data-toggle="tab" href="#arquivadas">Arquivadas</a>
                 </div>
                 <div class="tab-content">
-                    <div class="container tab-pane active" id="todas">
-
-                        <form>
-
-                            <div class="input-group divsearchcontact col-10 mt-5 ml-2">
-                                <input type="text" class="campotexto" name="contato" id="contato" placeholder="Buscar">
-
+                    <div class="container-fluid p-0 tab-pane active" id="todas">
+                        <div class="form-group col-12">
+                            <div class="input-icon">
+                                <span class="input-icon-addon text-primary">
+                                    <i class="fa fa-search search-icon" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control input-pill text-dark font-weight-bold" id="buscarPaciente" placeholder="Digite o Nome ou CPF">
                             </div>
-
-
-                        </form>
-
-
-                        <div class="container contato">
-                            <a class="acontato" onclick="" href="javascript:void(0)">
-                                <div class="row col contatos">
-                                    <div class="bola mt-4"></div>
-                                    <div class="avatar ml-2"></div>
-                                    <div class="mt-2">
-                                        <div class="col font-weight-bold nome">Nome Sobrenome</div>
-                                        <div class="col">Última mensagem</div>
-                                    </div>
-                                    <div class="mt-2 ml-3">2h ></div>
-                                </div>
-                            </a>
-
-                            <hr>
-                            <a class="acontato" onclick="" href="javascript:void(0)">
-                                <div class="row col contatos">
-                                    <div class="bola mt-4"></div>
-                                    <div class="avatar ml-2"></div>
-                                    <div class="mt-2">
-                                        <div class="col font-weight-bold nome">Nome Sobrenome</div>
-                                        <div class="col">Última mensagem</div>
-                                    </div>
-                                    <div class="mt-2 ml-3">2h ></div>
-                                </div>
-                            </a>
-                            <hr>
-                            <a class="acontato" onclick="" href="javascript:void(0)">
-                                <div class="row col contatos">
-                                    <div class="bola mt-4"></div>
-                                    <div class="avatar ml-2"></div>
-                                    <div class="mt-2">
-                                        <div class="col font-weight-bold nome">Nome Sobrenome</div>
-                                        <div class="col">Última mensagem</div>
-                                    </div>
-                                    <div class="mt-2 ml-3">2h ></div>
-                                </div>
-                            </a>
-                            <hr>
-                            <a class="acontato" onclick="" href="javascript:void(0)">
-                                <div class="row col contatos">
-                                    <div class="bola mt-4"></div>
-                                    <div class="avatar ml-2"></div>
-                                    <div class="mt-2">
-                                        <div class="col font-weight-bold nome">Nome Sobrenome</div>
-                                        <div class="col">Última mensagem</div>
-                                    </div>
-                                    <div class="mt-2 ml-3">2h ></div>
-                                </div>
-                            </a>
-                            <hr>
-                            <a class="acontato" onclick="" href="javascript:void(0)">
-                                <div class="row col contatos">
-                                    <div class="bola mt-4"></div>
-                                    <div class="avatar ml-2"></div>
-                                    <div class="mt-2">
-                                        <div class="col font-weight-bold nome">Nome Sobrenome</div>
-                                        <div class="col">Última mensagem</div>
-                                    </div>
-                                    <div class="mt-2 ml-3">2h ></div>
-                                </div>
-                            </a>
-                            <hr>
-                            <a class="acontato" onclick="" href="javascript:void(0)">
-                                <div class="row col contatos">
-                                    <div class="bola mt-4"></div>
-                                    <div class="avatar ml-2"></div>
-                                    <div class="mt-2">
-                                        <div class="col font-weight-bold nome">Nome Sobrenome</div>
-                                        <div class="col">Última mensagem</div>
-                                    </div>
-                                    <div class="mt-2 ml-3">2h ></div>
-                                </div>
-                            </a>
-                            <hr>
-                            <a class="acontato" onclick="" href="javascript:void(0)">
-                                <div class="row col contatos">
-                                    <div class="bola mt-4"></div>
-                                    <div class="avatar ml-2"></div>
-                                    <div class="mt-2">
-                                        <div class="col font-weight-bold nome">Nome Sobrenome</div>
-                                        <div class="col">Última mensagem</div>
-                                    </div>
-                                    <div class="mt-2 ml-3">2h ></div>
-                                </div>
-                            </a>
-
-
-
-
-
                         </div>
-
+                        <div class="_list_usercontact">
+                            <div class="_usercontact not_read">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">11:40</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">
+                                            <div class="_qtd_not_read">
+                                                <span>1</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact _usercontact_active">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-offline">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">22:31</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-away">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">23:25</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">17:50</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-offline">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">22:31</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-away">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">23:25</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">17:50</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-offline">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">22:31</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-away">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">23:25</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="_usercontact">
+                                <div class="_usercontact_head">
+                                    <div class="avatar avatar-online">
+                                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
+                                    </div>
+                                </div>
+                                <div class="_usercontact_body">
+                                    <div class="_usercontact_title">
+                                        <div class="_usercontact_title_name">
+                                            <span class="_span_inherit">
+                                                <span class="_span_text">Paulo André Jorge</span>
+                                            </span>
+                                        </div>
+                                        <div class="_last">17:50</div>
+                                    </div>
+                                    <div class="_usercontact_msg">
+                                        <div class="_usercontact_msg_text">
+                                            <span class="_usercontact_msg_span">
+                                                <span class="_span_text">Teria como mudar minha consulta para sexta?    </span>
+                                            </span>
+                                        </div>
+                                        @* <div class="_last">
+                                                <div class="_qtd_not_read">
+                                                    <span>1</span>
+                                                </div>
+                                            </div> *@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="arquivadas">teste222</div>
                 </div>
-
             </div>
-
         </div>
-        <div class="col-md-6 vh-100">
-            <h1 class="mt-5">Nome e Sobrenome</h1>
-            <div class="chat mt-5">
-                <div class="col">
-                    <div class="row">
-                        <div class="balao1">
-
-                            <p class="m-3">
-                                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                            </p>
-
-                        </div>
-
-                    </div>
-                    <div>
-                        1 dia atras
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="row justify-content-end">
-                        <div class="balao2 mr-5 bg-primary">
-                            <p class="m-3 text-white">Simmmsssssssssssssssssssssssssssssssssssssss</p>
-                        </div>
-
-                    </div>
-                    <div class="tempomsg">2 dias atras</div>
-                </div>
-
+        <div class="col-md-6 p-0 _height-message-page">
+            <div class="py-4 py-md-5 mx-3">
+                <h1 class="font-weight-bold text-truncate">Nome e Sobrenomesadasdasddsaadsasddasdsadsadsadsa</h1>
             </div>
-
-            <div class="form-group divcamptext col-11">
-                <input type="text" class="campotexto" name="msg" id="mensagem" placeholder="Envie sua mensagem">
-                <button id="butaozinho" type="submit" class="btnchat">
-                    <i class="fas fa-paper-plane"></i>
+            <div class="container-fluid p-0 _chat_messages _chat_messages-md border">
+                <div class="_spaceY"></div>
+                <div class="_container_loading">
+                    <div class="_loading" title="Carregando mensagens...">
+                        <svg class="_loading_svg" viewBox="0 0 46 46">
+                            <circle class="_loading_svg_circle" cx="23" cy="23" r="20" fill="none"></circle>
+                        </svg>
+                    </div>
+                </div>
+                <div class="message message-in message-close" data-id="messagecode">
+                    <div class="message-property message-growth remove-top-edge">
+                        <div class="message-edge message-shadow ">
+                            <div class="message-padding">
+                                <div class="message-content">
+                                    <span class="message-visibility selectable-text">
+                                        KKKKKKKK
+                                    </span>
+                                    <span class="message-time-spacing">
+                                    </span>
+                                </div>
+                                <div class="message-time">
+                                    <div class="message-time-property">
+                                        <span class="message-time-text">15:36</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message  message-out message-close" data-id="messagecode">
+                    <div class="message-property message-growth remove-top-edge">
+                        <div class="message-edge message-shadow ">
+                            <div class="message-padding">
+                                <div class="message-content">
+                                    <span class="message-visibility selectable-text">os caras chorem a perda</span>
+                                    <span class="message-time-spacing"></span>
+                                </div>
+                                <div class="message-time">
+                                    <div class="message-time-property" role="button">
+                                        <span class="message-time-text">20:03</span>
+                                        <div class="message-time-icon">
+                                            <span data-testid="msg-check" aria-label=" Enviada " data-icon="msg-check" class="">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15">
+                                                    <path fill="currentColor" d="M10.91 3.316l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"></path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group message-input-group col-12">
+                <input type="text" class="form-control message-input input-pill" name="msg" id="mensagem" placeholder="Envie sua mensagem">
+                <button id="butaozinho" type="submit" class="message-input-icon">
+                    <i class="text-primary far fa-paper-plane"></i>
                 </button>
             </div>
 
 
         </div>
-        <div class="d-md-flex d-none col-md-3 min-vh-100 border-left">
-            <div class="col">
-                <div class="d-flex justify-content-center mt-5">
-                    <div class="avatarnome rounded-circle border border-dark">
-
+        <div class="d-md-flex d-none col-md-3 p-0 _height-message-page">
+            <div class="col p-0">
+                <div class="d-flex justify-content-center py-5">
+                    <div class="avatar avatar-xl avatar-offline my-5">
+                        <span class="avatar-title rounded-circle font-weight-bold">PA</span>
                     </div>
-
                 </div>
-                <div class="d-flex justify-content-center mt-4" style="font-size: 20px;"> Nome Sobrenome </div>
-                <hr class="hr1 mt-4">
+                <div class="d-flex justify-content-center" style="font-size: 20px; top:0;"> Nome Sobrenome </div>
+                <hr class="hr1 mt-4" width="85%">
                 <div class="col">
                     <div class="col">
                         <h2>Dados</h2>
@@ -187,7 +406,7 @@
                         </p>
                     </div>
                 </div>
-                <hr class="hr1 mt-4">
+                <hr class="hr1 mt-4" width="85%">
                 <div class="col">
                     <h2 class="ml-2">Fotos e Documentos</h2>
                 </div>
@@ -198,167 +417,8 @@
 
     </div>
 </div>
-</div>
-
-
-
-<style>
-    ::-webkit-scrollbar-track {
-        background-color: #F4F4F4;
-    }
-
-    ::-webkit-scrollbar {
-        width: 6px;
-        background: #F4F4F4;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #dad7d7;
-    }
-
-    .avatarnome {
-        height: 150px;
-        width: 150px;
-    }
-
-    .tempomsg {
-        margin-left: 85%;
-    }
-
-    .chat {
-        height: 65%;
-        overflow-y: auto;
-    }
-
-    .balao1 {
-        max-width: 45%;
-        border-radius: 0 30px 30px 30px;
-        background-color: #C8C8C8;
-
-
-    }
-
-    .balao2 {
-        max-width: 45%;
-        background-color: red;
-        border-radius: 30px 30px 0 30px;
-
-    }
-
-    .btnchat {
-        background: none;
-        background-color: transparent;
-        border: none;
-    }
-
-    .baloes {
-        height: 88%;
-    }
-
-    .divcamptext {
-
-        border: 1px solid #909090;
-        border-radius: 20px;
-        background-color: white;
-        height: 40px;
-
-
-    }
-
-    .divsearchcontact {
-
-        border: 1px solid #909090;
-        border-radius: 20px;
-        background-color: white;
-        height: 30px;
-
-
-    }
-
-    .campotexto {
-        background: none;
-        background-color: transparent;
-        border: none;
-        width: 95%;
-
-    }
-
-
-    .acontato:link {
-        text-decoration: none;
-        color: #575962;
-    }
-
-
-    .bola {
-        border-radius: 50%;
-
-        height: 12px;
-        width: 12px;
-        border: 1px solid #1538fc;
-        background-color: #1538fc;
-    }
-
-    .contato {
-        height: 500px;
-        margin-top: 60px;
-        overflow: scroll;
-
-    }
-
-    .contatos {
-        margin-top: 40px;
-    }
-
-    .nome {
-        font-size: 18px;
-        color: black;
-    }
-
-    hr {
-        color: #f00;
-        background-color: #E0E0E0;
-        height: 0.5px;
-        width: 200px;
-
-    }
-
-    .hr1 {
-        color: #f00;
-        background-color: #E0E0E0;
-        height: 0.5px;
-        width: 350px;
-
-    }
-
-    .msg {
-        margin-left: 35px;
-    }
-
-    .avatar {
-        width: 65px;
-        height: 65px;
-        border-radius: 50%;
-        border: 1px solid #909090;
-
-    }
-
-    #txtBusca {
-        float: left;
-        background-color: transparent;
-        padding-left: 5px;
-
-        font-size: 15px;
-
-        height: 32px;
-
-        border: solid 1px #909090;
-        border-radius: 15px;
-        width: 300px;
-    }
-</style>
-
 
 @section Scripts{
     <script src="~/assets/js/odontoapp/message/message_index.js"></script>
+    <script>document.querySelector('footer.footer').remove()</script>
 }

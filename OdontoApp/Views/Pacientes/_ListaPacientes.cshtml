@@ -26,10 +26,8 @@
                                             @Html.DisplayNameFor(model => model.First().EmailPaciente)
                                         </th>
                                         <th>
-                                            (@Html.DisplayNameFor(model => model.First().DDD)) @Html.DisplayNameFor(model => model.First().Telefone)
-                                        </th>
-                                        <th class="text-center">
-                                            Detalhes
+                                            (@Html.DisplayNameFor(model => model.First().DDD)) @Html.DisplayNameFor(model =>
+                                        model.First().Telefone)
                                         </th>
                                         <th class="text-center">
                                             Excluir
@@ -40,23 +38,22 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr id="carregarPaciente" data-id="@item.PacienteId">
-                                            <td>
+                                            <td class="details-patient">
                                                 @Html.DisplayFor(modelItem => item.NomePaciente)
                                             </td>
-                                            <td>
+                                            <td class="details-patient">
                                                 @Html.DisplayFor(modelItem => item.CPF)
                                             </td>
-                                            <td>
+                                            <td class="details-patient">
                                                 @Html.DisplayFor(modelItem => item.EmailPaciente)
                                             </td>
-                                            <td>
-                                                (@Html.DisplayFor(modelItem => item.DDD)) @Html.DisplayFor(modelItem => item.Telefone)
+                                            <td class="details-patient">
+                                                (@Html.DisplayFor(modelItem => item.DDD)) @Html.DisplayFor(modelItem =>
+                                        item.Telefone)
                                             </td>
                                             <td class="text-center">
-                                                <a asp-action="paginapaciente" asp-route-id="@item.PacienteId" class="btn btn-link"><i class="fa fa-info-circle text-warning h4"></i></a>
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="javascript:void(0)" class="btn btn-link deletePaciente" data-id="@item.PacienteId"><i class="fa fa-times text-danger h4"></i></a>
+                                                <a href="javascript:void(0)" class="btn btn-link deletePaciente"
+                                                    data-id="@item.PacienteId"><i class="fa fa-times text-danger h4"></i></a>
                                             </td>
                                         </tr>
                                     }
@@ -99,4 +96,8 @@
         });
     }
     $('.deletePaciente').click(LoadmodalDelete)
+    document.querySelectorAll('td.details-patient')
+        .forEach(td => td.addEventListener('click', event =>
+            window.location.href = window.location.href + "/paginapaciente/" + event.path[1].getAttribute('data-id'))
+            , false)
 </script>

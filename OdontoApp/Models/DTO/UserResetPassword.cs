@@ -4,6 +4,7 @@ namespace OdontoApp.Models.DTO
 {
     public class UserResetPassword
     {
+
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         [MinLength(6, ErrorMessage = "Senha deve conter no mínimo 6 caracteres")]
         [RegularExpression("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])(?:([0-9a-zA-Z$*&@#])(?!\\1)){8,}$", ErrorMessage="Sua senha deve conter um dígito não alfanumérico, letras maiúsculas, minúsculas e números")]

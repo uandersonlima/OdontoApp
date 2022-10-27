@@ -1,51 +1,47 @@
 
 //Configura conexão com o signalR
-let connectionMsg = new signalR.HubConnectionBuilder()
+const connectionMessageHub = new signalR.HubConnectionBuilder()
     .withUrl("/messagehubservice")
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
-
-    //Starta conexão
-    connectionMsg.start().then(() => connectionMsg.on("reportnewmessagesasync", (msg, cdc) => {
-    appendNewMessage(cdc);
+//inicia conexão
+const connectionstartMessageHub = async () => {
+    connectionMessageHub.start().then(
+        () => {
+            enableCHAT();
+            console.info("Connected!");
+        }
+    ).catch(function (err) {
+        if (connection.state == 0) {
+            console.error(err.toString());
+            setTimeout(connectionstartMessageHub, 3000);
+        }
+    });
 }
-));
+connectionMessageHub.onclose(async () => await connectionstartMessageHub());
+
+const enableCHAT = async () => {
+    connectionMessageHub.on("reportnewmessagesasync", (msg, cdc) => appendNewMessage(cdc))
+    connectionMessageHub.on("UserIsConnectedAsync", msg => console.info(msg))
+    connectionMessageHub.on("UserIsDisconnectedAsync", msg => console.info(msg))
+}
 
 
-connectionMsg.on("UserIsConnectedAsync", msg => console.log(msg))
-connectionMsg.on("UserIsDisconnectedAsync", msg => console.log(msg))
-
-inputIdUser = document.querySelector('input[id="user"]');
 
 //Função teste para enviar mensagem fixa; 
-function teste() {
-    let request = new Request("/api/messages", {
+
+const sendMessageApi = async (destination, msg) => {
+    const request = new Request("/api/messages", {
         method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            description: "salve meu compatriota",
-            isDeleted: false,
-            messagecode: null,
-            receiverUser: null,
-            receiverUserId: inputIdUser.value,
-            senderUser: null,
-            senderUserId: "",
-            timeReceived: "",
-            timeSent: "",
-            viewedTime: "",
+            description: msg,
+            receiverUserId: destination,
         })
-    }
-    )
-    fetch(request)
-        .then(response => {
-            if (response.status == 200) {
-                console.log('ok');
-            }
-        })
-        .catch(error => console.error('Unable to update item.', error));
+    });
+    const response = await fetch(request);
+    return response
 }
 
+connectionstartMessageHub()

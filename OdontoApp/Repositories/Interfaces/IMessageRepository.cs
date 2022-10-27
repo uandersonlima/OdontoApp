@@ -15,6 +15,5 @@ namespace OdontoApp.Repositories.Interfaces
         Task DeleteMessageAsync(Message msg);
         Task SendMessageAsync(Message msg);
         Task UpdateMessageAsync(Message msg);
-        Task<List<string>> UserListAsync(string userId);
     }
 }

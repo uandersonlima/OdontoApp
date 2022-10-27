@@ -59,9 +59,5 @@ namespace OdontoApp.Services
                 await messageRepos.SendMessageAsync(msg);
         }
 
-        public async Task<List<string>> UserListAsync()
-        {
-            return await messageRepos.UserListAsync(authService.GetLoggedUserAsync().Result.Id);
-        }
     }
 }

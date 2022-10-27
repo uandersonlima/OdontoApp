@@ -66,8 +66,8 @@ namespace OdontoApp.Controllers
         {
             msg.TimeSent = DateTime.Now;
             msg.SenderUserId = authService.GetLoggedUserAsync().Result.Id;
-            await messageHub.Clients.User(msg.ReceiverUserId).ReportNewMessagesAsync("nova mensagem", msg);
             await msgSvc.SendMessageAsync(msg);
+            await messageHub.Clients.User(msg.ReceiverUserId).ReportNewMessagesAsync("nova mensagem", msg);
             return Ok(msg);
         }
 

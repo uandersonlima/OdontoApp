@@ -16,18 +16,18 @@ namespace OdontoApp.Services
     public class EmailService : IEmailService
     {
         private readonly AppSettings appsettings;
-        private readonly IHttpContextAccessor acessor;
+        private readonly IHttpContextAccessor accessor;
 
-        public EmailService(IOptions<AppSettings> appsettings, IHttpContextAccessor acessor)
+        public EmailService(IOptions<AppSettings> appsettings, IHttpContextAccessor accessor)
         {
             this.appsettings = appsettings.Value;
-            this.acessor = acessor;
+            this.accessor = accessor;
         }
 
         public async Task SendEmailRecoveryAsync(ApplicationUser usuario, string code_encrypted)
         {
             string nome = Mask.PrimeiroNome(usuario.Nome);    
-            string recoveryLink =  $"https://{acessor.HttpContext.Request.Host}/token/{code_encrypted}";    
+            string recoveryLink =  $"https://{accessor.HttpContext.Request.Host}/token/{code_encrypted}";    
             string head = HtmlEmailTemplate.EmailHead();
             string body = HtmlEmailTemplate.EmailRecoveryBody(nome, recoveryLink, "https://google.com.br", "https://google.com.br");
             string Html = HtmlEmailTemplate.EmailHtml(head, body);         
@@ -48,7 +48,7 @@ namespace OdontoApp.Services
         public async Task SendEmailVerificationAsync(ApplicationUser usuario, string code_encrypted)
         {
             string nome = Mask.PrimeiroNome(usuario.Nome);    
-            string confirmationLink =  $"https://{acessor.HttpContext.Request.Host}/token/{code_encrypted}";    
+            string confirmationLink =  $"https://{accessor.HttpContext.Request.Host}/token/{code_encrypted}";    
             string head = HtmlEmailTemplate.EmailHead();
             string body = HtmlEmailTemplate.EmailVerificationBody(nome, confirmationLink, "https://google.com.br", "https://google.com.br");
             string Html = HtmlEmailTemplate.EmailHtml(head, body);

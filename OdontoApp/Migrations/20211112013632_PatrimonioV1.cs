@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace OdontoApp.Migrations
 {
-    public partial class OdontoV1 : Migration
+    public partial class PatrimonioV1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +27,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     BairroId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -39,7 +40,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     CategoriaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoCategoria = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -52,7 +53,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     CepId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(maxLength: 10, nullable: false)
                 },
                 constraints: table =>
@@ -65,7 +66,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     CidadeId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -78,7 +79,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     CodigoPromocionalId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IndentificadorPlano = table.Column<string>(nullable: true),
                     Codigo = table.Column<string>(nullable: true),
                     Quantidade = table.Column<int>(nullable: false)
@@ -93,7 +94,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     DentesRegiaoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -106,7 +107,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     EstadoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -130,7 +131,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     PerguntaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoPergunta = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -143,7 +144,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     RespostaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao1 = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -156,7 +157,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     RuaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -169,7 +170,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     TipoPerguntaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoTipoPergunta = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -182,7 +183,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -247,7 +248,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     AgendaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Titulo = table.Column<string>(nullable: true),
                     Descricao = table.Column<string>(nullable: true),
                     Inicio = table.Column<DateTime>(nullable: false),
@@ -268,7 +269,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     AnamneseId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoAnamnese = table.Column<string>(nullable: false),
                     UsuarioId = table.Column<string>(nullable: true),
                     PacienteId = table.Column<int>(nullable: true),
@@ -284,7 +285,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -327,7 +328,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     AtestadoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoAtestado = table.Column<string>(nullable: false),
                     DataAtestado = table.Column<DateTime>(nullable: false),
                     NMasAtestado = table.Column<string>(nullable: false),
@@ -349,7 +350,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     CaixaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoCaixa = table.Column<string>(nullable: false),
                     UsuarioId = table.Column<string>(nullable: true)
                 },
@@ -363,7 +364,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     CargoClinicaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoCargoClinica = table.Column<string>(nullable: false),
                     UsuarioId = table.Column<string>(nullable: true)
                 },
@@ -377,7 +378,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     ClinicaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NomeClinica = table.Column<string>(nullable: false),
                     CnpjClinica = table.Column<string>(nullable: false),
                     TelefoneClinica = table.Column<string>(nullable: false),
@@ -419,7 +420,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     DespesaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoDespesa = table.Column<string>(nullable: false),
                     DataDespesa = table.Column<DateTime>(nullable: false),
                     ComprovanteDespesa = table.Column<string>(nullable: false),
@@ -464,7 +465,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     MedicamentoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoMedicamento = table.Column<string>(nullable: false),
                     StatusMedicamentoId = table.Column<int>(nullable: false),
                     PosologiaId = table.Column<int>(nullable: false),
@@ -480,7 +481,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     MedicoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NomeMedico = table.Column<string>(nullable: false),
                     NumeroCroMedico = table.Column<string>(nullable: false),
                     UsuarioId = table.Column<string>(nullable: true)
@@ -495,7 +496,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     EnderecoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NumeroEndereco = table.Column<string>(nullable: false),
                     EstadoId = table.Column<int>(nullable: false),
                     CidadeId = table.Column<int>(nullable: false),
@@ -593,7 +594,7 @@ namespace OdontoApp.Migrations
                     ReceiverUserId = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     TimeSent = table.Column<DateTime>(nullable: true),
-                    TimeReceived = table.Column<DateTime>(nullable: true),
+                    TimeDelivered = table.Column<DateTime>(nullable: true),
                     ViewedTime = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false)
                 },
@@ -619,7 +620,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     PerguntaAnamneseId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TipoPerguntaId = table.Column<int>(nullable: false),
                     PerguntaId = table.Column<int>(nullable: false),
                     RespostaId = table.Column<int>(nullable: true),
@@ -666,7 +667,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     PlanoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NomePlano = table.Column<string>(nullable: true),
                     NumeroPlano = table.Column<string>(nullable: true),
                     CpfResponsavelPlano = table.Column<string>(nullable: true),
@@ -688,7 +689,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     PosologiaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoPosologia = table.Column<string>(nullable: false),
                     UsuarioId = table.Column<string>(nullable: true)
                 },
@@ -708,7 +709,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     ProdutoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Descricao = table.Column<string>(nullable: true),
                     EstoqueMinimo = table.Column<int>(nullable: false),
                     EstoqueMaximo = table.Column<int>(nullable: false),
@@ -731,7 +732,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     ReceitaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UsuarioId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -750,7 +751,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     StatusMedicamentoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoStatusMedicamento = table.Column<string>(nullable: false),
                     UsuarioId = table.Column<string>(nullable: true)
                 },
@@ -770,13 +771,13 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     PacienteId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NomePaciente = table.Column<string>(nullable: false),
                     Sexo = table.Column<string>(nullable: false),
                     Nascimento = table.Column<DateTime>(nullable: false),
                     CPF = table.Column<string>(maxLength: 14, nullable: false),
                     RgPaciente = table.Column<string>(maxLength: 14, nullable: false),
-                    ObsPaciente = table.Column<string>(nullable: false),
+                    ObsPaciente = table.Column<string>(nullable: true),
                     EmailPaciente = table.Column<string>(nullable: false),
                     ComoChegouPaciente = table.Column<string>(nullable: false),
                     DDD = table.Column<string>(maxLength: 2, nullable: false),
@@ -814,7 +815,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     EstoqueId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ValorIndividual = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
                     Quantidade = table.Column<int>(nullable: false),
                     ValorTotal = table.Column<decimal>(type: "decimal(10, 2)", nullable: true),
@@ -884,7 +885,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     OrcamentoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DescricaoOrcamento = table.Column<string>(nullable: false),
                     DataOrcamento = table.Column<DateTime>(nullable: false),
                     ValorOrcamento = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
@@ -936,7 +937,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     ReceituarioId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EnderecoId = table.Column<int>(nullable: false),
                     PacienteId = table.Column<int>(nullable: false),
                     ReceitaId = table.Column<int>(nullable: false),
@@ -990,7 +991,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     TratamentoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NomeTratamento = table.Column<string>(nullable: false),
                     ValorTratamento = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
                     DentesRegiaoId = table.Column<int>(nullable: false),
@@ -1032,7 +1033,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     EntradaSaidaId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TransactionType = table.Column<string>(nullable: true),
                     Quantidade = table.Column<int>(nullable: false),
                     DataTransacao = table.Column<DateTime>(nullable: false),
@@ -1103,7 +1104,7 @@ namespace OdontoApp.Migrations
                 columns: table => new
                 {
                     RecebimentoId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DataRecebimento = table.Column<DateTime>(nullable: false),
                     ComprovanteRecebimento = table.Column<string>(nullable: false),
                     PacienteId = table.Column<int>(nullable: false),
@@ -1203,8 +1204,7 @@ namespace OdontoApp.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -1235,8 +1235,7 @@ namespace OdontoApp.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Atestado_ClinicaId",

@@ -17,9 +17,9 @@ namespace OdontoApp.Services
             this.contextAccessor = contextAccessor;
         }
 
-        public Task<ApplicationUser> GetLoggedUserAsync()
+        public async Task<ApplicationUser> GetLoggedUserAsync()
         {
-            return signInManager.UserManager.GetUserAsync(contextAccessor.HttpContext.User);
+            return await signInManager.UserManager.GetUserAsync(contextAccessor.HttpContext.User);
         }
 
         public async Task SignInAsync(ApplicationUser user)

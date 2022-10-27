@@ -27,9 +27,9 @@ namespace OdontoApp.Services.Extensions
             svc.AddHttpContextAccessor();
 
             svc.AddSignalR();
-            
+
             svc.Configure<AppSettings>(conf.GetSection(AppSettings.Position));
-           
+
             svc.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -41,7 +41,7 @@ namespace OdontoApp.Services.Extensions
                 options.Password.RequiredUniqueChars = 1;
 
                 // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(2);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1000);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
                 // User settings.
@@ -54,18 +54,23 @@ namespace OdontoApp.Services.Extensions
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromHours(2);
+                options.ExpireTimeSpan = TimeSpan.FromHours(1000);
                 options.LoginPath = "/Auth/SignIn";
                 options.AccessDeniedPath = "/Auth/AccessDenied";
                 options.SlidingExpiration = true;
             });
-            
-            svc.AddScoped<EmailService>();
-            svc.AddScoped<IKeyRepository, KeyRepository>();
-           
+
+            svc.AddAuthentication()
+            .AddGoogle(googleOptions =>
+            {
+                IConfigurationSection googleAuthNSection = conf.GetSection("Auth:GoogleOAuth2");
+                googleOptions.ClientId = googleAuthNSection["ClientId"];
+                googleOptions.ClientSecret = googleAuthNSection["ClientSecret"];
+            });
+
             //Banco de Dados
             svc.AddDbContext<OdontoAppContext>(options =>
-            options.UseSqlServer(conf.GetConnectionString("OdontoAppContext"),
+            options.UseMySql(conf.GetConnectionString("testeContext"),
                                      x => x.MigrationsAssembly("OdontoApp")));
 
             svc.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<OdontoAppContext>().AddDefaultTokenProviders();

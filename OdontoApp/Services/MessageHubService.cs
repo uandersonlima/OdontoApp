@@ -16,17 +16,11 @@ namespace OdontoApp.Services
 
         public override async Task OnConnectedAsync()
         {
-            var a = Context.UserIdentifier.ToString();
-            var userList = await msgService.UserListAsync();
-            userList.Add(a);
-            await Clients.Users(userList).UserIsConnectedAsync($"{a} se conectou");
+            await Clients.All.UserIsConnectedAsync($"{Context.UserIdentifier} se conectou");
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            var a = Context.UserIdentifier.ToString();
-            var userList = await msgService.UserListAsync();
-            userList.Add(a);
-            await Clients.Users(userList).UserIsDisconnectedAsync($"{a} se desconectou");
+            await Clients.All.UserIsDisconnectedAsync($"{Context.UserIdentifier} se desconectou");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OdontoApp.Libraries.Validation;
+using OdontoApp.Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,15 +22,19 @@ namespace OdontoApp.Models
         [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Nascimento { get; set; }
 
-        
+
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         public string Sexo { get; set; }
 
-        
+
         [CPF(ErrorMessage = "Informe um {0} válido")]
         [Required(ErrorMessage = "Informe o campo {0}", AllowEmptyStrings = false)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#########'/'##}")]
+        
         public string CPF { get; set; }
+
+        [NotMapped]
+        public StatusIndicator Status { get; set; }
 
         public int EnderecoId { get; set; }
         public Endereco Endereco { get; set; }

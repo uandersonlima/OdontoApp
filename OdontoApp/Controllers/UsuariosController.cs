@@ -121,7 +121,7 @@ namespace OdontoApp.Controllers
 
         [HttpPost]
         public async Task<IActionResult> NovaConfirmacaoEmail(string codeType)
-        {
+        {   
             var loggedUser = await authService.GetLoggedUserAsync();
             if (!(loggedUser is null))
             {

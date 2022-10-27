@@ -21,7 +21,7 @@ namespace OdontoApp.Models
         public string Description { get; set; }
 
         public DateTime? TimeSent { get; set; }
-        public DateTime? TimeReceived { get; set; }
+        public DateTime? TimeDelivered { get; set; }
         public DateTime? ViewedTime { get; set; }
         public bool IsDeleted { get; set; }
 
